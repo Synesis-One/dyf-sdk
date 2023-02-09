@@ -8261,7 +8261,7 @@ var createStakeCampaignInstructions = /*#__PURE__*/function () {
           _PublicKey$findProgra = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], PROGRAM_ID), userProfile = _PublicKey$findProgra[0];
           _PublicKey$findProgra2 = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], PROGRAM_ID), farmConfig = _PublicKey$findProgra2[0];
           _context.next = 10;
-          return connection.getParsedAccountInfo(userProfile);
+          return connection.getParsedAccountInfo(userProfile, 'processed');
         case 10:
           profile = _context.sent;
           if (!profile || !profile.value) {
@@ -8280,7 +8280,7 @@ var createStakeCampaignInstructions = /*#__PURE__*/function () {
           _PublicKey$findProgra4 = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), publicKey.toBuffer()], PROGRAM_ID), campaignActivity = _PublicKey$findProgra4[0];
           _PublicKey$findProgra5 = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:VAULT'), Buffer.from(campaignTitle)], PROGRAM_ID), campaignVault = _PublicKey$findProgra5[0];
           _context.next = 18;
-          return connection.getAccountInfo(userToken);
+          return connection.getAccountInfo(userToken, 'processed');
         case 18:
           accountInfo = _context.sent;
           if (accountInfo == null) {
@@ -8507,7 +8507,7 @@ var createStakeCampaignWithNFTInstructions = /*#__PURE__*/function () {
           _PublicKey$findProgra28 = web3.PublicKey.findProgramAddressSync([Buffer.from('metadata'), new web3.PublicKey(METADATA_PROGRAM_ADDRESS).toBuffer(), new web3.PublicKey(mint).toBuffer()], new web3.PublicKey(METADATA_PROGRAM_ADDRESS)), nftMetadata = _PublicKey$findProgra28[0];
           _PublicKey$findProgra29 = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF')], PROGRAM_ID), pdaAccount = _PublicKey$findProgra29[0];
           _context5.next = 14;
-          return connection.getParsedAccountInfo(userProfile);
+          return connection.getParsedAccountInfo(userProfile, 'processed');
         case 14:
           profile = _context5.sent;
           if (!profile || !profile.value) {
@@ -9430,7 +9430,7 @@ var createRpcPermitInstructions = /*#__PURE__*/function () {
         case 10:
           farmConfig = _context3.sent;
           _context3.next = 13;
-          return connection.getParsedAccountInfo(userProfile);
+          return connection.getParsedAccountInfo(userProfile, 'processed');
         case 13:
           profile = _context3.sent;
           if (!profile || !profile.value) {
