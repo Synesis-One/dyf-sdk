@@ -8,5 +8,6 @@ export declare const createBuilderSubmitUtterancesInstructions: (publicKey: Publ
     signers: Signer[];
 };
 export declare const createRpcSubmitUtterancesPromises: (publicKey: PublicKey, connection: Connection, rpcAuthToken: string, campaignTitle: string, batchUtterances: PUtterance[][]) => {
-    promises: Promise<import("../typings").RpcBatchSubmissionResponse[]>[];
+    promise: (token: string, dyfarmContract: string, campaignTitle: string, wallet: string, offchainReferences: string[], offchainTypes: number[], kinds: number[]) => Promise<import("../typings").RpcBatchSubmissionResponse[]>;
+    args: (string | any[])[][];
 };

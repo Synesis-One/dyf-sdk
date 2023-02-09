@@ -9109,17 +9109,18 @@ var createRpcSubmitUtterancesPromises = function createRpcSubmitUtterancesPromis
   if (!publicKey) throw new Error('PublicKey is undefined');
   if (!connection) throw new Error('Connection is undefined');
   if (!rpcAuthToken || rpcAuthToken === '') throw new Error('RPC Auth Token is undefined');
-  var promises = batchUtterances.map(function (_utterances) {
-    return rpcBatchSubmitPhrases(rpcAuthToken, PROGRAM_ADDRESS, campaignTitle, publicKey.toBase58(), _utterances.map(function (utterance) {
+  var args = batchUtterances.map(function (_utterances) {
+    return [rpcAuthToken, PROGRAM_ADDRESS, campaignTitle, publicKey.toBase58(), _utterances.map(function (utterance) {
       return utterance.canonical;
     }), _utterances.map(function () {
       return OFFCHAIN_TYPE.s3.val;
     }), _utterances.map(function (utterance) {
       return PHRASE_TYPE[String(utterance.kind).toLowerCase()].val;
-    }));
+    })];
   });
   return {
-    promises: promises
+    promise: rpcBatchSubmitPhrases,
+    args: args
   };
 };
 
@@ -9805,8 +9806,8 @@ var createRpcValidateUtterancesPromises = function createRpcValidateUtterancesPr
   if (!publicKey) throw new Error('PublicKey is undefined');
   if (!connection) throw new Error('Connection is undefined');
   if (!rpcAuthToken || rpcAuthToken === '') throw new Error('RPC Auth Token is undefined');
-  var promises = batchValidations.map(function (_validations) {
-    return rpcBatchValidatePhrase(rpcAuthToken, PROGRAM_ADDRESS, campaignTitle, publicKey.toBase58(), _validations.map(function (validation) {
+  var args = batchValidations.map(function (_validations) {
+    return [rpcAuthToken, PROGRAM_ADDRESS, campaignTitle, publicKey.toBase58(), _validations.map(function (validation) {
       return validation.builder;
     }), _validations.map(function (validation) {
       return validation.utterance;
@@ -9816,10 +9817,11 @@ var createRpcValidateUtterancesPromises = function createRpcValidateUtterancesPr
       return validation.vote;
     }), _validations.map(function (validation) {
       return validation.confidence;
-    }));
+    })];
   });
   return {
-    promises: promises
+    promise: rpcBatchValidatePhrase,
+    args: args
   };
 };
 

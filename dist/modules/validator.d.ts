@@ -6,5 +6,6 @@ export declare const createValidatorValidateUtterancesInstructions: (publicKey: 
     signers: Signer[];
 };
 export declare const createRpcValidateUtterancesPromises: (publicKey: PublicKey, connection: Connection, rpcAuthToken: string, campaignTitle: string, batchValidations: ValidationArgs[][]) => {
-    promises: Promise<import("../typings").RpcBatchSubmissionResponse[]>[];
+    promise: (token: string, dyfarmContract: string, campaignTitle: string, wallet: string, builders: string[], phraseAccounts: string[], canonicals: string[], values: boolean[], confidences: number[]) => Promise<import("../typings").RpcBatchSubmissionResponse[]>;
+    args: (string | string[] | number[] | boolean[])[][];
 };
