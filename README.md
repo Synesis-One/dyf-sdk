@@ -1,5 +1,10 @@
 # DYF SDK
 
+
+```
+npm install @synesis-one/dyf@Synesis-One/dyf-sdk
+```
+
 ```typescript
 
 import { Dyfarm } from '_packages'
