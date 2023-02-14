@@ -1,7 +1,7 @@
-import { Transaction, PublicKey, TransactionInstruction, SystemProgram, SYSVAR_RENT_PUBKEY, SYSVAR_CLOCK_PUBKEY, LAMPORTS_PER_SOL } from '@solana/web3.js';
-import { TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID, createAssociatedTokenAccountInstruction } from '@solana/spl-token';
+import { PublicKey, TransactionInstruction, SystemProgram, SYSVAR_RENT_PUBKEY, Transaction, SYSVAR_CLOCK_PUBKEY, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { fixedScalarEnum, BeetStruct, uniformFixedSizeArray, u8, u64, u16, bool, FixableBeetStruct, utf8String, coption, u32, i64, array, BeetArgsStruct, FixableBeetArgsStruct } from '@metaplex-foundation/beet';
 import { publicKey, GpaBuilder } from '@metaplex-foundation/beet-solana';
+import { TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID, createAssociatedTokenAccountInstruction } from '@solana/spl-token';
 import BN from 'bn.js';
 import randomstring from 'randomstring';
 import axios from 'axios';
@@ -495,520 +495,6 @@ function _toPropertyKey(arg) {
   return typeof key === "symbol" ? key : String(key);
 }
 
-var encodeText = function encodeText(txt) {
-  return new TextEncoder().encode(txt);
-};
-var decodeText = function decodeText(bytes) {
-  return new TextDecoder('utf-8').decode(Uint8Array.from(bytes.filter(function (item) {
-    return item !== 0;
-  })));
-};
-var sleep = function sleep(ms) {
-  return new Promise(function (resolve) {
-    return setTimeout(resolve, ms);
-  });
-};
-
-var DEFAULT_TIMEOUT = 3 * 60 * 1000; // 3 minutes
-function sendInstructions(_x, _x2, _x3, _x4, _x5, _x6) {
-  return _sendInstructions.apply(this, arguments);
-}
-function _sendInstructions() {
-  _sendInstructions = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(connection, wallet, instructions, signers, commitment, payer) {
-    var _tx;
-    var tx, _tx2, _yield$sendAndConfirm, txid;
-    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
-      while (1) switch (_context5.prev = _context5.next) {
-        case 0:
-          if (commitment === void 0) {
-            commitment = 'processed';
-          }
-          if (payer === void 0) {
-            payer = wallet.publicKey;
-          }
-          tx = new Transaction();
-          _context5.next = 5;
-          return connection.getRecentBlockhash();
-        case 5:
-          tx.recentBlockhash = _context5.sent.blockhash;
-          tx.feePayer = payer || wallet.publicKey;
-          (_tx = tx).add.apply(_tx, instructions);
-          if (signers.length > 0) {
-            (_tx2 = tx).partialSign.apply(_tx2, signers);
-          }
-          _context5.next = 11;
-          return wallet.signTransaction(tx);
-        case 11:
-          tx = _context5.sent;
-          _context5.prev = 12;
-          _context5.next = 15;
-          return sendAndConfirmWithRetry(connection, tx.serialize(), {
-            skipPreflight: true
-          }, commitment);
-        case 15:
-          _yield$sendAndConfirm = _context5.sent;
-          txid = _yield$sendAndConfirm.txid;
-          return _context5.abrupt("return", txid);
-        case 20:
-          _context5.prev = 20;
-          _context5.t0 = _context5["catch"](12);
-          console.error(_context5.t0);
-          throw _context5.t0;
-        case 24:
-        case "end":
-          return _context5.stop();
-      }
-    }, _callee5, null, [[12, 20]]);
-  }));
-  return _sendInstructions.apply(this, arguments);
-}
-function getUnixTime() {
-  return new Date().valueOf() / 1000;
-}
-var awaitTransactionSignatureConfirmation = /*#__PURE__*/function () {
-  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(txid, timeout, connection, commitment, queryStatus) {
-    var done, status, subId;
-    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-      while (1) switch (_context3.prev = _context3.next) {
-        case 0:
-          if (commitment === void 0) {
-            commitment = 'recent';
-          }
-          if (queryStatus === void 0) {
-            queryStatus = false;
-          }
-          done = false;
-          status = {
-            slot: 0,
-            confirmations: 0,
-            err: null
-          };
-          subId = 0; // eslint-disable-next-line no-async-promise-executor
-          _context3.next = 7;
-          return new Promise( /*#__PURE__*/function () {
-            var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(resolve, reject) {
-              return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-                while (1) switch (_context2.prev = _context2.next) {
-                  case 0:
-                    setTimeout(function () {
-                      if (done) {
-                        return;
-                      }
-                      done = true;
-                      console.log('Rejecting for timeout...');
-                      reject({
-                        timeout: true
-                      });
-                    }, timeout);
-                    try {
-                      console.log('COMMIMENT', commitment);
-                      subId = connection.onSignature(txid, function (result, context) {
-                        done = true;
-                        status = {
-                          err: result.err,
-                          slot: context.slot,
-                          confirmations: 0
-                        };
-                        if (result.err) {
-                          console.log('Rejected via websocket', result.err);
-                          reject(status);
-                        } else {
-                          console.log('Resolved via websocket', result);
-                          resolve(status);
-                        }
-                      }, commitment);
-                    } catch (e) {
-                      done = true;
-                      console.error('WS error in setup', txid, e);
-                    }
-                  case 2:
-                    if (!(!done && queryStatus)) {
-                      _context2.next = 9;
-                      break;
-                    }
-                    _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-                      var signatureStatuses;
-                      return _regeneratorRuntime().wrap(function _callee$(_context) {
-                        while (1) switch (_context.prev = _context.next) {
-                          case 0:
-                            _context.prev = 0;
-                            _context.next = 3;
-                            return connection.getSignatureStatuses([txid]);
-                          case 3:
-                            signatureStatuses = _context.sent;
-                            status = signatureStatuses && signatureStatuses.value[0];
-                            if (!done) {
-                              if (!status) {
-                                console.log('REST null result for', txid, status);
-                              } else if (status.err) {
-                                console.log('REST error for', txid, status);
-                                done = true;
-                                reject(status.err);
-                              } else if (!status.confirmations && !status.confirmationStatus) {
-                                console.log('REST no confirmations for', txid, status);
-                              } else {
-                                console.log('REST confirmation for', txid, status);
-                                if (!status.confirmationStatus || status.confirmationStatus == commitment) {
-                                  done = true;
-                                  resolve(status);
-                                }
-                              }
-                            }
-                            _context.next = 11;
-                            break;
-                          case 8:
-                            _context.prev = 8;
-                            _context.t0 = _context["catch"](0);
-                            if (!done) {
-                              console.log('REST connection error: txid', txid, _context.t0);
-                            }
-                          case 11:
-                          case "end":
-                            return _context.stop();
-                        }
-                      }, _callee, null, [[0, 8]]);
-                    }))();
-                    _context2.next = 7;
-                    return sleep(2000);
-                  case 7:
-                    _context2.next = 2;
-                    break;
-                  case 9:
-                  case "end":
-                    return _context2.stop();
-                }
-              }, _callee2);
-            }));
-            return function (_x12, _x13) {
-              return _ref2.apply(this, arguments);
-            };
-          }());
-        case 7:
-          status = _context3.sent;
-          if (
-          //@ts-ignore
-          connection._signatureSubscriptions &&
-          //@ts-ignore
-          connection._signatureSubscriptions[subId]) {
-            connection.removeSignatureListener(subId);
-          }
-          done = true;
-          console.log('Returning status ', status);
-          return _context3.abrupt("return", status);
-        case 12:
-        case "end":
-          return _context3.stop();
-      }
-    }, _callee3);
-  }));
-  return function awaitTransactionSignatureConfirmation(_x7, _x8, _x9, _x10, _x11) {
-    return _ref.apply(this, arguments);
-  };
-}();
-function simulateTransaction(_x14, _x15, _x16) {
-  return _simulateTransaction.apply(this, arguments);
-}
-function _simulateTransaction() {
-  _simulateTransaction = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(connection, transaction, commitment) {
-    var signData, wireTransaction, encodedTransaction, config, args, res;
-    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
-      while (1) switch (_context6.prev = _context6.next) {
-        case 0:
-          _context6.next = 2;
-          return connection._recentBlockhash(
-          // @ts-ignore
-          connection._disableBlockhashCaching);
-        case 2:
-          transaction.recentBlockhash = _context6.sent;
-          signData = transaction.serializeMessage(); // @ts-ignore
-          wireTransaction = transaction._serialize(signData);
-          encodedTransaction = wireTransaction.toString('base64');
-          config = {
-            encoding: 'base64',
-            commitment: commitment
-          };
-          args = [encodedTransaction, config]; // @ts-ignore
-          _context6.next = 10;
-          return connection._rpcRequest('simulateTransaction', args);
-        case 10:
-          res = _context6.sent;
-          if (!res.error) {
-            _context6.next = 13;
-            break;
-          }
-          throw new Error('failed to simulate transaction: ' + res.error.message);
-        case 13:
-          return _context6.abrupt("return", res.result);
-        case 14:
-        case "end":
-          return _context6.stop();
-      }
-    }, _callee6);
-  }));
-  return _simulateTransaction.apply(this, arguments);
-}
-function sendAndConfirmWithRetry(_x17, _x18, _x19, _x20, _x21) {
-  return _sendAndConfirmWithRetry.apply(this, arguments);
-}
-function _sendAndConfirmWithRetry() {
-  _sendAndConfirmWithRetry = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(connection, txn, sendOptions, commitment, timeout) {
-    var done, txid, startTime, confirmation, _tx$meta, _tx$meta$logMessages, tx, simulateResult, _tx3$meta, _tx3$meta$logMessages, _tx3;
-    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
-      while (1) switch (_context8.prev = _context8.next) {
-        case 0:
-          if (timeout === void 0) {
-            timeout = DEFAULT_TIMEOUT;
-          }
-          done = false; // let slot = 0;
-          _context8.next = 4;
-          return connection.sendRawTransaction(txn, sendOptions);
-        case 4:
-          txid = _context8.sent;
-          startTime = getUnixTime();
-          _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
-            return _regeneratorRuntime().wrap(function _callee7$(_context7) {
-              while (1) switch (_context7.prev = _context7.next) {
-                case 0:
-                  if (!(!done && getUnixTime() - startTime < timeout)) {
-                    _context7.next = 7;
-                    break;
-                  }
-                  _context7.next = 3;
-                  return connection.sendRawTransaction(txn, sendOptions);
-                case 3:
-                  _context7.next = 5;
-                  return sleep(500);
-                case 5:
-                  _context7.next = 0;
-                  break;
-                case 7:
-                case "end":
-                  return _context7.stop();
-              }
-            }, _callee7);
-          }))();
-          _context8.prev = 7;
-          _context8.next = 10;
-          return awaitTransactionSignatureConfirmation(txid, timeout, connection, commitment, true);
-        case 10:
-          confirmation = _context8.sent;
-          if (confirmation) {
-            _context8.next = 13;
-            break;
-          }
-          throw new Error('Timed out awaiting confirmation on transaction');
-        case 13:
-          if (!confirmation.err) {
-            _context8.next = 20;
-            break;
-          }
-          _context8.next = 16;
-          return connection.getTransaction(txid);
-        case 16:
-          tx = _context8.sent;
-          console.error(tx == null ? void 0 : (_tx$meta = tx.meta) == null ? void 0 : (_tx$meta$logMessages = _tx$meta.logMessages) == null ? void 0 : _tx$meta$logMessages.join('\n'));
-          console.error(confirmation.err);
-          throw new Error('Transaction failed: Custom instruction error');
-        case 20:
-          _context8.next = 44;
-          break;
-        case 22:
-          _context8.prev = 22;
-          _context8.t0 = _context8["catch"](7);
-          console.error('Timeout Error caught', _context8.t0);
-          if (!_context8.t0.timeout) {
-            _context8.next = 27;
-            break;
-          }
-          throw new Error('Timed out awaiting confirmation on transaction');
-        case 27:
-          simulateResult = null;
-          _context8.prev = 28;
-          _context8.next = 31;
-          return simulateTransaction(connection, Transaction.from(txn), 'single');
-        case 31:
-          simulateResult = _context8.sent.value;
-          _context8.next = 40;
-          break;
-        case 34:
-          _context8.prev = 34;
-          _context8.t1 = _context8["catch"](28);
-          _context8.next = 38;
-          return connection.getTransaction(txid);
-        case 38:
-          _tx3 = _context8.sent;
-          console.error(_tx3 == null ? void 0 : (_tx3$meta = _tx3.meta) == null ? void 0 : (_tx3$meta$logMessages = _tx3$meta.logMessages) == null ? void 0 : _tx3$meta$logMessages.join('\n'));
-        case 40:
-          if (simulateResult && simulateResult.err) {
-            if (simulateResult.logs) {
-              console.error(simulateResult.logs.join('\n'));
-            }
-          }
-          if (!_context8.t0.err) {
-            _context8.next = 43;
-            break;
-          }
-          throw _context8.t0.err;
-        case 43:
-          throw _context8.t0;
-        case 44:
-          _context8.prev = 44;
-          done = true;
-          return _context8.finish(44);
-        case 47:
-          console.log('Latency', txid, getUnixTime() - startTime);
-          return _context8.abrupt("return", {
-            txid: txid
-          });
-        case 49:
-        case "end":
-          return _context8.stop();
-      }
-    }, _callee8, null, [[7, 22, 44, 47], [28, 34]]);
-  }));
-  return _sendAndConfirmWithRetry.apply(this, arguments);
-}
-var getAssociateTokenAccount = function getAssociateTokenAccount(mint, authority) {
-  var _PublicKey$findProgra = PublicKey.findProgramAddressSync([authority.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), mint.toBuffer()], ASSOCIATED_TOKEN_PROGRAM_ID),
-    address = _PublicKey$findProgra[0];
-  return address;
-};
-var getOrCreateAssociateTokenAccount = /*#__PURE__*/function () {
-  var _ref4 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(connection, wallet, mint, authority) {
-    var ata, accountInfo, instructions;
-    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-      while (1) switch (_context4.prev = _context4.next) {
-        case 0:
-          ata = getAssociateTokenAccount(mint, authority);
-          _context4.next = 3;
-          return connection.getAccountInfo(ata);
-        case 3:
-          accountInfo = _context4.sent;
-          if (!(accountInfo == null)) {
-            _context4.next = 8;
-            break;
-          }
-          instructions = [createAssociatedTokenAccountInstruction(wallet.publicKey, ata, authority, mint, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID)];
-          _context4.next = 8;
-          return sendInstructions(connection, wallet, instructions, []);
-        case 8:
-          return _context4.abrupt("return", ata);
-        case 9:
-        case "end":
-          return _context4.stop();
-      }
-    }, _callee4);
-  }));
-  return function getOrCreateAssociateTokenAccount(_x22, _x23, _x24, _x25) {
-    return _ref4.apply(this, arguments);
-  };
-}();
-var isEqualAddress = function isEqualAddress(acc_st, acc_nd) {
-  if (acc_st === null || acc_st === undefined || acc_nd === null || acc_nd === undefined) return false;
-  var pubkey_st = typeof acc_st === 'string' ? acc_st : new PublicKey(acc_st).toBase58();
-  var pubkey_nd = typeof acc_nd === 'string' ? acc_nd : new PublicKey(acc_nd).toBase58();
-  return pubkey_st === pubkey_nd;
-};
-var isIncludingAddress = function isIncludingAddress(arr_addr, addr) {
-  return arr_addr.filter(function (addr_st) {
-    return isEqualAddress(addr, addr_st);
-  }).length > 0;
-};
-var isValidAddress = function isValidAddress(acc) {
-  var pubkey = typeof acc === 'string' ? new PublicKey(acc) : acc;
-  return PublicKey.isOnCurve(pubkey.toBuffer());
-};
-var isEmptyAddress = function isEmptyAddress(acc) {
-  var pubkey = typeof acc === 'string' ? new PublicKey(acc) : acc;
-  return pubkey.toBase58() === '11111111111111111111111111111111';
-};
-
-var STAKE_ACCOUNT_ROLE = {
-  architect: {
-    val: 1,
-    label: 'architect'
-  },
-  builder: {
-    val: 2,
-    label: 'builder'
-  },
-  validator: {
-    val: 3,
-    label: 'validator'
-  }
-};
-var ACCESS_METHOD = {
-  nft: {
-    val: 0,
-    label: 'nft'
-  },
-  sns: {
-    val: 1,
-    label: 'sns'
-  },
-  free2play: {
-    val: 2,
-    label: 'free2play'
-  }
-};
-var PHRASE_TYPE = {
-  general: {
-    val: 0,
-    label: 'general'
-  },
-  specific: {
-    val: 1,
-    label: 'specific'
-  },
-  cause: {
-    val: 2,
-    label: 'cause'
-  },
-  effect: {
-    val: 3,
-    label: 'effect'
-  }
-};
-var OFFCHAIN_TYPE = {
-  synesis: {
-    val: 0,
-    label: 'synesis'
-  },
-  ipfs: {
-    val: 1,
-    label: 'ipfs'
-  },
-  arweave: {
-    val: 2,
-    label: 'arweave'
-  },
-  s3: {
-    val: 3,
-    label: 's3'
-  }
-};
-var RPC_TXN_STATUS = {
-  pending: {
-    val: 0,
-    label: 'pending'
-  },
-  finalized: {
-    val: 1,
-    label: 'finalized'
-  },
-  expired: {
-    val: 2,
-    label: 'expired'
-  }
-};
-var SNS_ADDRESS = 'SNSNkV9zfG5ZKWQs6x4hxvBRV6s8SqMfSGCtECDvdMd';
-var KANON_NFT_CHARITY_ADDRESS = 'CRTegTRWPceXBc7ywwP9NKHXavjcW5HYaN4AxR3AcH9H';
-var KANON_NFT_AUTHORITY_ADDRESS = 'AfqoHa1MmyBDai5teTLz7H5NcvwYDRCauKgkBFyb1nfV';
-var METADATA_PROGRAM_ADDRESS = 'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s';
-var SNS_PAIR = 'SNS/USD';
-var LOOKUP_PROGRAM_ADDRESS = 'AddressLookupTab1e1111111111111111111111111';
-var LAMPORTS_PER_USDC = 1000000;
-
 /**
  * This code was GENERATED using the solita package.
  * Please DO NOT EDIT THIS FILE, instead rerun solita to update it or write a wrapper to add functionality.
@@ -1132,7 +618,7 @@ var Campaign = /*#__PURE__*/function () {
   ;
   Campaign.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('undefined');
+      programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
     }
     return GpaBuilder.fromStruct(programId, campaignBeet);
   }
@@ -1498,7 +984,7 @@ var CampaignActivity = /*#__PURE__*/function () {
   ;
   CampaignActivity.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('undefined');
+      programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
     }
     return GpaBuilder.fromStruct(programId, campaignActivityBeet);
   }
@@ -1752,7 +1238,7 @@ var CampaignVault = /*#__PURE__*/function () {
   ;
   CampaignVault.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('undefined');
+      programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
     }
     return GpaBuilder.fromStruct(programId, campaignVaultBeet);
   }
@@ -2000,7 +1486,7 @@ var FarmConfig = /*#__PURE__*/function () {
   ;
   FarmConfig.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('undefined');
+      programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
     }
     return GpaBuilder.fromStruct(programId, farmConfigBeet);
   }
@@ -2223,7 +1709,7 @@ var Feed = /*#__PURE__*/function () {
   ;
   Feed.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('undefined');
+      programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
     }
     return GpaBuilder.fromStruct(programId, feedBeet);
   }
@@ -2414,7 +1900,7 @@ var Guild = /*#__PURE__*/function () {
   ;
   Guild.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('undefined');
+      programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
     }
     return GpaBuilder.fromStruct(programId, guildBeet);
   }
@@ -2658,7 +2144,7 @@ var Phrase = /*#__PURE__*/function () {
   ;
   Phrase.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('undefined');
+      programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
     }
     return GpaBuilder.fromStruct(programId, phraseBeet);
   }
@@ -2886,7 +2372,7 @@ var Profile = /*#__PURE__*/function () {
   ;
   Profile.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('undefined');
+      programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
     }
     return GpaBuilder.fromStruct(programId, profileBeet);
   }
@@ -3158,7 +2644,7 @@ var StakeAccount = /*#__PURE__*/function () {
   ;
   StakeAccount.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('undefined');
+      programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
     }
     return GpaBuilder.fromStruct(programId, stakeAccountBeet);
   }
@@ -3429,7 +2915,7 @@ var Validate = /*#__PURE__*/function () {
   ;
   Validate.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('undefined');
+      programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
     }
     return GpaBuilder.fromStruct(programId, validateBeet);
   }
@@ -3608,7 +3094,7 @@ var Validators = /*#__PURE__*/function () {
   ;
   Validators.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('undefined');
+      programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
     }
     return GpaBuilder.fromStruct(programId, validatorsBeet);
   }
@@ -4480,7 +3966,7 @@ var adjustRewardInstructionDiscriminator = [23, 3, 192, 117, 96, 198, 166, 215];
 function createAdjustRewardInstruction(accounts, args, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _adjustRewardStruct$s = adjustRewardStruct.serialize(_extends({
       instructionDiscriminator: adjustRewardInstructionDiscriminator
@@ -4531,7 +4017,7 @@ var airdropInstructionDiscriminator = [113, 173, 36, 238, 38, 152, 22, 117];
 function createAirdropInstruction(accounts, programId) {
   var _accounts$tokenProgra;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _airdropStruct$serial = airdropStruct.serialize({
       instructionDiscriminator: airdropInstructionDiscriminator
@@ -4596,7 +4082,7 @@ var allocateTableInstructionDiscriminator = [51, 148, 3, 2, 77, 128, 58, 80];
 function createAllocateTableInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _allocateTableStruct$ = allocateTableStruct.serialize(_extends({
       instructionDiscriminator: allocateTableInstructionDiscriminator
@@ -4665,7 +4151,7 @@ var checkPriceInstructionDiscriminator = [167, 85, 209, 192, 115, 173, 239, 176]
 function createCheckPriceInstruction(accounts, args, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _checkPriceStruct$ser = checkPriceStruct.serialize(_extends({
       instructionDiscriminator: checkPriceInstructionDiscriminator
@@ -4722,7 +4208,7 @@ var claimRewardInstructionDiscriminator = [149, 95, 181, 242, 94, 90, 158, 162];
 function createClaimRewardInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _claimRewardStruct$se = claimRewardStruct.serialize(_extends({
       instructionDiscriminator: claimRewardInstructionDiscriminator
@@ -4807,7 +4293,7 @@ var createCampaignInstructionDiscriminator = [111, 131, 187, 98, 160, 193, 114, 
 function createCreateCampaignInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _createCampaignStruct = createCampaignStruct.serialize(_extends({
       instructionDiscriminator: createCampaignInstructionDiscriminator
@@ -4908,7 +4394,7 @@ var createGuildInstructionDiscriminator = [163, 27, 97, 167, 132, 198, 53, 168];
 function createCreateGuildInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _createGuildStruct$se = createGuildStruct.serialize(_extends({
       instructionDiscriminator: createGuildInstructionDiscriminator
@@ -4985,7 +4471,7 @@ var createProfileInstructionDiscriminator = [225, 205, 234, 143, 17, 186, 50, 22
 function createCreateProfileInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _createProfileStruct$ = createProfileStruct.serialize(_extends({
       instructionDiscriminator: createProfileInstructionDiscriminator
@@ -5048,7 +4534,7 @@ var deactiveTableInstructionDiscriminator = [145, 99, 175, 188, 124, 217, 141, 7
 function createDeactiveTableInstruction(accounts, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _deactiveTableStruct$ = deactiveTableStruct.serialize({
       instructionDiscriminator: deactiveTableInstructionDiscriminator
@@ -5115,7 +4601,7 @@ var extendTableInstructionDiscriminator = [181, 129, 37, 152, 188, 164, 212, 75]
 function createExtendTableInstruction(accounts, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _extendTableStruct$se = extendTableStruct.serialize({
       instructionDiscriminator: extendTableInstructionDiscriminator
@@ -5182,7 +4668,7 @@ var free2playInstructionDiscriminator = [14, 185, 90, 244, 62, 166, 71, 245];
 function createFree2playInstruction(accounts, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _free2playStruct$seri = free2playStruct.serialize({
       instructionDiscriminator: free2playInstructionDiscriminator
@@ -5251,7 +4737,7 @@ var guildClaimRewardInstructionDiscriminator = [151, 61, 18, 77, 172, 55, 161, 8
 function createGuildClaimRewardInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _guildClaimRewardStru = guildClaimRewardStruct.serialize(_extends({
       instructionDiscriminator: guildClaimRewardInstructionDiscriminator
@@ -5347,7 +4833,7 @@ var guildGrantScholarInstructionDiscriminator = [246, 74, 234, 202, 61, 146, 196
  */
 function createGuildGrantScholarInstruction(accounts, args, programId) {
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _guildGrantScholarStr = guildGrantScholarStruct.serialize(_extends({
       instructionDiscriminator: guildGrantScholarInstructionDiscriminator
@@ -5404,7 +4890,7 @@ var guildStakeNftInstructionDiscriminator = [84, 239, 169, 71, 243, 35, 180, 158
 function createGuildStakeNftInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _guildStakeNftStruct$ = guildStakeNftStruct.serialize(_extends({
       instructionDiscriminator: guildStakeNftInstructionDiscriminator
@@ -5513,7 +4999,7 @@ var guildUnstakeNftInstructionDiscriminator = [131, 104, 220, 144, 180, 206, 25,
 function createGuildUnstakeNftInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _guildUnstakeNftStruc = guildUnstakeNftStruct.serialize(_extends({
       instructionDiscriminator: guildUnstakeNftInstructionDiscriminator
@@ -5606,7 +5092,7 @@ var initializeInstructionDiscriminator = [175, 175, 109, 31, 13, 152, 155, 237];
 function createInitializeInstruction(accounts, args, programId) {
   var _accounts$tokenProgra, _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _initializeStruct$ser = initializeStruct.serialize(_extends({
       instructionDiscriminator: initializeInstructionDiscriminator
@@ -5691,7 +5177,7 @@ var revokeScholarInstructionDiscriminator = [47, 197, 48, 149, 14, 68, 39, 200];
 function createRevokeScholarInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _revokeScholarStruct$ = revokeScholarStruct.serialize(_extends({
       instructionDiscriminator: revokeScholarInstructionDiscriminator
@@ -5774,7 +5260,7 @@ var rpcCloseCampaignInstructionDiscriminator = [67, 33, 43, 114, 123, 198, 81, 2
 function createRpcCloseCampaignInstruction(accounts, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _rpcCloseCampaignStru = rpcCloseCampaignStruct.serialize({
       instructionDiscriminator: rpcCloseCampaignInstructionDiscriminator
@@ -5837,7 +5323,7 @@ var rpcClosePhraseInstructionDiscriminator = [227, 100, 252, 19, 112, 191, 162, 
 function createRpcClosePhraseInstruction(accounts, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _rpcClosePhraseStruct = rpcClosePhraseStruct.serialize({
       instructionDiscriminator: rpcClosePhraseInstructionDiscriminator
@@ -5900,7 +5386,7 @@ var rpcCloseValidateInstructionDiscriminator = [57, 139, 225, 164, 199, 188, 164
 function createRpcCloseValidateInstruction(accounts, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _rpcCloseValidateStru = rpcCloseValidateStruct.serialize({
       instructionDiscriminator: rpcCloseValidateInstructionDiscriminator
@@ -5965,7 +5451,7 @@ var rpcPermitInstructionDiscriminator = [92, 83, 224, 31, 112, 83, 197, 55];
 function createRpcPermitInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _rpcPermitStruct$seri = rpcPermitStruct.serialize(_extends({
       instructionDiscriminator: rpcPermitInstructionDiscriminator
@@ -6026,7 +5512,7 @@ var rpcSubmitPhraseInstructionDiscriminator = [163, 108, 108, 237, 170, 235, 190
 function createRpcSubmitPhraseInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _rpcSubmitPhraseStruc = rpcSubmitPhraseStruct.serialize(_extends({
       instructionDiscriminator: rpcSubmitPhraseInstructionDiscriminator
@@ -6107,7 +5593,7 @@ var rpcValidatePhraseInstructionDiscriminator = [161, 172, 106, 49, 80, 167, 50,
 function createRpcValidatePhraseInstruction(accounts, args, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _rpcValidatePhraseStr = rpcValidatePhraseStruct.serialize(_extends({
       instructionDiscriminator: rpcValidatePhraseInstructionDiscriminator
@@ -6191,7 +5677,7 @@ var scholarSignInstructionDiscriminator = [124, 192, 76, 227, 147, 194, 65, 121]
  */
 function createScholarSignInstruction(accounts, args, programId) {
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _scholarSignStruct$se = scholarSignStruct.serialize(_extends({
       instructionDiscriminator: scholarSignInstructionDiscriminator
@@ -6252,7 +5738,7 @@ var stakeCampaignInstructionDiscriminator = [147, 38, 195, 247, 115, 100, 125, 3
 function createStakeCampaignInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _stakeCampaignStruct$ = stakeCampaignStruct.serialize(_extends({
       instructionDiscriminator: stakeCampaignInstructionDiscriminator
@@ -6335,7 +5821,7 @@ var stakeNftInstructionDiscriminator = [38, 27, 66, 46, 69, 65, 151, 219];
 function createStakeNftInstruction(accounts, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _stakeNftStruct$seria = stakeNftStruct.serialize({
       instructionDiscriminator: stakeNftInstructionDiscriminator
@@ -6424,7 +5910,7 @@ var submitPhraseInstructionDiscriminator = [201, 89, 230, 171, 244, 100, 6, 127]
 function createSubmitPhraseInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _submitPhraseStruct$s = submitPhraseStruct.serialize(_extends({
       instructionDiscriminator: submitPhraseInstructionDiscriminator
@@ -6501,7 +5987,7 @@ var unstakeCampaignInstructionDiscriminator = [208, 3, 38, 137, 80, 29, 12, 75];
 function createUnstakeCampaignInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _unstakeCampaignStruc = unstakeCampaignStruct.serialize(_extends({
       instructionDiscriminator: unstakeCampaignInstructionDiscriminator
@@ -6592,7 +6078,7 @@ var unstakeNftInstructionDiscriminator = [17, 182, 24, 211, 101, 138, 50, 163];
 function createUnstakeNftInstruction(accounts, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _unstakeNftStruct$ser = unstakeNftStruct.serialize({
       instructionDiscriminator: unstakeNftInstructionDiscriminator
@@ -6677,7 +6163,7 @@ var updateCampaignInstructionDiscriminator = [235, 31, 39, 49, 121, 173, 19, 92]
 function createUpdateCampaignInstruction(accounts, args, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _updateCampaignStruct = updateCampaignStruct.serialize(_extends({
       instructionDiscriminator: updateCampaignInstructionDiscriminator
@@ -6734,7 +6220,7 @@ var validatePhraseInstructionDiscriminator = [131, 138, 249, 228, 211, 54, 251, 
 function createValidatePhraseInstruction(accounts, args, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _validatePhraseStruct = validatePhraseStruct.serialize(_extends({
       instructionDiscriminator: validatePhraseInstructionDiscriminator
@@ -6813,7 +6299,7 @@ var verifyPreStakedNftInstructionDiscriminator = [147, 217, 55, 199, 25, 110, 24
 function createVerifyPreStakedNftInstruction(accounts, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('undefined');
+    programId = new PublicKey('DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs');
   }
   var _verifyPreStakedNftSt = verifyPreStakedNftStruct.serialize({
       instructionDiscriminator: verifyPreStakedNftInstructionDiscriminator
@@ -6897,8 +6383,519 @@ var PROGRAM_ADDRESS = 'DcCixxuPFZ8xZzqHWwrY4MZUsPN14EoUKt15gaEbyRAs';
  */
 var PROGRAM_ID = /*#__PURE__*/new PublicKey(PROGRAM_ADDRESS);
 
+var encodeText = function encodeText(txt) {
+  return new TextEncoder().encode(txt);
+};
+var decodeText = function decodeText(bytes) {
+  return new TextDecoder('utf-8').decode(Uint8Array.from(bytes.filter(function (item) {
+    return item !== 0;
+  })));
+};
+var sleep = function sleep(ms) {
+  return new Promise(function (resolve) {
+    return setTimeout(resolve, ms);
+  });
+};
+
+var DEFAULT_TIMEOUT = 3 * 60 * 1000; // 3 minutes
+function sendInstructions(_x, _x2, _x3, _x4, _x5, _x6) {
+  return _sendInstructions.apply(this, arguments);
+}
+function _sendInstructions() {
+  _sendInstructions = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(connection, wallet, instructions, signers, commitment, payer) {
+    var _tx;
+    var tx, _tx2, _yield$sendAndConfirm, txid;
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) switch (_context5.prev = _context5.next) {
+        case 0:
+          if (commitment === void 0) {
+            commitment = 'processed';
+          }
+          if (payer === void 0) {
+            payer = wallet.publicKey;
+          }
+          tx = new Transaction();
+          _context5.next = 5;
+          return connection.getRecentBlockhash();
+        case 5:
+          tx.recentBlockhash = _context5.sent.blockhash;
+          tx.feePayer = payer || wallet.publicKey;
+          (_tx = tx).add.apply(_tx, instructions);
+          if (signers.length > 0) {
+            (_tx2 = tx).partialSign.apply(_tx2, signers);
+          }
+          _context5.next = 11;
+          return wallet.signTransaction(tx);
+        case 11:
+          tx = _context5.sent;
+          _context5.prev = 12;
+          _context5.next = 15;
+          return sendAndConfirmWithRetry(connection, tx.serialize(), {
+            skipPreflight: true
+          }, commitment);
+        case 15:
+          _yield$sendAndConfirm = _context5.sent;
+          txid = _yield$sendAndConfirm.txid;
+          return _context5.abrupt("return", txid);
+        case 20:
+          _context5.prev = 20;
+          _context5.t0 = _context5["catch"](12);
+          console.error(_context5.t0);
+          throw _context5.t0;
+        case 24:
+        case "end":
+          return _context5.stop();
+      }
+    }, _callee5, null, [[12, 20]]);
+  }));
+  return _sendInstructions.apply(this, arguments);
+}
+function getUnixTime() {
+  return new Date().valueOf() / 1000;
+}
+var awaitTransactionSignatureConfirmation = /*#__PURE__*/function () {
+  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(txid, timeout, connection, commitment, queryStatus) {
+    var done, status, subId;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
+        case 0:
+          if (commitment === void 0) {
+            commitment = 'recent';
+          }
+          if (queryStatus === void 0) {
+            queryStatus = false;
+          }
+          done = false;
+          status = {
+            slot: 0,
+            confirmations: 0,
+            err: null
+          };
+          subId = 0; // eslint-disable-next-line no-async-promise-executor
+          _context3.next = 7;
+          return new Promise( /*#__PURE__*/function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(resolve, reject) {
+              return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+                while (1) switch (_context2.prev = _context2.next) {
+                  case 0:
+                    setTimeout(function () {
+                      if (done) {
+                        return;
+                      }
+                      done = true;
+                      console.log('Rejecting for timeout...');
+                      reject({
+                        timeout: true
+                      });
+                    }, timeout);
+                    try {
+                      console.log('COMMIMENT', commitment);
+                      subId = connection.onSignature(txid, function (result, context) {
+                        done = true;
+                        status = {
+                          err: result.err,
+                          slot: context.slot,
+                          confirmations: 0
+                        };
+                        if (result.err) {
+                          console.log('Rejected via websocket', result.err);
+                          reject(status);
+                        } else {
+                          console.log('Resolved via websocket', result);
+                          resolve(status);
+                        }
+                      }, commitment);
+                    } catch (e) {
+                      done = true;
+                      console.error('WS error in setup', txid, e);
+                    }
+                  case 2:
+                    if (!(!done && queryStatus)) {
+                      _context2.next = 9;
+                      break;
+                    }
+                    _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+                      var signatureStatuses;
+                      return _regeneratorRuntime().wrap(function _callee$(_context) {
+                        while (1) switch (_context.prev = _context.next) {
+                          case 0:
+                            _context.prev = 0;
+                            _context.next = 3;
+                            return connection.getSignatureStatuses([txid]);
+                          case 3:
+                            signatureStatuses = _context.sent;
+                            status = signatureStatuses && signatureStatuses.value[0];
+                            if (!done) {
+                              if (!status) {
+                                console.log('REST null result for', txid, status);
+                              } else if (status.err) {
+                                console.log('REST error for', txid, status);
+                                done = true;
+                                reject(status.err);
+                              } else if (!status.confirmations && !status.confirmationStatus) {
+                                console.log('REST no confirmations for', txid, status);
+                              } else {
+                                console.log('REST confirmation for', txid, status);
+                                if (!status.confirmationStatus || status.confirmationStatus == commitment) {
+                                  done = true;
+                                  resolve(status);
+                                }
+                              }
+                            }
+                            _context.next = 11;
+                            break;
+                          case 8:
+                            _context.prev = 8;
+                            _context.t0 = _context["catch"](0);
+                            if (!done) {
+                              console.log('REST connection error: txid', txid, _context.t0);
+                            }
+                          case 11:
+                          case "end":
+                            return _context.stop();
+                        }
+                      }, _callee, null, [[0, 8]]);
+                    }))();
+                    _context2.next = 7;
+                    return sleep(2000);
+                  case 7:
+                    _context2.next = 2;
+                    break;
+                  case 9:
+                  case "end":
+                    return _context2.stop();
+                }
+              }, _callee2);
+            }));
+            return function (_x12, _x13) {
+              return _ref2.apply(this, arguments);
+            };
+          }());
+        case 7:
+          status = _context3.sent;
+          if (
+          //@ts-ignore
+          connection._signatureSubscriptions &&
+          //@ts-ignore
+          connection._signatureSubscriptions[subId]) {
+            connection.removeSignatureListener(subId);
+          }
+          done = true;
+          console.log('Returning status ', status);
+          return _context3.abrupt("return", status);
+        case 12:
+        case "end":
+          return _context3.stop();
+      }
+    }, _callee3);
+  }));
+  return function awaitTransactionSignatureConfirmation(_x7, _x8, _x9, _x10, _x11) {
+    return _ref.apply(this, arguments);
+  };
+}();
+function simulateTransaction(_x14, _x15, _x16) {
+  return _simulateTransaction.apply(this, arguments);
+}
+function _simulateTransaction() {
+  _simulateTransaction = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(connection, transaction, commitment) {
+    var signData, wireTransaction, encodedTransaction, config, args, res;
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+      while (1) switch (_context6.prev = _context6.next) {
+        case 0:
+          _context6.next = 2;
+          return connection._recentBlockhash(
+          // @ts-ignore
+          connection._disableBlockhashCaching);
+        case 2:
+          transaction.recentBlockhash = _context6.sent;
+          signData = transaction.serializeMessage(); // @ts-ignore
+          wireTransaction = transaction._serialize(signData);
+          encodedTransaction = wireTransaction.toString('base64');
+          config = {
+            encoding: 'base64',
+            commitment: commitment
+          };
+          args = [encodedTransaction, config]; // @ts-ignore
+          _context6.next = 10;
+          return connection._rpcRequest('simulateTransaction', args);
+        case 10:
+          res = _context6.sent;
+          if (!res.error) {
+            _context6.next = 13;
+            break;
+          }
+          throw new Error('failed to simulate transaction: ' + res.error.message);
+        case 13:
+          return _context6.abrupt("return", res.result);
+        case 14:
+        case "end":
+          return _context6.stop();
+      }
+    }, _callee6);
+  }));
+  return _simulateTransaction.apply(this, arguments);
+}
+function sendAndConfirmWithRetry(_x17, _x18, _x19, _x20, _x21) {
+  return _sendAndConfirmWithRetry.apply(this, arguments);
+}
+function _sendAndConfirmWithRetry() {
+  _sendAndConfirmWithRetry = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(connection, txn, sendOptions, commitment, timeout) {
+    var done, txid, startTime, confirmation, _tx$meta, _tx$meta$logMessages, tx, simulateResult, _tx3$meta, _tx3$meta$logMessages, _tx3;
+    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+      while (1) switch (_context8.prev = _context8.next) {
+        case 0:
+          if (timeout === void 0) {
+            timeout = DEFAULT_TIMEOUT;
+          }
+          done = false; // let slot = 0;
+          _context8.next = 4;
+          return connection.sendRawTransaction(txn, sendOptions);
+        case 4:
+          txid = _context8.sent;
+          startTime = getUnixTime();
+          _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+            return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+              while (1) switch (_context7.prev = _context7.next) {
+                case 0:
+                  if (!(!done && getUnixTime() - startTime < timeout)) {
+                    _context7.next = 7;
+                    break;
+                  }
+                  _context7.next = 3;
+                  return connection.sendRawTransaction(txn, sendOptions);
+                case 3:
+                  _context7.next = 5;
+                  return sleep(500);
+                case 5:
+                  _context7.next = 0;
+                  break;
+                case 7:
+                case "end":
+                  return _context7.stop();
+              }
+            }, _callee7);
+          }))();
+          _context8.prev = 7;
+          _context8.next = 10;
+          return awaitTransactionSignatureConfirmation(txid, timeout, connection, commitment, true);
+        case 10:
+          confirmation = _context8.sent;
+          if (confirmation) {
+            _context8.next = 13;
+            break;
+          }
+          throw new Error('Timed out awaiting confirmation on transaction');
+        case 13:
+          if (!confirmation.err) {
+            _context8.next = 20;
+            break;
+          }
+          _context8.next = 16;
+          return connection.getTransaction(txid);
+        case 16:
+          tx = _context8.sent;
+          console.error(tx == null ? void 0 : (_tx$meta = tx.meta) == null ? void 0 : (_tx$meta$logMessages = _tx$meta.logMessages) == null ? void 0 : _tx$meta$logMessages.join('\n'));
+          console.error(confirmation.err);
+          throw new Error('Transaction failed: Custom instruction error');
+        case 20:
+          _context8.next = 44;
+          break;
+        case 22:
+          _context8.prev = 22;
+          _context8.t0 = _context8["catch"](7);
+          console.error('Timeout Error caught', _context8.t0);
+          if (!_context8.t0.timeout) {
+            _context8.next = 27;
+            break;
+          }
+          throw new Error('Timed out awaiting confirmation on transaction');
+        case 27:
+          simulateResult = null;
+          _context8.prev = 28;
+          _context8.next = 31;
+          return simulateTransaction(connection, Transaction.from(txn), 'single');
+        case 31:
+          simulateResult = _context8.sent.value;
+          _context8.next = 40;
+          break;
+        case 34:
+          _context8.prev = 34;
+          _context8.t1 = _context8["catch"](28);
+          _context8.next = 38;
+          return connection.getTransaction(txid);
+        case 38:
+          _tx3 = _context8.sent;
+          console.error(_tx3 == null ? void 0 : (_tx3$meta = _tx3.meta) == null ? void 0 : (_tx3$meta$logMessages = _tx3$meta.logMessages) == null ? void 0 : _tx3$meta$logMessages.join('\n'));
+        case 40:
+          if (simulateResult && simulateResult.err) {
+            if (simulateResult.logs) {
+              console.error(simulateResult.logs.join('\n'));
+            }
+          }
+          if (!_context8.t0.err) {
+            _context8.next = 43;
+            break;
+          }
+          throw _context8.t0.err;
+        case 43:
+          throw _context8.t0;
+        case 44:
+          _context8.prev = 44;
+          done = true;
+          return _context8.finish(44);
+        case 47:
+          console.log('Latency', txid, getUnixTime() - startTime);
+          return _context8.abrupt("return", {
+            txid: txid
+          });
+        case 49:
+        case "end":
+          return _context8.stop();
+      }
+    }, _callee8, null, [[7, 22, 44, 47], [28, 34]]);
+  }));
+  return _sendAndConfirmWithRetry.apply(this, arguments);
+}
+var getAssociateTokenAccount = function getAssociateTokenAccount(mint, authority) {
+  var _PublicKey$findProgra = PublicKey.findProgramAddressSync([authority.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), mint.toBuffer()], ASSOCIATED_TOKEN_PROGRAM_ID),
+    address = _PublicKey$findProgra[0];
+  return address;
+};
+var getOrCreateAssociateTokenAccount = /*#__PURE__*/function () {
+  var _ref4 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(connection, wallet, mint, authority) {
+    var ata, accountInfo, instructions;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
+        case 0:
+          ata = getAssociateTokenAccount(mint, authority);
+          _context4.next = 3;
+          return connection.getAccountInfo(ata);
+        case 3:
+          accountInfo = _context4.sent;
+          if (!(accountInfo == null)) {
+            _context4.next = 8;
+            break;
+          }
+          instructions = [createAssociatedTokenAccountInstruction(wallet.publicKey, ata, authority, mint, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID)];
+          _context4.next = 8;
+          return sendInstructions(connection, wallet, instructions, []);
+        case 8:
+          return _context4.abrupt("return", ata);
+        case 9:
+        case "end":
+          return _context4.stop();
+      }
+    }, _callee4);
+  }));
+  return function getOrCreateAssociateTokenAccount(_x22, _x23, _x24, _x25) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+var isEqualAddress = function isEqualAddress(acc_st, acc_nd) {
+  if (acc_st === null || acc_st === undefined || acc_nd === null || acc_nd === undefined) return false;
+  var pubkey_st = typeof acc_st === 'string' ? acc_st : new PublicKey(acc_st).toBase58();
+  var pubkey_nd = typeof acc_nd === 'string' ? acc_nd : new PublicKey(acc_nd).toBase58();
+  return pubkey_st === pubkey_nd;
+};
+var isIncludingAddress = function isIncludingAddress(arr_addr, addr) {
+  return arr_addr.filter(function (addr_st) {
+    return isEqualAddress(addr, addr_st);
+  }).length > 0;
+};
+var isValidAddress = function isValidAddress(acc) {
+  var pubkey = typeof acc === 'string' ? new PublicKey(acc) : acc;
+  return PublicKey.isOnCurve(pubkey.toBuffer());
+};
+var isEmptyAddress = function isEmptyAddress(acc) {
+  var pubkey = typeof acc === 'string' ? new PublicKey(acc) : acc;
+  return pubkey.toBase58() === '11111111111111111111111111111111';
+};
+
+var STAKE_ACCOUNT_ROLE = {
+  architect: {
+    val: 1,
+    label: 'architect'
+  },
+  builder: {
+    val: 2,
+    label: 'builder'
+  },
+  validator: {
+    val: 3,
+    label: 'validator'
+  }
+};
+var ACCESS_METHOD = {
+  nft: {
+    val: 0,
+    label: 'nft'
+  },
+  sns: {
+    val: 1,
+    label: 'sns'
+  },
+  free2play: {
+    val: 2,
+    label: 'free2play'
+  }
+};
+var PHRASE_TYPE = {
+  general: {
+    val: 0,
+    label: 'general'
+  },
+  specific: {
+    val: 1,
+    label: 'specific'
+  },
+  cause: {
+    val: 2,
+    label: 'cause'
+  },
+  effect: {
+    val: 3,
+    label: 'effect'
+  }
+};
+var OFFCHAIN_TYPE = {
+  synesis: {
+    val: 0,
+    label: 'synesis'
+  },
+  ipfs: {
+    val: 1,
+    label: 'ipfs'
+  },
+  arweave: {
+    val: 2,
+    label: 'arweave'
+  },
+  s3: {
+    val: 3,
+    label: 's3'
+  }
+};
+var RPC_TXN_STATUS = {
+  pending: {
+    val: 0,
+    label: 'pending'
+  },
+  finalized: {
+    val: 1,
+    label: 'finalized'
+  },
+  expired: {
+    val: 2,
+    label: 'expired'
+  }
+};
+var METADATA_PROGRAM_ADDRESS = 'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s';
+var SNS_PAIR = 'SNS/USD';
+var LOOKUP_PROGRAM_ADDRESS = 'AddressLookupTab1e1111111111111111111111111';
+var LAMPORTS_PER_USDC = 1000000;
+
 var createAirdropSNSInstructions = /*#__PURE__*/function () {
-  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(publicKey, connection) {
+  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(publicKey, connection, args) {
     var instructions, signers, _PublicKey$findProgra, pdaAccount, _PublicKey$findProgra2, dyfVault, _tokenBalance, dyfVaultTokenAccount, userToken, accountInfo;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
@@ -6917,8 +6914,8 @@ var createAirdropSNSInstructions = /*#__PURE__*/function () {
         case 4:
           instructions = [];
           signers = [];
-          _PublicKey$findProgra = PublicKey.findProgramAddressSync([Buffer.from('DYF')], PROGRAM_ID), pdaAccount = _PublicKey$findProgra[0];
-          _PublicKey$findProgra2 = PublicKey.findProgramAddressSync([pdaAccount.toBuffer(), Buffer.from('DYF:VAULT')], PROGRAM_ID), dyfVault = _PublicKey$findProgra2[0];
+          _PublicKey$findProgra = PublicKey.findProgramAddressSync([Buffer.from('DYF')], args.programId), pdaAccount = _PublicKey$findProgra[0];
+          _PublicKey$findProgra2 = PublicKey.findProgramAddressSync([pdaAccount.toBuffer(), Buffer.from('DYF:VAULT')], args.programId), dyfVault = _PublicKey$findProgra2[0];
           _tokenBalance = null;
           _context.next = 11;
           return connection.getParsedAccountInfo(dyfVault);
@@ -6934,13 +6931,13 @@ var createAirdropSNSInstructions = /*#__PURE__*/function () {
           }
           throw new Error('The token vault is empty. Please contact the administrator.');
         case 15:
-          userToken = getAssociateTokenAccount(new PublicKey(SNS_ADDRESS), publicKey);
+          userToken = getAssociateTokenAccount(args.snsMint, publicKey);
           _context.next = 18;
           return connection.getAccountInfo(userToken);
         case 18:
           accountInfo = _context.sent;
           if (accountInfo == null) {
-            instructions.push(createAssociatedTokenAccountInstruction(publicKey, userToken, publicKey, new PublicKey(SNS_ADDRESS), TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID));
+            instructions.push(createAssociatedTokenAccountInstruction(publicKey, userToken, publicKey, args.snsMint, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID));
           }
           instructions.push(createAirdropInstruction({
             authority: publicKey,
@@ -6948,7 +6945,7 @@ var createAirdropSNSInstructions = /*#__PURE__*/function () {
             tokenVault: dyfVault,
             pdaAccount: pdaAccount,
             clock: SYSVAR_CLOCK_PUBKEY
-          }, PROGRAM_ID));
+          }, args.programId));
           return _context.abrupt("return", {
             instructions: instructions,
             signers: signers
@@ -6959,28 +6956,21 @@ var createAirdropSNSInstructions = /*#__PURE__*/function () {
       }
     }, _callee);
   }));
-  return function createAirdropSNSInstructions(_x, _x2) {
+  return function createAirdropSNSInstructions(_x, _x2, _x3) {
     return _ref.apply(this, arguments);
   };
 }();
 
-var authKey = 'Basic c3luLWFwaTpmaW5keW91cm1lYW5pbmc=';
-var apiHost = 'https://dyf-dev.synesis.xyz';
 var submitOntology = /*#__PURE__*/function () {
-  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(ontology) {
+  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(ontology, args) {
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          {
-            _context.next = 2;
-            break;
-          }
-        case 2:
-          return _context.abrupt("return", axios.post(apiHost + "/submit-ontology", [_extends({}, ontology, {
+          return _context.abrupt("return", axios.post(args.apiHost + "/submit-ontology", [_extends({}, ontology, {
             mock: false
           })], {
             headers: {
-              Authorization: authKey
+              Authorization: args.apiAuth
             }
           }).then(function (response) {
             if (Array.isArray(response.data) && response.data.length >= 2 && Array.isArray(response.data[1])) {
@@ -7013,31 +7003,26 @@ var submitOntology = /*#__PURE__*/function () {
               };
             }
           }));
-        case 3:
+        case 1:
         case "end":
           return _context.stop();
       }
     }, _callee);
   }));
-  return function submitOntology(_x) {
+  return function submitOntology(_x, _x2) {
     return _ref.apply(this, arguments);
   };
 }();
 var deleteOntology = /*#__PURE__*/function () {
-  var _ref2 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(canonical) {
+  var _ref2 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(canonical, args) {
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
-          {
-            _context2.next = 2;
-            break;
-          }
-        case 2:
-          return _context2.abrupt("return", axios.post(apiHost + "/delete-ontology", [{
+          return _context2.abrupt("return", axios.post(args.apiHost + "/delete-ontology", [{
             reference_id: canonical
           }], {
             headers: {
-              Authorization: authKey
+              Authorization: args.apiAuth
             }
           }).then(function (response) {
             if (response.data && Array.isArray(response.data) && response.data[0] !== 'false' && response.data[0] !== false) {
@@ -7046,31 +7031,26 @@ var deleteOntology = /*#__PURE__*/function () {
               return false;
             }
           }));
-        case 3:
+        case 1:
         case "end":
           return _context2.stop();
       }
     }, _callee2);
   }));
-  return function deleteOntology(_x2) {
+  return function deleteOntology(_x3, _x4) {
     return _ref2.apply(this, arguments);
   };
 }();
 var checkWhitelist = /*#__PURE__*/function () {
-  var _ref3 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(wallet) {
+  var _ref3 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(wallet, args) {
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
-          {
-            _context3.next = 2;
-            break;
-          }
-        case 2:
-          return _context3.abrupt("return", axios.post(apiHost + "/check-whitelist", {
+          return _context3.abrupt("return", axios.post(args.apiHost + "/check-whitelist", {
             wallet: wallet
           }, {
             headers: {
-              Authorization: authKey
+              Authorization: args.apiAuth
             }
           }).then(function (response) {
             if (response.data !== null && response.data !== 'null') {
@@ -7082,86 +7062,71 @@ var checkWhitelist = /*#__PURE__*/function () {
             console.log(error);
             return null;
           }));
-        case 3:
+        case 1:
         case "end":
           return _context3.stop();
       }
     }, _callee3);
   }));
-  return function checkWhitelist(_x3) {
+  return function checkWhitelist(_x5, _x6) {
     return _ref3.apply(this, arguments);
   };
 }();
 var addCampaignMeta = /*#__PURE__*/function () {
-  var _ref4 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(data) {
+  var _ref4 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(data, args) {
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
-          {
-            _context4.next = 2;
-            break;
-          }
-        case 2:
-          _context4.next = 4;
-          return axios.post(apiHost + "/add-campaign-meta", data, {
+          _context4.next = 2;
+          return axios.post(args.apiHost + "/add-campaign-meta", data, {
             headers: {
-              Authorization: authKey
+              Authorization: args.apiAuth
             }
           }).then(function (res) {
             if (res.data === true || res.data === 'true') return true;else return false;
           });
-        case 4:
+        case 2:
           return _context4.abrupt("return", _context4.sent);
-        case 5:
+        case 3:
         case "end":
           return _context4.stop();
       }
     }, _callee4);
   }));
-  return function addCampaignMeta(_x4) {
+  return function addCampaignMeta(_x7, _x8) {
     return _ref4.apply(this, arguments);
   };
 }();
 var delCampaignMeta = /*#__PURE__*/function () {
-  var _ref5 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(data) {
+  var _ref5 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(data, args) {
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
-          {
-            _context5.next = 2;
-            break;
-          }
-        case 2:
-          return _context5.abrupt("return", axios.post(apiHost + "/del-campaign-meta", data, {
+          return _context5.abrupt("return", axios.post(args.apiHost + "/del-campaign-meta", data, {
             headers: {
-              Authorization: authKey
+              Authorization: args.apiAuth
             }
           }).then(function (res) {
             if (res.data === true || res.data === 'true') return true;else return false;
           }));
-        case 3:
+        case 1:
         case "end":
           return _context5.stop();
       }
     }, _callee5);
   }));
-  return function delCampaignMeta(_x5) {
+  return function delCampaignMeta(_x9, _x10) {
     return _ref5.apply(this, arguments);
   };
 }();
 var getAllCampaignsInfo = /*#__PURE__*/function () {
-  var _ref6 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+  var _ref6 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(args) {
     return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) switch (_context6.prev = _context6.next) {
         case 0:
-          {
-            _context6.next = 2;
-            break;
-          }
-        case 2:
-          return _context6.abrupt("return", axios.get(apiHost + "/all-campaigns-info", {
+          return _context6.abrupt("return", axios.get(args.apiHost + "/all-campaigns-info", {
             headers: {
-              Authorization: authKey
+              Authorization: args.apiAuth
             }
           }).then(function (response) {
             if (!!response.data && Array.isArray(response.data)) {
@@ -7205,31 +7170,26 @@ var getAllCampaignsInfo = /*#__PURE__*/function () {
             console.log(error);
             return [];
           }));
-        case 3:
+        case 1:
         case "end":
           return _context6.stop();
       }
     }, _callee6);
   }));
-  return function getAllCampaignsInfo() {
+  return function getAllCampaignsInfo(_x11) {
     return _ref6.apply(this, arguments);
   };
 }();
 var getCampaginMeta = /*#__PURE__*/function () {
-  var _ref7 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(dapp_title) {
+  var _ref7 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(dapp_title, args) {
     return _regeneratorRuntime().wrap(function _callee7$(_context7) {
       while (1) switch (_context7.prev = _context7.next) {
         case 0:
-          {
-            _context7.next = 2;
-            break;
-          }
-        case 2:
-          return _context7.abrupt("return", axios.post(apiHost + "/campaign-info", {
+          return _context7.abrupt("return", axios.post(args.apiHost + "/campaign-info", {
             dapp_title: dapp_title
           }, {
             headers: {
-              Authorization: authKey
+              Authorization: args.apiAuth
             }
           }).then(function (response) {
             if (!!response.data && Array.isArray(response.data)) {
@@ -7250,31 +7210,26 @@ var getCampaginMeta = /*#__PURE__*/function () {
             console.log(error);
             return null;
           }));
-        case 3:
+        case 1:
         case "end":
           return _context7.stop();
       }
     }, _callee7);
   }));
-  return function getCampaginMeta(_x6) {
+  return function getCampaginMeta(_x12, _x13) {
     return _ref7.apply(this, arguments);
   };
 }();
 var getSubmissionsInfo = /*#__PURE__*/function () {
-  var _ref8 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(campaign) {
+  var _ref8 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(campaign, args) {
     return _regeneratorRuntime().wrap(function _callee8$(_context8) {
       while (1) switch (_context8.prev = _context8.next) {
         case 0:
-          {
-            _context8.next = 2;
-            break;
-          }
-        case 2:
-          return _context8.abrupt("return", axios.post(apiHost + "/submissions-info", {
+          return _context8.abrupt("return", axios.post(args.apiHost + "/submissions-info", {
             wallet: campaign
           }, {
             headers: {
-              Authorization: authKey
+              Authorization: args.apiAuth
             }
           }).then(function (response) {
             if (!!response.data && Array.isArray(response.data)) {
@@ -7302,31 +7257,26 @@ var getSubmissionsInfo = /*#__PURE__*/function () {
             console.log(error);
             return [];
           }));
-        case 3:
+        case 1:
         case "end":
           return _context8.stop();
       }
     }, _callee8);
   }));
-  return function getSubmissionsInfo(_x7) {
+  return function getSubmissionsInfo(_x14, _x15) {
     return _ref8.apply(this, arguments);
   };
 }();
 var getValidationsInfo = /*#__PURE__*/function () {
-  var _ref9 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(campaign) {
+  var _ref9 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(campaign, args) {
     return _regeneratorRuntime().wrap(function _callee9$(_context9) {
       while (1) switch (_context9.prev = _context9.next) {
         case 0:
-          {
-            _context9.next = 2;
-            break;
-          }
-        case 2:
-          return _context9.abrupt("return", axios.post(apiHost + "/validations-info", {
+          return _context9.abrupt("return", axios.post(args.apiHost + "/validations-info", {
             wallet: campaign
           }, {
             headers: {
-              Authorization: authKey
+              Authorization: args.apiAuth
             }
           }).then(function (response) {
             if (!!response.data && Array.isArray(response.data)) {
@@ -7347,31 +7297,26 @@ var getValidationsInfo = /*#__PURE__*/function () {
             console.log(error);
             return [];
           }));
-        case 3:
+        case 1:
         case "end":
           return _context9.stop();
       }
     }, _callee9);
   }));
-  return function getValidationsInfo(_x8) {
+  return function getValidationsInfo(_x16, _x17) {
     return _ref9.apply(this, arguments);
   };
 }();
 var getSubmissionsValidationsInfo = /*#__PURE__*/function () {
-  var _ref10 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(campaign) {
+  var _ref10 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(campaign, args) {
     return _regeneratorRuntime().wrap(function _callee10$(_context10) {
       while (1) switch (_context10.prev = _context10.next) {
         case 0:
-          {
-            _context10.next = 2;
-            break;
-          }
-        case 2:
-          return _context10.abrupt("return", axios.post(apiHost + "/submissions-validations-info", {
+          return _context10.abrupt("return", axios.post(args.apiHost + "/submissions-validations-info", {
             wallet: campaign
           }, {
             headers: {
-              Authorization: authKey
+              Authorization: args.apiAuth
             }
           }).then(function (response) {
             if (!!response.data && Array.isArray(response.data)) {
@@ -7417,29 +7362,24 @@ var getSubmissionsValidationsInfo = /*#__PURE__*/function () {
               validations: []
             };
           }));
-        case 3:
+        case 1:
         case "end":
           return _context10.stop();
       }
     }, _callee10);
   }));
-  return function getSubmissionsValidationsInfo(_x9) {
+  return function getSubmissionsValidationsInfo(_x18, _x19) {
     return _ref10.apply(this, arguments);
   };
 }();
 var getAllCampaignTitles = /*#__PURE__*/function () {
-  var _ref11 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11() {
+  var _ref11 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11(args) {
     return _regeneratorRuntime().wrap(function _callee11$(_context11) {
       while (1) switch (_context11.prev = _context11.next) {
         case 0:
-          {
-            _context11.next = 2;
-            break;
-          }
-        case 2:
-          return _context11.abrupt("return", axios.get(apiHost + "/all-campaign-titles", {
+          return _context11.abrupt("return", axios.get(args.apiHost + "/all-campaign-titles", {
             headers: {
-              Authorization: authKey
+              Authorization: args.apiAuth
             }
           }).then(function (response) {
             if (!!response.data && Array.isArray(response.data)) {
@@ -7451,31 +7391,26 @@ var getAllCampaignTitles = /*#__PURE__*/function () {
             console.log(error);
             return [];
           }));
-        case 3:
+        case 1:
         case "end":
           return _context11.stop();
       }
     }, _callee11);
   }));
-  return function getAllCampaignTitles() {
+  return function getAllCampaignTitles(_x20) {
     return _ref11.apply(this, arguments);
   };
 }();
 var getBuilderActivityInfo = /*#__PURE__*/function () {
-  var _ref12 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12(wallet) {
+  var _ref12 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12(wallet, args) {
     return _regeneratorRuntime().wrap(function _callee12$(_context12) {
       while (1) switch (_context12.prev = _context12.next) {
         case 0:
-          {
-            _context12.next = 2;
-            break;
-          }
-        case 2:
-          return _context12.abrupt("return", axios.post(apiHost + "/get-builder-activity-info", {
+          return _context12.abrupt("return", axios.post(args.apiHost + "/get-builder-activity-info", {
             wallet: wallet
           }, {
             headers: {
-              Authorization: authKey
+              Authorization: args.apiAuth
             }
           }).then(function (response) {
             if (response.data) {
@@ -7487,31 +7422,26 @@ var getBuilderActivityInfo = /*#__PURE__*/function () {
             console.log(error);
             return null;
           }));
-        case 3:
+        case 1:
         case "end":
           return _context12.stop();
       }
     }, _callee12);
   }));
-  return function getBuilderActivityInfo(_x10) {
+  return function getBuilderActivityInfo(_x21, _x22) {
     return _ref12.apply(this, arguments);
   };
 }();
 var getValidatorActivityInfo = /*#__PURE__*/function () {
-  var _ref13 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13(wallet) {
+  var _ref13 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13(wallet, args) {
     return _regeneratorRuntime().wrap(function _callee13$(_context13) {
       while (1) switch (_context13.prev = _context13.next) {
         case 0:
-          {
-            _context13.next = 2;
-            break;
-          }
-        case 2:
-          return _context13.abrupt("return", axios.post(apiHost + "/get-validator-activity-info", {
+          return _context13.abrupt("return", axios.post(args.apiHost + "/get-validator-activity-info", {
             wallet: wallet
           }, {
             headers: {
-              Authorization: authKey
+              Authorization: args.apiAuth
             }
           }).then(function (response) {
             if (response.data) {
@@ -7523,32 +7453,27 @@ var getValidatorActivityInfo = /*#__PURE__*/function () {
             console.log(error);
             return null;
           }));
-        case 3:
+        case 1:
         case "end":
           return _context13.stop();
       }
     }, _callee13);
   }));
-  return function getValidatorActivityInfo(_x11) {
+  return function getValidatorActivityInfo(_x23, _x24) {
     return _ref13.apply(this, arguments);
   };
 }();
 var getBuilderRecentSubmissions = /*#__PURE__*/function () {
-  var _ref14 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14(pubkey, utc_offset) {
+  var _ref14 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14(pubkey, utc_offset, args) {
     return _regeneratorRuntime().wrap(function _callee14$(_context14) {
       while (1) switch (_context14.prev = _context14.next) {
         case 0:
-          {
-            _context14.next = 2;
-            break;
-          }
-        case 2:
-          return _context14.abrupt("return", axios.post(apiHost + "/get-builder-recent-submissions", {
+          return _context14.abrupt("return", axios.post(args.apiHost + "/get-builder-recent-submissions", {
             pubkey: pubkey,
             utc_offset: utc_offset
           }, {
             headers: {
-              Authorization: authKey
+              Authorization: args.apiAuth
             }
           }).then(function (response) {
             if (response.data && Array.isArray(response.data)) {
@@ -7560,32 +7485,27 @@ var getBuilderRecentSubmissions = /*#__PURE__*/function () {
             console.log(error);
             return 0;
           }));
-        case 3:
+        case 1:
         case "end":
           return _context14.stop();
       }
     }, _callee14);
   }));
-  return function getBuilderRecentSubmissions(_x12, _x13) {
+  return function getBuilderRecentSubmissions(_x25, _x26, _x27) {
     return _ref14.apply(this, arguments);
   };
 }();
 var getValidatorRecentValidations = /*#__PURE__*/function () {
-  var _ref15 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee15(pubkey, utc_offset) {
+  var _ref15 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee15(pubkey, utc_offset, args) {
     return _regeneratorRuntime().wrap(function _callee15$(_context15) {
       while (1) switch (_context15.prev = _context15.next) {
         case 0:
-          {
-            _context15.next = 2;
-            break;
-          }
-        case 2:
-          return _context15.abrupt("return", axios.post(apiHost + "/get-validator-recent-submissions", {
+          return _context15.abrupt("return", axios.post(args.apiHost + "/get-validator-recent-submissions", {
             pubkey: pubkey,
             utc_offset: utc_offset
           }, {
             headers: {
-              Authorization: authKey
+              Authorization: args.apiAuth
             }
           }).then(function (response) {
             if (response.data) {
@@ -7597,29 +7517,23 @@ var getValidatorRecentValidations = /*#__PURE__*/function () {
             console.log(error);
             return 0;
           }));
-        case 3:
+        case 1:
         case "end":
           return _context15.stop();
       }
     }, _callee15);
   }));
-  return function getValidatorRecentValidations(_x14, _x15) {
+  return function getValidatorRecentValidations(_x28, _x29, _x30) {
     return _ref15.apply(this, arguments);
   };
 }();
 
-var rpcHost = 'https://dyf-rpc-dev.synesis.xyz/';
 var rpcRequestAuth = /*#__PURE__*/function () {
-  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(wallet) {
+  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(wallet, args) {
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          {
-            _context.next = 2;
-            break;
-          }
-        case 2:
-          return _context.abrupt("return", axios.post(rpcHost, {
+          return _context.abrupt("return", axios.post(args.rpcHost, {
             jsonrpc: '2.0',
             method: 'requestAuth',
             params: [wallet],
@@ -7634,27 +7548,22 @@ var rpcRequestAuth = /*#__PURE__*/function () {
               return null;
             }
           }));
-        case 3:
+        case 1:
         case "end":
           return _context.stop();
       }
     }, _callee);
   }));
-  return function rpcRequestAuth(_x) {
+  return function rpcRequestAuth(_x, _x2) {
     return _ref.apply(this, arguments);
   };
 }();
 var rpcVerifyAuth = /*#__PURE__*/function () {
-  var _ref2 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(wallet, signature) {
+  var _ref2 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(wallet, signature, args) {
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
-          {
-            _context2.next = 2;
-            break;
-          }
-        case 2:
-          return _context2.abrupt("return", axios.post(rpcHost, {
+          return _context2.abrupt("return", axios.post(args.rpcHost, {
             jsonrpc: '2.0',
             method: 'verifyAuth',
             params: [wallet, signature],
@@ -7669,27 +7578,22 @@ var rpcVerifyAuth = /*#__PURE__*/function () {
               return null;
             }
           }));
-        case 3:
+        case 1:
         case "end":
           return _context2.stop();
       }
     }, _callee2);
   }));
-  return function rpcVerifyAuth(_x2, _x3) {
+  return function rpcVerifyAuth(_x3, _x4, _x5) {
     return _ref2.apply(this, arguments);
   };
 }();
 var rpcSubmitPhrase = /*#__PURE__*/function () {
-  var _ref3 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(token, dyfarmContract, campaignTitle, wallet, offchainReference, offchainType, kind, id) {
+  var _ref3 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(token, dyfarmContract, campaignTitle, wallet, offchainReference, offchainType, kind, id, args) {
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
-          {
-            _context3.next = 2;
-            break;
-          }
-        case 2:
-          return _context3.abrupt("return", axios.post(rpcHost, {
+          return _context3.abrupt("return", axios.post(args.rpcHost, {
             jsonrpc: '2.0',
             method: 'SubmitPhrase',
             params: [token, dyfarmContract, campaignTitle, wallet, offchainReference, offchainType, kind],
@@ -7709,33 +7613,28 @@ var rpcSubmitPhrase = /*#__PURE__*/function () {
               return null;
             }
           }));
-        case 3:
+        case 1:
         case "end":
           return _context3.stop();
       }
     }, _callee3);
   }));
-  return function rpcSubmitPhrase(_x4, _x5, _x6, _x7, _x8, _x9, _x10, _x11) {
+  return function rpcSubmitPhrase(_x6, _x7, _x8, _x9, _x10, _x11, _x12, _x13, _x14) {
     return _ref3.apply(this, arguments);
   };
 }();
 var rpcBatchSubmitPhrases = /*#__PURE__*/function () {
-  var _ref4 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(token, dyfarmContract, campaignTitle, wallet, offchainReferences, offchainTypes, kinds) {
+  var _ref4 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(token, dyfarmContract, campaignTitle, wallet, offchainReferences, offchainTypes, kinds, args) {
     var data;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
-          {
+          if (!(offchainReferences.length !== offchainTypes.length || offchainReferences.length !== kinds.length)) {
             _context4.next = 2;
             break;
           }
-        case 2:
-          if (!(offchainReferences.length !== offchainTypes.length || offchainReferences.length !== kinds.length)) {
-            _context4.next = 4;
-            break;
-          }
           throw new Error('Something is wrong. Invalid data.');
-        case 4:
+        case 2:
           data = offchainReferences.map(function (offchainReference, idx) {
             return {
               jsonrpc: '2.0',
@@ -7744,7 +7643,7 @@ var rpcBatchSubmitPhrases = /*#__PURE__*/function () {
               id: idx + 1
             };
           });
-          return _context4.abrupt("return", axios.post(rpcHost, data).then(function (response) {
+          return _context4.abrupt("return", axios.post(args.rpcHost, data).then(function (response) {
             return response.data.map(function (row) {
               if (row.error) {
                 var _row$error;
@@ -7766,27 +7665,22 @@ var rpcBatchSubmitPhrases = /*#__PURE__*/function () {
               };
             });
           }));
-        case 6:
+        case 4:
         case "end":
           return _context4.stop();
       }
     }, _callee4);
   }));
-  return function rpcBatchSubmitPhrases(_x12, _x13, _x14, _x15, _x16, _x17, _x18) {
+  return function rpcBatchSubmitPhrases(_x15, _x16, _x17, _x18, _x19, _x20, _x21, _x22) {
     return _ref4.apply(this, arguments);
   };
 }();
 var rpcValidatePhrase = /*#__PURE__*/function () {
-  var _ref5 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(token, dyfarmContract, campaignTitle, wallet, builder, phraseAccount, canonical, value, confidence, id) {
+  var _ref5 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(token, dyfarmContract, campaignTitle, wallet, builder, phraseAccount, canonical, value, confidence, id, args) {
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
-          {
-            _context5.next = 2;
-            break;
-          }
-        case 2:
-          return _context5.abrupt("return", axios.post(rpcHost, {
+          return _context5.abrupt("return", axios.post(args.rpcHost, {
             jsonrpc: '2.0',
             method: 'ValidatePhrase',
             params: [token, dyfarmContract, campaignTitle, wallet, builder, phraseAccount, canonical, confidence, value],
@@ -7806,33 +7700,28 @@ var rpcValidatePhrase = /*#__PURE__*/function () {
               return null;
             }
           }));
-        case 3:
+        case 1:
         case "end":
           return _context5.stop();
       }
     }, _callee5);
   }));
-  return function rpcValidatePhrase(_x19, _x20, _x21, _x22, _x23, _x24, _x25, _x26, _x27, _x28) {
+  return function rpcValidatePhrase(_x23, _x24, _x25, _x26, _x27, _x28, _x29, _x30, _x31, _x32, _x33) {
     return _ref5.apply(this, arguments);
   };
 }();
 var rpcBatchValidatePhrase = /*#__PURE__*/function () {
-  var _ref6 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(token, dyfarmContract, campaignTitle, wallet, builders, phraseAccounts, canonicals, values, confidences) {
+  var _ref6 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(token, dyfarmContract, campaignTitle, wallet, builders, phraseAccounts, canonicals, values, confidences, args) {
     var data;
     return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) switch (_context6.prev = _context6.next) {
         case 0:
-          {
+          if (!(phraseAccounts.length !== canonicals.length || phraseAccounts.length !== values.length)) {
             _context6.next = 2;
             break;
           }
-        case 2:
-          if (!(phraseAccounts.length !== canonicals.length || phraseAccounts.length !== values.length)) {
-            _context6.next = 4;
-            break;
-          }
           throw new Error('Something is wrong. Invalid data.');
-        case 4:
+        case 2:
           data = phraseAccounts.map(function (phraseAccount, idx) {
             return {
               jsonrpc: '2.0',
@@ -7841,7 +7730,7 @@ var rpcBatchValidatePhrase = /*#__PURE__*/function () {
               id: idx + 1
             };
           });
-          return _context6.abrupt("return", axios.post(rpcHost, data).then(function (response) {
+          return _context6.abrupt("return", axios.post(args.rpcHost, data).then(function (response) {
             return response.data.map(function (row) {
               if (row.error) {
                 var _row$error2;
@@ -7863,27 +7752,22 @@ var rpcBatchValidatePhrase = /*#__PURE__*/function () {
               };
             });
           }));
-        case 6:
+        case 4:
         case "end":
           return _context6.stop();
       }
     }, _callee6);
   }));
-  return function rpcBatchValidatePhrase(_x29, _x30, _x31, _x32, _x33, _x34, _x35, _x36, _x37) {
+  return function rpcBatchValidatePhrase(_x34, _x35, _x36, _x37, _x38, _x39, _x40, _x41, _x42, _x43) {
     return _ref6.apply(this, arguments);
   };
 }();
 var getRpcSubmissionStatus = /*#__PURE__*/function () {
-  var _ref7 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(wallet, campaign) {
+  var _ref7 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(wallet, campaign, args) {
     return _regeneratorRuntime().wrap(function _callee7$(_context7) {
       while (1) switch (_context7.prev = _context7.next) {
         case 0:
-          {
-            _context7.next = 2;
-            break;
-          }
-        case 2:
-          return _context7.abrupt("return", axios.post(rpcHost, {
+          return _context7.abrupt("return", axios.post(args.rpcHost, {
             jsonrpc: '2.0',
             method: 'getSubmitStatus',
             params: [wallet, campaign],
@@ -7901,27 +7785,22 @@ var getRpcSubmissionStatus = /*#__PURE__*/function () {
               return [];
             }
           }));
-        case 3:
+        case 1:
         case "end":
           return _context7.stop();
       }
     }, _callee7);
   }));
-  return function getRpcSubmissionStatus(_x38, _x39) {
+  return function getRpcSubmissionStatus(_x44, _x45, _x46) {
     return _ref7.apply(this, arguments);
   };
 }();
 var getRpcValidationStatus = /*#__PURE__*/function () {
-  var _ref8 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(wallet, campaign) {
+  var _ref8 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(wallet, campaign, args) {
     return _regeneratorRuntime().wrap(function _callee8$(_context8) {
       while (1) switch (_context8.prev = _context8.next) {
         case 0:
-          {
-            _context8.next = 2;
-            break;
-          }
-        case 2:
-          return _context8.abrupt("return", axios.post(rpcHost, {
+          return _context8.abrupt("return", axios.post(args.rpcHost, {
             jsonrpc: '2.0',
             method: 'getValidateStatus',
             params: [wallet, campaign],
@@ -7939,27 +7818,22 @@ var getRpcValidationStatus = /*#__PURE__*/function () {
               return [];
             }
           }));
-        case 3:
+        case 1:
         case "end":
           return _context8.stop();
       }
     }, _callee8);
   }));
-  return function getRpcValidationStatus(_x40, _x41) {
+  return function getRpcValidationStatus(_x47, _x48, _x49) {
     return _ref8.apply(this, arguments);
   };
 }();
 var getRpcListActivity = /*#__PURE__*/function () {
-  var _ref9 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(dyfarmContract, wallet, role) {
+  var _ref9 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(dyfarmContract, wallet, role, args) {
     return _regeneratorRuntime().wrap(function _callee9$(_context9) {
       while (1) switch (_context9.prev = _context9.next) {
         case 0:
-          {
-            _context9.next = 2;
-            break;
-          }
-        case 2:
-          return _context9.abrupt("return", axios.post(rpcHost, {
+          return _context9.abrupt("return", axios.post(args.rpcHost, {
             jsonrpc: '2.0',
             method: 'ListActivity',
             params: [dyfarmContract, wallet],
@@ -7975,19 +7849,19 @@ var getRpcListActivity = /*#__PURE__*/function () {
               return [];
             }
           }));
-        case 3:
+        case 1:
         case "end":
           return _context9.stop();
       }
     }, _callee9);
   }));
-  return function getRpcListActivity(_x42, _x43, _x44) {
+  return function getRpcListActivity(_x50, _x51, _x52, _x53) {
     return _ref9.apply(this, arguments);
   };
 }();
 
 var getUtterancesAndHistoriesForArchitect = /*#__PURE__*/function () {
-  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(publicKey, connection, campaign) {
+  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(publicKey, connection, campaign, args) {
     var submissionsAndValidationsInfo, submissionsInfo, validationsInfo, objValidationsInfo, submissionsChecked, utterances;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
@@ -8005,7 +7879,10 @@ var getUtterancesAndHistoriesForArchitect = /*#__PURE__*/function () {
           throw new Error('Connection is undefined');
         case 4:
           _context.next = 6;
-          return getSubmissionsValidationsInfo(campaign.pubkey);
+          return getSubmissionsValidationsInfo(campaign.pubkey, {
+            apiHost: args.apiHost,
+            apiAuth: args.apiAuth
+          });
         case 6:
           submissionsAndValidationsInfo = _context.sent;
           submissionsInfo = submissionsAndValidationsInfo.submissions;
@@ -8049,12 +7926,12 @@ var getUtterancesAndHistoriesForArchitect = /*#__PURE__*/function () {
       }
     }, _callee);
   }));
-  return function getUtterancesAndHistoriesForArchitect(_x, _x2, _x3) {
+  return function getUtterancesAndHistoriesForArchitect(_x, _x2, _x3, _x4) {
     return _ref.apply(this, arguments);
   };
 }();
 var createArchitectCreateCampaignInstructions = /*#__PURE__*/function () {
-  var _ref2 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, data) {
+  var _ref2 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, data, args) {
     var instructions, signers, campaignTitle, tag, open, close, expire, minimumStake, rpuValidator, minPhrase, minValidate, majorityQuorum, rpuGeneral, rpuSpecific, rpuCause, rpuEffect, organizer, language, industry, domain, subject, _PublicKey$findProgra, campaignAccount, _PublicKey$findProgra2, campaignVault, _PublicKey$findProgra3, farmConfigAccount, farmConfig, userToken, _PublicKey$findProgra4, pdaAccount, _PublicKey$findProgra5, priceFeed;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
@@ -8092,22 +7969,22 @@ var createArchitectCreateCampaignInstructions = /*#__PURE__*/function () {
           industry = data.industry;
           domain = data.domain;
           subject = data.subject;
-          _PublicKey$findProgra = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], PROGRAM_ID), campaignAccount = _PublicKey$findProgra[0];
-          _PublicKey$findProgra2 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:VAULT'), Buffer.from(campaignTitle)], PROGRAM_ID), campaignVault = _PublicKey$findProgra2[0];
-          _PublicKey$findProgra3 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], PROGRAM_ID), farmConfigAccount = _PublicKey$findProgra3[0];
+          _PublicKey$findProgra = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], args.programId), campaignAccount = _PublicKey$findProgra[0];
+          _PublicKey$findProgra2 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:VAULT'), Buffer.from(campaignTitle)], args.programId), campaignVault = _PublicKey$findProgra2[0];
+          _PublicKey$findProgra3 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], args.programId), farmConfigAccount = _PublicKey$findProgra3[0];
           _context2.next = 30;
           return FarmConfig.fromAccountAddress(connection, farmConfigAccount, 'processed');
         case 30:
           farmConfig = _context2.sent;
-          userToken = getAssociateTokenAccount(new PublicKey(SNS_ADDRESS), publicKey);
-          _PublicKey$findProgra4 = PublicKey.findProgramAddressSync([Buffer.from('DYF')], PROGRAM_ID), pdaAccount = _PublicKey$findProgra4[0];
+          userToken = getAssociateTokenAccount(args.snsMint, publicKey);
+          _PublicKey$findProgra4 = PublicKey.findProgramAddressSync([Buffer.from('DYF')], args.programId), pdaAccount = _PublicKey$findProgra4[0];
           _PublicKey$findProgra5 = PublicKey.findProgramAddressSync([Buffer.from('PRICE:FEED:CONFIG'), Buffer.from(SNS_PAIR)], farmConfig.oracle), priceFeed = _PublicKey$findProgra5[0];
           instructions.push(createCreateCampaignInstruction({
             user: publicKey,
             campaignAccount: campaignAccount,
             campaignVault: campaignVault,
             userToken: userToken,
-            mint: new PublicKey(SNS_ADDRESS),
+            mint: args.snsMint,
             farmConfig: farmConfigAccount,
             priceFeed: priceFeed,
             pdaAccount: pdaAccount,
@@ -8137,7 +8014,7 @@ var createArchitectCreateCampaignInstructions = /*#__PURE__*/function () {
             minValidator: minValidate,
             majorityQuorum: majorityQuorum,
             minimumStake: minimumStake
-          }, PROGRAM_ID));
+          }, args.programId));
           return _context2.abrupt("return", {
             instructions: instructions,
             signers: signers
@@ -8148,12 +8025,12 @@ var createArchitectCreateCampaignInstructions = /*#__PURE__*/function () {
       }
     }, _callee2);
   }));
-  return function createArchitectCreateCampaignInstructions(_x4, _x5, _x6) {
+  return function createArchitectCreateCampaignInstructions(_x5, _x6, _x7, _x8) {
     return _ref2.apply(this, arguments);
   };
 }();
 var createArchitectUpdateCampaignInstructions = /*#__PURE__*/function () {
-  var _ref3 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(publicKey, connection, data) {
+  var _ref3 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(publicKey, connection, data, args) {
     var instructions, signers, campaignTitle, open, close, expire, _PublicKey$findProgra6, campaignAccount, _PublicKey$findProgra7, farmConfig;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
@@ -8176,8 +8053,8 @@ var createArchitectUpdateCampaignInstructions = /*#__PURE__*/function () {
           open = new BN(data.open);
           close = new BN(data.close);
           expire = new BN(data.expire);
-          _PublicKey$findProgra6 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(data.campaignTitle)], PROGRAM_ID), campaignAccount = _PublicKey$findProgra6[0];
-          _PublicKey$findProgra7 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], PROGRAM_ID), farmConfig = _PublicKey$findProgra7[0];
+          _PublicKey$findProgra6 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(data.campaignTitle)], args.programId), campaignAccount = _PublicKey$findProgra6[0];
+          _PublicKey$findProgra7 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], args.programId), farmConfig = _PublicKey$findProgra7[0];
           instructions.push(createUpdateCampaignInstruction({
             user: publicKey,
             campaignAccount: campaignAccount,
@@ -8187,7 +8064,7 @@ var createArchitectUpdateCampaignInstructions = /*#__PURE__*/function () {
             open: open,
             close: close,
             expire: expire
-          }, PROGRAM_ID));
+          }, args.programId));
           return _context3.abrupt("return", {
             instructions: instructions,
             signers: signers
@@ -8198,12 +8075,12 @@ var createArchitectUpdateCampaignInstructions = /*#__PURE__*/function () {
       }
     }, _callee3);
   }));
-  return function createArchitectUpdateCampaignInstructions(_x7, _x8, _x9) {
+  return function createArchitectUpdateCampaignInstructions(_x9, _x10, _x11, _x12) {
     return _ref3.apply(this, arguments);
   };
 }();
 var getUnusedCampaignTitle = /*#__PURE__*/function () {
-  var _ref4 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(publicKey, connection) {
+  var _ref4 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(publicKey, connection, args) {
     var campaignTitle, ret, str, campaignTitles, _PublicKey$findProgra8, campaignAccount, campaignAccountInfo;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
@@ -8234,7 +8111,10 @@ var getUnusedCampaignTitle = /*#__PURE__*/function () {
           ret = 0;
           str = randomstring.generate(16);
           _context4.next = 12;
-          return getAllCampaignTitles();
+          return getAllCampaignTitles({
+            apiHost: args.apiHost,
+            apiAuth: args.apiAuth
+          });
         case 12:
           campaignTitles = _context4.sent;
           if (!campaignTitles.includes(str)) {
@@ -8245,7 +8125,7 @@ var getUnusedCampaignTitle = /*#__PURE__*/function () {
           _context4.next = 22;
           break;
         case 17:
-          _PublicKey$findProgra8 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(str)], PROGRAM_ID), campaignAccount = _PublicKey$findProgra8[0];
+          _PublicKey$findProgra8 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(str)], args.programId), campaignAccount = _PublicKey$findProgra8[0];
           _context4.next = 20;
           return connection.getParsedAccountInfo(campaignAccount);
         case 20:
@@ -8267,521 +8147,13 @@ var getUnusedCampaignTitle = /*#__PURE__*/function () {
       }
     }, _callee4);
   }));
-  return function getUnusedCampaignTitle(_x10, _x11) {
+  return function getUnusedCampaignTitle(_x13, _x14, _x15) {
     return _ref4.apply(this, arguments);
-  };
-}();
-
-var createStakeCampaignInstructions = /*#__PURE__*/function () {
-  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(publicKey, connection, role, amount, campaignTitle) {
-    var instructions, signers, _PublicKey$findProgra, userProfile, _PublicKey$findProgra2, farmConfig, profile, _PublicKey$findProgra3, campaignAccount, userToken, _PublicKey$findProgra4, campaignActivity, _PublicKey$findProgra5, campaignVault, accountInfo;
-    return _regeneratorRuntime().wrap(function _callee$(_context) {
-      while (1) switch (_context.prev = _context.next) {
-        case 0:
-          if (publicKey) {
-            _context.next = 2;
-            break;
-          }
-          throw new Error('PublicKey is undefined');
-        case 2:
-          if (connection) {
-            _context.next = 4;
-            break;
-          }
-          throw new Error('Connection is undefined');
-        case 4:
-          instructions = [];
-          signers = [];
-          _PublicKey$findProgra = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], PROGRAM_ID), userProfile = _PublicKey$findProgra[0];
-          _PublicKey$findProgra2 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], PROGRAM_ID), farmConfig = _PublicKey$findProgra2[0];
-          _context.next = 10;
-          return connection.getParsedAccountInfo(userProfile, 'processed');
-        case 10:
-          profile = _context.sent;
-          if (!profile || !profile.value) {
-            instructions.push(createCreateProfileInstruction({
-              user: publicKey,
-              userProfile: userProfile,
-              farmConfig: farmConfig,
-              clock: SYSVAR_CLOCK_PUBKEY
-            }, {
-              role: role,
-              access: ACCESS_METHOD.nft.val
-            }, PROGRAM_ID));
-          }
-          _PublicKey$findProgra3 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], PROGRAM_ID), campaignAccount = _PublicKey$findProgra3[0];
-          userToken = getAssociateTokenAccount(new PublicKey(SNS_ADDRESS), publicKey);
-          _PublicKey$findProgra4 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), publicKey.toBuffer()], PROGRAM_ID), campaignActivity = _PublicKey$findProgra4[0];
-          _PublicKey$findProgra5 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:VAULT'), Buffer.from(campaignTitle)], PROGRAM_ID), campaignVault = _PublicKey$findProgra5[0];
-          _context.next = 18;
-          return connection.getAccountInfo(userToken, 'processed');
-        case 18:
-          accountInfo = _context.sent;
-          if (accountInfo == null) {
-            instructions.push(createAssociatedTokenAccountInstruction(publicKey, userToken, publicKey, new PublicKey(SNS_ADDRESS), TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID));
-          }
-          instructions.push(createStakeCampaignInstruction({
-            user: publicKey,
-            userProfile: userProfile,
-            campaignActivity: campaignActivity,
-            userToken: userToken,
-            campaignAccount: campaignAccount,
-            campaignVault: campaignVault,
-            farmConfig: farmConfig,
-            clock: SYSVAR_CLOCK_PUBKEY
-          }, {
-            campaignTitle: campaignTitle,
-            amount: new BN(amount)
-          }, PROGRAM_ID));
-          return _context.abrupt("return", {
-            instructions: instructions,
-            signers: signers
-          });
-        case 22:
-        case "end":
-          return _context.stop();
-      }
-    }, _callee);
-  }));
-  return function createStakeCampaignInstructions(_x, _x2, _x3, _x4, _x5) {
-    return _ref.apply(this, arguments);
-  };
-}();
-var createUnstakeCampaignInstructions = /*#__PURE__*/function () {
-  var _ref2 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, campaignTitle) {
-    var instructions, signers, _PublicKey$findProgra6, userProfile, _PublicKey$findProgra7, campaignAccount, _PublicKey$findProgra8, campaignVault, _PublicKey$findProgra9, pdaAccount, _PublicKey$findProgra10, dyfVault, _PublicKey$findProgra11, campaignActivity, _PublicKey$findProgra12, farmConfig, userToken;
-    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-      while (1) switch (_context2.prev = _context2.next) {
-        case 0:
-          if (publicKey) {
-            _context2.next = 2;
-            break;
-          }
-          throw new Error('PublicKey is undefined');
-        case 2:
-          if (connection) {
-            _context2.next = 4;
-            break;
-          }
-          throw new Error('Connection is undefined');
-        case 4:
-          instructions = [];
-          signers = [];
-          _PublicKey$findProgra6 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], PROGRAM_ID), userProfile = _PublicKey$findProgra6[0];
-          _PublicKey$findProgra7 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], PROGRAM_ID), campaignAccount = _PublicKey$findProgra7[0];
-          _PublicKey$findProgra8 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:VAULT'), Buffer.from(campaignTitle)], PROGRAM_ID), campaignVault = _PublicKey$findProgra8[0];
-          _PublicKey$findProgra9 = PublicKey.findProgramAddressSync([Buffer.from('DYF')], PROGRAM_ID), pdaAccount = _PublicKey$findProgra9[0];
-          _PublicKey$findProgra10 = PublicKey.findProgramAddressSync([pdaAccount.toBuffer(), Buffer.from('DYF:VAULT')], PROGRAM_ID), dyfVault = _PublicKey$findProgra10[0];
-          _PublicKey$findProgra11 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), publicKey.toBuffer()], PROGRAM_ID), campaignActivity = _PublicKey$findProgra11[0];
-          _PublicKey$findProgra12 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], PROGRAM_ID), farmConfig = _PublicKey$findProgra12[0];
-          userToken = getAssociateTokenAccount(new PublicKey(SNS_ADDRESS), publicKey);
-          instructions.push(createUnstakeCampaignInstruction({
-            user: publicKey,
-            userProfile: userProfile,
-            userToken: userToken,
-            campaignAccount: campaignAccount,
-            campaignVault: campaignVault,
-            dyfVault: dyfVault,
-            campaignActivity: campaignActivity,
-            farmConfig: farmConfig,
-            pdaAccount: pdaAccount,
-            clock: SYSVAR_CLOCK_PUBKEY
-          }, {
-            campaignTitle: campaignTitle
-          }, PROGRAM_ID));
-          return _context2.abrupt("return", {
-            instructions: instructions,
-            signers: signers
-          });
-        case 16:
-        case "end":
-          return _context2.stop();
-      }
-    }, _callee2);
-  }));
-  return function createUnstakeCampaignInstructions(_x6, _x7, _x8) {
-    return _ref2.apply(this, arguments);
-  };
-}();
-var createClaimRewardInstructions = /*#__PURE__*/function () {
-  var _ref3 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(publicKey, connection, campaignTitle) {
-    var instructions, signers, _PublicKey$findProgra13, userProfile, userToken, _PublicKey$findProgra14, campaignActivity, _PublicKey$findProgra15, campaignVault, _PublicKey$findProgra16, farmConfig, _PublicKey$findProgra17, pdaAccount, _PublicKey$findProgra18, dyfVault;
-    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-      while (1) switch (_context3.prev = _context3.next) {
-        case 0:
-          if (publicKey) {
-            _context3.next = 2;
-            break;
-          }
-          throw new Error('PublicKey is undefined');
-        case 2:
-          if (connection) {
-            _context3.next = 4;
-            break;
-          }
-          throw new Error('Connection is undefined');
-        case 4:
-          instructions = [];
-          signers = [];
-          _PublicKey$findProgra13 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], PROGRAM_ID), userProfile = _PublicKey$findProgra13[0];
-          userToken = getAssociateTokenAccount(new PublicKey(SNS_ADDRESS), publicKey);
-          _PublicKey$findProgra14 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), publicKey.toBuffer()], PROGRAM_ID), campaignActivity = _PublicKey$findProgra14[0];
-          _PublicKey$findProgra15 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:VAULT'), Buffer.from(campaignTitle)], PROGRAM_ID), campaignVault = _PublicKey$findProgra15[0];
-          _PublicKey$findProgra16 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], PROGRAM_ID), farmConfig = _PublicKey$findProgra16[0];
-          _PublicKey$findProgra17 = PublicKey.findProgramAddressSync([Buffer.from('DYF')], PROGRAM_ID), pdaAccount = _PublicKey$findProgra17[0];
-          _PublicKey$findProgra18 = PublicKey.findProgramAddressSync([pdaAccount.toBuffer(), Buffer.from('DYF:VAULT')], PROGRAM_ID), dyfVault = _PublicKey$findProgra18[0];
-          instructions.push(createClaimRewardInstruction({
-            user: publicKey,
-            userProfile: userProfile,
-            userToken: userToken,
-            campaignActivity: campaignActivity,
-            campaignVault: campaignVault,
-            farmConfig: farmConfig,
-            pdaAccount: pdaAccount,
-            dyfVault: dyfVault,
-            clock: SYSVAR_CLOCK_PUBKEY
-          }, {
-            campaignTitle: campaignTitle
-          }, PROGRAM_ID));
-          return _context3.abrupt("return", {
-            instructions: instructions,
-            signers: signers
-          });
-        case 15:
-        case "end":
-          return _context3.stop();
-      }
-    }, _callee3);
-  }));
-  return function createClaimRewardInstructions(_x9, _x10, _x11) {
-    return _ref3.apply(this, arguments);
-  };
-}();
-var createBatchClaimRewardInstructions = /*#__PURE__*/function () {
-  var _ref4 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(publicKey, connection, campaignTitles) {
-    var _PublicKey$findProgra19, userProfile, userToken, _PublicKey$findProgra20, farmConfig, _PublicKey$findProgra21, pdaAccount, _PublicKey$findProgra22, dyfVault, instructions, signers;
-    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-      while (1) switch (_context4.prev = _context4.next) {
-        case 0:
-          if (publicKey) {
-            _context4.next = 2;
-            break;
-          }
-          throw new Error('PublicKey is undefined');
-        case 2:
-          if (connection) {
-            _context4.next = 4;
-            break;
-          }
-          throw new Error('Connection is undefined');
-        case 4:
-          _PublicKey$findProgra19 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], PROGRAM_ID), userProfile = _PublicKey$findProgra19[0];
-          userToken = getAssociateTokenAccount(new PublicKey(SNS_ADDRESS), publicKey);
-          _PublicKey$findProgra20 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], PROGRAM_ID), farmConfig = _PublicKey$findProgra20[0];
-          _PublicKey$findProgra21 = PublicKey.findProgramAddressSync([Buffer.from('DYF')], PROGRAM_ID), pdaAccount = _PublicKey$findProgra21[0];
-          _PublicKey$findProgra22 = PublicKey.findProgramAddressSync([pdaAccount.toBuffer(), Buffer.from('DYF:VAULT')], PROGRAM_ID), dyfVault = _PublicKey$findProgra22[0];
-          instructions = campaignTitles.map(function (campaignTitle) {
-            var _PublicKey$findProgra23 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), publicKey.toBuffer()], PROGRAM_ID),
-              campaignActivity = _PublicKey$findProgra23[0];
-            var _PublicKey$findProgra24 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:VAULT'), Buffer.from(campaignTitle)], PROGRAM_ID),
-              campaignVault = _PublicKey$findProgra24[0];
-            return createClaimRewardInstruction({
-              user: publicKey,
-              userProfile: userProfile,
-              userToken: userToken,
-              campaignActivity: campaignActivity,
-              campaignVault: campaignVault,
-              farmConfig: farmConfig,
-              pdaAccount: pdaAccount,
-              dyfVault: dyfVault,
-              clock: SYSVAR_CLOCK_PUBKEY
-            }, {
-              campaignTitle: campaignTitle
-            }, PROGRAM_ID);
-          });
-          signers = [];
-          return _context4.abrupt("return", {
-            instructions: instructions,
-            signers: signers
-          });
-        case 12:
-        case "end":
-          return _context4.stop();
-      }
-    }, _callee4);
-  }));
-  return function createBatchClaimRewardInstructions(_x12, _x13, _x14) {
-    return _ref4.apply(this, arguments);
-  };
-}();
-var createStakeCampaignWithNFTInstructions = /*#__PURE__*/function () {
-  var _ref5 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(publicKey, connection, role, mint) {
-    var instructions, signers, _PublicKey$findProgra25, userProfile, _PublicKey$findProgra26, farmConfigAccount, userNft, _PublicKey$findProgra27, nftVault, _PublicKey$findProgra28, nftMetadata, _PublicKey$findProgra29, pdaAccount, profile;
-    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
-      while (1) switch (_context5.prev = _context5.next) {
-        case 0:
-          if (publicKey) {
-            _context5.next = 2;
-            break;
-          }
-          throw new Error('PublicKey is undefined');
-        case 2:
-          if (connection) {
-            _context5.next = 4;
-            break;
-          }
-          throw new Error('Connection is undefined');
-        case 4:
-          instructions = [];
-          signers = [];
-          _PublicKey$findProgra25 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], PROGRAM_ID), userProfile = _PublicKey$findProgra25[0];
-          _PublicKey$findProgra26 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], PROGRAM_ID), farmConfigAccount = _PublicKey$findProgra26[0];
-          userNft = getAssociateTokenAccount(new PublicKey(mint), publicKey);
-          _PublicKey$findProgra27 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:VAULT'), userNft.toBuffer()], PROGRAM_ID), nftVault = _PublicKey$findProgra27[0];
-          _PublicKey$findProgra28 = PublicKey.findProgramAddressSync([Buffer.from('metadata'), new PublicKey(METADATA_PROGRAM_ADDRESS).toBuffer(), new PublicKey(mint).toBuffer()], new PublicKey(METADATA_PROGRAM_ADDRESS)), nftMetadata = _PublicKey$findProgra28[0];
-          _PublicKey$findProgra29 = PublicKey.findProgramAddressSync([Buffer.from('DYF')], PROGRAM_ID), pdaAccount = _PublicKey$findProgra29[0];
-          _context5.next = 14;
-          return connection.getParsedAccountInfo(userProfile, 'processed');
-        case 14:
-          profile = _context5.sent;
-          if (!profile || !profile.value) {
-            instructions.push(createCreateProfileInstruction({
-              user: publicKey,
-              userProfile: userProfile,
-              farmConfig: farmConfigAccount,
-              clock: SYSVAR_CLOCK_PUBKEY
-            }, {
-              role: STAKE_ACCOUNT_ROLE[role].val,
-              access: ACCESS_METHOD.nft.val
-            }, PROGRAM_ID));
-          }
-          instructions.push(createStakeNftInstruction({
-            user: publicKey,
-            userProfile: userProfile,
-            userNft: userNft,
-            nftVault: nftVault,
-            farmConfig: farmConfigAccount,
-            pdaAccount: pdaAccount,
-            nftMint: new PublicKey(mint),
-            nftMetadata: nftMetadata,
-            clock: SYSVAR_CLOCK_PUBKEY
-          }, PROGRAM_ID));
-          return _context5.abrupt("return", {
-            instructions: instructions,
-            signers: signers
-          });
-        case 18:
-        case "end":
-          return _context5.stop();
-      }
-    }, _callee5);
-  }));
-  return function createStakeCampaignWithNFTInstructions(_x15, _x16, _x17, _x18) {
-    return _ref5.apply(this, arguments);
-  };
-}();
-var getTotalAvailableRewards = /*#__PURE__*/function () {
-  var _ref6 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(publicKey, connection, appCampaigns) {
-    var _PublicKey$findProgra30, userProfile, profile, role, stakedCampaigns, campaignTitles, totalRewards, totalClaimed;
-    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
-      while (1) switch (_context7.prev = _context7.next) {
-        case 0:
-          if (publicKey) {
-            _context7.next = 2;
-            break;
-          }
-          throw new Error('PublicKey is undefined');
-        case 2:
-          if (connection) {
-            _context7.next = 4;
-            break;
-          }
-          throw new Error('Connection is undefined');
-        case 4:
-          _PublicKey$findProgra30 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], PROGRAM_ID), userProfile = _PublicKey$findProgra30[0];
-          _context7.next = 7;
-          return Profile.fromAccountAddress(connection, userProfile, 'processed');
-        case 7:
-          profile = _context7.sent;
-          role = Number(profile.role);
-          if (!(role !== STAKE_ACCOUNT_ROLE.builder.val && role !== STAKE_ACCOUNT_ROLE.validator.val)) {
-            _context7.next = 11;
-            break;
-          }
-          throw new Error('Architects cannot claim!');
-        case 11:
-          stakedCampaigns = appCampaigns.filter(function (campaign) {
-            return role === STAKE_ACCOUNT_ROLE.builder.val && campaign.builderStakeStatus || role === STAKE_ACCOUNT_ROLE.validator.val && campaign.validatorStakeStatus;
-          });
-          campaignTitles = [];
-          totalRewards = 0;
-          totalClaimed = 0;
-          _context7.next = 17;
-          return Promise.all(stakedCampaigns.map( /*#__PURE__*/function () {
-            var _ref7 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(campaign) {
-              var _PublicKey$findProgra31, campaignActivityAccount, campaignActivity, unclaimedReward, claimedReward;
-              return _regeneratorRuntime().wrap(function _callee6$(_context6) {
-                while (1) switch (_context6.prev = _context6.next) {
-                  case 0:
-                    if (publicKey) {
-                      _context6.next = 2;
-                      break;
-                    }
-                    return _context6.abrupt("return");
-                  case 2:
-                    _context6.prev = 2;
-                    _PublicKey$findProgra31 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaign.campaignTitle), publicKey.toBuffer()], PROGRAM_ID), campaignActivityAccount = _PublicKey$findProgra31[0];
-                    _context6.next = 6;
-                    return CampaignActivity.fromAccountAddress(connection, campaignActivityAccount, 'processed');
-                  case 6:
-                    campaignActivity = _context6.sent;
-                    unclaimedReward = new BN(campaignActivity.unclaimedReward).toNumber();
-                    claimedReward = new BN(campaignActivity.claimedReward).toNumber();
-                    totalRewards += unclaimedReward;
-                    totalClaimed += claimedReward;
-                    if (unclaimedReward > claimedReward) campaignTitles.push(campaign.campaignTitle);
-                    _context6.next = 16;
-                    break;
-                  case 14:
-                    _context6.prev = 14;
-                    _context6.t0 = _context6["catch"](2);
-                  case 16:
-                  case "end":
-                    return _context6.stop();
-                }
-              }, _callee6, null, [[2, 14]]);
-            }));
-            return function (_x22) {
-              return _ref7.apply(this, arguments);
-            };
-          }()));
-        case 17:
-          return _context7.abrupt("return", {
-            rewards: totalRewards,
-            claimed: totalClaimed,
-            campaignTitles: campaignTitles
-          });
-        case 18:
-        case "end":
-          return _context7.stop();
-      }
-    }, _callee7);
-  }));
-  return function getTotalAvailableRewards(_x19, _x20, _x21) {
-    return _ref6.apply(this, arguments);
-  };
-}();
-var getBuilderActivity = /*#__PURE__*/function () {
-  var _ref8 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(publicKey) {
-    var activityInfo;
-    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
-      while (1) switch (_context8.prev = _context8.next) {
-        case 0:
-          if (publicKey) {
-            _context8.next = 2;
-            break;
-          }
-          throw new Error('PublicKey is undefined');
-        case 2:
-          _context8.next = 4;
-          return getBuilderActivityInfo(publicKey.toBase58());
-        case 4:
-          activityInfo = _context8.sent;
-          return _context8.abrupt("return", activityInfo);
-        case 6:
-        case "end":
-          return _context8.stop();
-      }
-    }, _callee8);
-  }));
-  return function getBuilderActivity(_x23) {
-    return _ref8.apply(this, arguments);
-  };
-}();
-var getValidatorActivity = /*#__PURE__*/function () {
-  var _ref9 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(publicKey) {
-    var activityInfo;
-    return _regeneratorRuntime().wrap(function _callee9$(_context9) {
-      while (1) switch (_context9.prev = _context9.next) {
-        case 0:
-          if (publicKey) {
-            _context9.next = 2;
-            break;
-          }
-          throw new Error('PublicKey is undefined');
-        case 2:
-          _context9.next = 4;
-          return getValidatorActivityInfo(publicKey.toBase58());
-        case 4:
-          activityInfo = _context9.sent;
-          return _context9.abrupt("return", activityInfo);
-        case 6:
-        case "end":
-          return _context9.stop();
-      }
-    }, _callee9);
-  }));
-  return function getValidatorActivity(_x24) {
-    return _ref9.apply(this, arguments);
-  };
-}();
-var getBuilderSubmissionsToday = /*#__PURE__*/function () {
-  var _ref10 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(publicKey) {
-    var recentSubmissions;
-    return _regeneratorRuntime().wrap(function _callee10$(_context10) {
-      while (1) switch (_context10.prev = _context10.next) {
-        case 0:
-          if (publicKey) {
-            _context10.next = 2;
-            break;
-          }
-          throw new Error('PublicKey is undefined');
-        case 2:
-          _context10.next = 4;
-          return getBuilderRecentSubmissions(publicKey.toBase58(), new Date().getTimezoneOffset());
-        case 4:
-          recentSubmissions = _context10.sent;
-          return _context10.abrupt("return", recentSubmissions);
-        case 6:
-        case "end":
-          return _context10.stop();
-      }
-    }, _callee10);
-  }));
-  return function getBuilderSubmissionsToday(_x25) {
-    return _ref10.apply(this, arguments);
-  };
-}();
-var getValidatorValidationsToday = /*#__PURE__*/function () {
-  var _ref11 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11(publicKey) {
-    var recentValidations;
-    return _regeneratorRuntime().wrap(function _callee11$(_context11) {
-      while (1) switch (_context11.prev = _context11.next) {
-        case 0:
-          if (publicKey) {
-            _context11.next = 2;
-            break;
-          }
-          throw new Error('PublicKey is undefined');
-        case 2:
-          _context11.next = 4;
-          return getValidatorRecentValidations(publicKey.toBase58(), new Date().getTimezoneOffset());
-        case 4:
-          recentValidations = _context11.sent;
-          return _context11.abrupt("return", recentValidations);
-        case 6:
-        case "end":
-          return _context11.stop();
-      }
-    }, _callee11);
-  }));
-  return function getValidatorValidationsToday(_x26) {
-    return _ref11.apply(this, arguments);
   };
 }();
 
 var getUtterancesAndHistoriesForBuilder = /*#__PURE__*/function () {
-  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, campaign, latestSubmittedUuids) {
+  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, campaign, latestSubmittedUuids, args) {
     var _PublicKey$findProgra, campaignAccount, submissionsAndValidationsInfo, submissionsInfo, validationsInfo, rpcSubmissions, objSubmissionsInfo, objValidationsInfo, objRpcSubmissions, utterancesChecked, utterancesPre, utterancesQueued, utterancesExpired, submissionsChecked, submissionsPre, submissionsNotSubmittedButRpcFinalizedOrExpired, submissionsNotSubmittedAndRpcPending, utterances;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
@@ -8798,15 +8170,20 @@ var getUtterancesAndHistoriesForBuilder = /*#__PURE__*/function () {
           }
           throw new Error('Connection is undefined');
         case 4:
-          _PublicKey$findProgra = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaign.campaignTitle)], PROGRAM_ID), campaignAccount = _PublicKey$findProgra[0];
+          _PublicKey$findProgra = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaign.campaignTitle)], args.programId), campaignAccount = _PublicKey$findProgra[0];
           _context2.next = 7;
-          return getSubmissionsValidationsInfo(campaign.pubkey);
+          return getSubmissionsValidationsInfo(campaign.pubkey, {
+            apiHost: args.apiHost,
+            apiAuth: args.apiAuth
+          });
         case 7:
           submissionsAndValidationsInfo = _context2.sent;
           submissionsInfo = submissionsAndValidationsInfo.submissions;
           validationsInfo = submissionsAndValidationsInfo.validations;
           _context2.next = 12;
-          return getRpcSubmissionStatus(publicKey.toBase58(), campaign.pubkey);
+          return getRpcSubmissionStatus(publicKey.toBase58(), campaign.pubkey, {
+            rpcHost: args.rpcHost
+          });
         case 12:
           rpcSubmissions = _context2.sent;
           objSubmissionsInfo = submissionsInfo.reduce(function (all, submission) {
@@ -8877,7 +8254,7 @@ var getUtterancesAndHistoriesForBuilder = /*#__PURE__*/function () {
               return _regeneratorRuntime().wrap(function _callee$(_context) {
                 while (1) switch (_context.prev = _context.next) {
                   case 0:
-                    _PublicKey$findProgra2 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:PHRASE'), campaignAccount.toBuffer(), Buffer.from(submission.canonical)], PROGRAM_ID), phraseAccount = _PublicKey$findProgra2[0];
+                    _PublicKey$findProgra2 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:PHRASE'), campaignAccount.toBuffer(), Buffer.from(submission.canonical)], args.programId), phraseAccount = _PublicKey$findProgra2[0];
                     _context.prev = 1;
                     _context.next = 4;
                     return Phrase.fromAccountAddress(connection, phraseAccount, 'processed');
@@ -8942,7 +8319,7 @@ var getUtterancesAndHistoriesForBuilder = /*#__PURE__*/function () {
                 }
               }, _callee, null, [[1, 14]]);
             }));
-            return function (_x5) {
+            return function (_x6) {
               return _ref2.apply(this, arguments);
             };
           }()));
@@ -8972,12 +8349,12 @@ var getUtterancesAndHistoriesForBuilder = /*#__PURE__*/function () {
       }
     }, _callee2);
   }));
-  return function getUtterancesAndHistoriesForBuilder(_x, _x2, _x3, _x4) {
+  return function getUtterancesAndHistoriesForBuilder(_x, _x2, _x3, _x4, _x5) {
     return _ref.apply(this, arguments);
   };
 }();
 var createUtteranceByOntology = /*#__PURE__*/function () {
-  var _ref3 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(publicKey, ontology) {
+  var _ref3 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(publicKey, ontology, args) {
     var resp, canonical, utterance;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
@@ -8989,7 +8366,10 @@ var createUtteranceByOntology = /*#__PURE__*/function () {
           throw new Error('PublicKey is undefined');
         case 2:
           _context3.next = 4;
-          return submitOntology(ontology);
+          return submitOntology(ontology, {
+            apiHost: args.apiHost,
+            apiAuth: args.apiAuth
+          });
         case 4:
           resp = _context3.sent;
           if (resp.isSuccess) {
@@ -9032,12 +8412,12 @@ var createUtteranceByOntology = /*#__PURE__*/function () {
       }
     }, _callee3);
   }));
-  return function createUtteranceByOntology(_x6, _x7) {
+  return function createUtteranceByOntology(_x7, _x8, _x9) {
     return _ref3.apply(this, arguments);
   };
 }();
 var deleteOntologyByCanonical = /*#__PURE__*/function () {
-  var _ref4 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(canonical) {
+  var _ref4 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(canonical, args) {
     var ret;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
@@ -9049,7 +8429,10 @@ var deleteOntologyByCanonical = /*#__PURE__*/function () {
           throw new Error('Invalid canonical.');
         case 2:
           _context4.next = 4;
-          return deleteOntology(canonical);
+          return deleteOntology(canonical, {
+            apiHost: args.apiHost,
+            apiAuth: args.apiAuth
+          });
         case 4:
           ret = _context4.sent;
           if (ret) {
@@ -9065,25 +8448,25 @@ var deleteOntologyByCanonical = /*#__PURE__*/function () {
       }
     }, _callee4);
   }));
-  return function deleteOntologyByCanonical(_x8) {
+  return function deleteOntologyByCanonical(_x10, _x11) {
     return _ref4.apply(this, arguments);
   };
 }();
-var createBuilderSubmitUtterancesInstructions = function createBuilderSubmitUtterancesInstructions(publicKey, connection, campaignTitle, utterances) {
+var createBuilderSubmitUtterancesInstructions = function createBuilderSubmitUtterancesInstructions(publicKey, connection, campaignTitle, utterances, args) {
   if (!publicKey) throw new Error('PublicKey is undefined');
   if (!connection) throw new Error('Connection is undefined');
   var instructions = [];
   var signers = [];
-  var _PublicKey$findProgra3 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], PROGRAM_ID),
+  var _PublicKey$findProgra3 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], args.programId),
     campaignAccount = _PublicKey$findProgra3[0];
-  var _PublicKey$findProgra4 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], PROGRAM_ID),
+  var _PublicKey$findProgra4 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], args.programId),
     farmConfig = _PublicKey$findProgra4[0];
-  var _PublicKey$findProgra5 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], PROGRAM_ID),
+  var _PublicKey$findProgra5 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId),
     userProfile = _PublicKey$findProgra5[0];
-  var _PublicKey$findProgra6 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), publicKey.toBuffer()], PROGRAM_ID),
+  var _PublicKey$findProgra6 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), publicKey.toBuffer()], args.programId),
     campaignActivity = _PublicKey$findProgra6[0];
   instructions = utterances.map(function (utterance) {
-    var _PublicKey$findProgra7 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:PHRASE'), campaignAccount.toBuffer(), Buffer.from(utterance.canonical)], PROGRAM_ID),
+    var _PublicKey$findProgra7 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:PHRASE'), campaignAccount.toBuffer(), Buffer.from(utterance.canonical)], args.programId),
       phraseAccount = _PublicKey$findProgra7[0];
     return createSubmitPhraseInstruction({
       user: publicKey,
@@ -9098,34 +8481,556 @@ var createBuilderSubmitUtterancesInstructions = function createBuilderSubmitUtte
       offchainRef: utterance.canonical,
       offchainType: OFFCHAIN_TYPE.s3.val,
       kind: PHRASE_TYPE[utterance.kind.toLowerCase()].val
-    }, PROGRAM_ID);
+    }, args.programId);
   });
   return {
     instructions: instructions,
     signers: signers
   };
 };
-var createRpcSubmitUtterancesPromises = function createRpcSubmitUtterancesPromises(publicKey, connection, rpcAuthToken, campaignTitle, batchUtterances) {
+var createRpcSubmitUtterancesPromises = function createRpcSubmitUtterancesPromises(publicKey, connection, rpcAuthToken, campaignTitle, batchUtterances, args) {
   if (!publicKey) throw new Error('PublicKey is undefined');
   if (!connection) throw new Error('Connection is undefined');
   if (!rpcAuthToken || rpcAuthToken === '') throw new Error('RPC Auth Token is undefined');
-  var args = batchUtterances.map(function (_utterances) {
-    return [rpcAuthToken, PROGRAM_ADDRESS, campaignTitle, publicKey.toBase58(), _utterances.map(function (utterance) {
+  var returnArgs = batchUtterances.map(function (_utterances) {
+    return [rpcAuthToken, args.programId.toBase58(), campaignTitle, publicKey.toBase58(), _utterances.map(function (utterance) {
       return utterance.canonical;
     }), _utterances.map(function () {
       return OFFCHAIN_TYPE.s3.val;
     }), _utterances.map(function (utterance) {
       return PHRASE_TYPE[String(utterance.kind).toLowerCase()].val;
-    })];
+    }), {
+      rpcHost: args.rpcHost
+    }];
   });
   return {
     promise: rpcBatchSubmitPhrases,
-    args: args
+    args: returnArgs
   };
 };
 
+var createStakeCampaignInstructions = /*#__PURE__*/function () {
+  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(publicKey, connection, role, amount, campaignTitle, args) {
+    var instructions, signers, _PublicKey$findProgra, userProfile, _PublicKey$findProgra2, farmConfig, profile, _PublicKey$findProgra3, campaignAccount, userToken, _PublicKey$findProgra4, campaignActivity, _PublicKey$findProgra5, campaignVault, accountInfo;
+    return _regeneratorRuntime().wrap(function _callee$(_context) {
+      while (1) switch (_context.prev = _context.next) {
+        case 0:
+          if (publicKey) {
+            _context.next = 2;
+            break;
+          }
+          throw new Error('PublicKey is undefined');
+        case 2:
+          if (connection) {
+            _context.next = 4;
+            break;
+          }
+          throw new Error('Connection is undefined');
+        case 4:
+          instructions = [];
+          signers = [];
+          _PublicKey$findProgra = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId), userProfile = _PublicKey$findProgra[0];
+          _PublicKey$findProgra2 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], args.programId), farmConfig = _PublicKey$findProgra2[0];
+          _context.next = 10;
+          return connection.getParsedAccountInfo(userProfile, 'processed');
+        case 10:
+          profile = _context.sent;
+          if (!profile || !profile.value) {
+            instructions.push(createCreateProfileInstruction({
+              user: publicKey,
+              userProfile: userProfile,
+              farmConfig: farmConfig,
+              clock: SYSVAR_CLOCK_PUBKEY
+            }, {
+              role: role,
+              access: ACCESS_METHOD.nft.val
+            }, args.programId));
+          }
+          _PublicKey$findProgra3 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], args.programId), campaignAccount = _PublicKey$findProgra3[0];
+          userToken = getAssociateTokenAccount(args.snsMint, publicKey);
+          _PublicKey$findProgra4 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), publicKey.toBuffer()], args.programId), campaignActivity = _PublicKey$findProgra4[0];
+          _PublicKey$findProgra5 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:VAULT'), Buffer.from(campaignTitle)], args.programId), campaignVault = _PublicKey$findProgra5[0];
+          _context.next = 18;
+          return connection.getAccountInfo(userToken, 'processed');
+        case 18:
+          accountInfo = _context.sent;
+          if (accountInfo == null) {
+            instructions.push(createAssociatedTokenAccountInstruction(publicKey, userToken, publicKey, args.snsMint, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID));
+          }
+          instructions.push(createStakeCampaignInstruction({
+            user: publicKey,
+            userProfile: userProfile,
+            campaignActivity: campaignActivity,
+            userToken: userToken,
+            campaignAccount: campaignAccount,
+            campaignVault: campaignVault,
+            farmConfig: farmConfig,
+            clock: SYSVAR_CLOCK_PUBKEY
+          }, {
+            campaignTitle: campaignTitle,
+            amount: new BN(amount)
+          }, args.programId));
+          return _context.abrupt("return", {
+            instructions: instructions,
+            signers: signers
+          });
+        case 22:
+        case "end":
+          return _context.stop();
+      }
+    }, _callee);
+  }));
+  return function createStakeCampaignInstructions(_x, _x2, _x3, _x4, _x5, _x6) {
+    return _ref.apply(this, arguments);
+  };
+}();
+var createUnstakeCampaignInstructions = /*#__PURE__*/function () {
+  var _ref2 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, campaignTitle, args) {
+    var instructions, signers, _PublicKey$findProgra6, userProfile, _PublicKey$findProgra7, campaignAccount, _PublicKey$findProgra8, campaignVault, _PublicKey$findProgra9, pdaAccount, _PublicKey$findProgra10, dyfVault, _PublicKey$findProgra11, campaignActivity, _PublicKey$findProgra12, farmConfig, userToken;
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
+        case 0:
+          if (publicKey) {
+            _context2.next = 2;
+            break;
+          }
+          throw new Error('PublicKey is undefined');
+        case 2:
+          if (connection) {
+            _context2.next = 4;
+            break;
+          }
+          throw new Error('Connection is undefined');
+        case 4:
+          instructions = [];
+          signers = [];
+          _PublicKey$findProgra6 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId), userProfile = _PublicKey$findProgra6[0];
+          _PublicKey$findProgra7 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], args.programId), campaignAccount = _PublicKey$findProgra7[0];
+          _PublicKey$findProgra8 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:VAULT'), Buffer.from(campaignTitle)], args.programId), campaignVault = _PublicKey$findProgra8[0];
+          _PublicKey$findProgra9 = PublicKey.findProgramAddressSync([Buffer.from('DYF')], args.programId), pdaAccount = _PublicKey$findProgra9[0];
+          _PublicKey$findProgra10 = PublicKey.findProgramAddressSync([pdaAccount.toBuffer(), Buffer.from('DYF:VAULT')], args.programId), dyfVault = _PublicKey$findProgra10[0];
+          _PublicKey$findProgra11 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), publicKey.toBuffer()], args.programId), campaignActivity = _PublicKey$findProgra11[0];
+          _PublicKey$findProgra12 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], args.programId), farmConfig = _PublicKey$findProgra12[0];
+          userToken = getAssociateTokenAccount(args.snsMint, publicKey);
+          instructions.push(createUnstakeCampaignInstruction({
+            user: publicKey,
+            userProfile: userProfile,
+            userToken: userToken,
+            campaignAccount: campaignAccount,
+            campaignVault: campaignVault,
+            dyfVault: dyfVault,
+            campaignActivity: campaignActivity,
+            farmConfig: farmConfig,
+            pdaAccount: pdaAccount,
+            clock: SYSVAR_CLOCK_PUBKEY
+          }, {
+            campaignTitle: campaignTitle
+          }, args.programId));
+          return _context2.abrupt("return", {
+            instructions: instructions,
+            signers: signers
+          });
+        case 16:
+        case "end":
+          return _context2.stop();
+      }
+    }, _callee2);
+  }));
+  return function createUnstakeCampaignInstructions(_x7, _x8, _x9, _x10) {
+    return _ref2.apply(this, arguments);
+  };
+}();
+var createClaimRewardInstructions = /*#__PURE__*/function () {
+  var _ref3 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(publicKey, connection, campaignTitle, args) {
+    var instructions, signers, _PublicKey$findProgra13, userProfile, userToken, _PublicKey$findProgra14, campaignActivity, _PublicKey$findProgra15, campaignVault, _PublicKey$findProgra16, farmConfig, _PublicKey$findProgra17, pdaAccount, _PublicKey$findProgra18, dyfVault;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
+        case 0:
+          if (publicKey) {
+            _context3.next = 2;
+            break;
+          }
+          throw new Error('PublicKey is undefined');
+        case 2:
+          if (connection) {
+            _context3.next = 4;
+            break;
+          }
+          throw new Error('Connection is undefined');
+        case 4:
+          instructions = [];
+          signers = [];
+          _PublicKey$findProgra13 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId), userProfile = _PublicKey$findProgra13[0];
+          userToken = getAssociateTokenAccount(args.snsMint, publicKey);
+          _PublicKey$findProgra14 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), publicKey.toBuffer()], args.programId), campaignActivity = _PublicKey$findProgra14[0];
+          _PublicKey$findProgra15 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:VAULT'), Buffer.from(campaignTitle)], args.programId), campaignVault = _PublicKey$findProgra15[0];
+          _PublicKey$findProgra16 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], args.programId), farmConfig = _PublicKey$findProgra16[0];
+          _PublicKey$findProgra17 = PublicKey.findProgramAddressSync([Buffer.from('DYF')], args.programId), pdaAccount = _PublicKey$findProgra17[0];
+          _PublicKey$findProgra18 = PublicKey.findProgramAddressSync([pdaAccount.toBuffer(), Buffer.from('DYF:VAULT')], args.programId), dyfVault = _PublicKey$findProgra18[0];
+          instructions.push(createClaimRewardInstruction({
+            user: publicKey,
+            userProfile: userProfile,
+            userToken: userToken,
+            campaignActivity: campaignActivity,
+            campaignVault: campaignVault,
+            farmConfig: farmConfig,
+            pdaAccount: pdaAccount,
+            dyfVault: dyfVault,
+            clock: SYSVAR_CLOCK_PUBKEY
+          }, {
+            campaignTitle: campaignTitle
+          }, args.programId));
+          return _context3.abrupt("return", {
+            instructions: instructions,
+            signers: signers
+          });
+        case 15:
+        case "end":
+          return _context3.stop();
+      }
+    }, _callee3);
+  }));
+  return function createClaimRewardInstructions(_x11, _x12, _x13, _x14) {
+    return _ref3.apply(this, arguments);
+  };
+}();
+var createBatchClaimRewardInstructions = /*#__PURE__*/function () {
+  var _ref4 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(publicKey, connection, campaignTitles, args) {
+    var _PublicKey$findProgra19, userProfile, userToken, _PublicKey$findProgra20, farmConfig, _PublicKey$findProgra21, pdaAccount, _PublicKey$findProgra22, dyfVault, instructions, signers;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
+        case 0:
+          if (publicKey) {
+            _context4.next = 2;
+            break;
+          }
+          throw new Error('PublicKey is undefined');
+        case 2:
+          if (connection) {
+            _context4.next = 4;
+            break;
+          }
+          throw new Error('Connection is undefined');
+        case 4:
+          _PublicKey$findProgra19 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId), userProfile = _PublicKey$findProgra19[0];
+          userToken = getAssociateTokenAccount(args.snsMint, publicKey);
+          _PublicKey$findProgra20 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], args.programId), farmConfig = _PublicKey$findProgra20[0];
+          _PublicKey$findProgra21 = PublicKey.findProgramAddressSync([Buffer.from('DYF')], args.programId), pdaAccount = _PublicKey$findProgra21[0];
+          _PublicKey$findProgra22 = PublicKey.findProgramAddressSync([pdaAccount.toBuffer(), Buffer.from('DYF:VAULT')], args.programId), dyfVault = _PublicKey$findProgra22[0];
+          instructions = campaignTitles.map(function (campaignTitle) {
+            var _PublicKey$findProgra23 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), publicKey.toBuffer()], args.programId),
+              campaignActivity = _PublicKey$findProgra23[0];
+            var _PublicKey$findProgra24 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:VAULT'), Buffer.from(campaignTitle)], args.programId),
+              campaignVault = _PublicKey$findProgra24[0];
+            return createClaimRewardInstruction({
+              user: publicKey,
+              userProfile: userProfile,
+              userToken: userToken,
+              campaignActivity: campaignActivity,
+              campaignVault: campaignVault,
+              farmConfig: farmConfig,
+              pdaAccount: pdaAccount,
+              dyfVault: dyfVault,
+              clock: SYSVAR_CLOCK_PUBKEY
+            }, {
+              campaignTitle: campaignTitle
+            }, args.programId);
+          });
+          signers = [];
+          return _context4.abrupt("return", {
+            instructions: instructions,
+            signers: signers
+          });
+        case 12:
+        case "end":
+          return _context4.stop();
+      }
+    }, _callee4);
+  }));
+  return function createBatchClaimRewardInstructions(_x15, _x16, _x17, _x18) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+var createStakeCampaignWithNFTInstructions = /*#__PURE__*/function () {
+  var _ref5 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(publicKey, connection, role, mint, args) {
+    var instructions, signers, _PublicKey$findProgra25, userProfile, _PublicKey$findProgra26, farmConfigAccount, userNft, _PublicKey$findProgra27, nftVault, _PublicKey$findProgra28, nftMetadata, _PublicKey$findProgra29, pdaAccount, profile;
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) switch (_context5.prev = _context5.next) {
+        case 0:
+          if (publicKey) {
+            _context5.next = 2;
+            break;
+          }
+          throw new Error('PublicKey is undefined');
+        case 2:
+          if (connection) {
+            _context5.next = 4;
+            break;
+          }
+          throw new Error('Connection is undefined');
+        case 4:
+          instructions = [];
+          signers = [];
+          _PublicKey$findProgra25 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId), userProfile = _PublicKey$findProgra25[0];
+          _PublicKey$findProgra26 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], args.programId), farmConfigAccount = _PublicKey$findProgra26[0];
+          userNft = getAssociateTokenAccount(new PublicKey(mint), publicKey);
+          _PublicKey$findProgra27 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:VAULT'), userNft.toBuffer()], args.programId), nftVault = _PublicKey$findProgra27[0];
+          _PublicKey$findProgra28 = PublicKey.findProgramAddressSync([Buffer.from('metadata'), new PublicKey(METADATA_PROGRAM_ADDRESS).toBuffer(), new PublicKey(mint).toBuffer()], new PublicKey(METADATA_PROGRAM_ADDRESS)), nftMetadata = _PublicKey$findProgra28[0];
+          _PublicKey$findProgra29 = PublicKey.findProgramAddressSync([Buffer.from('DYF')], args.programId), pdaAccount = _PublicKey$findProgra29[0];
+          _context5.next = 14;
+          return connection.getParsedAccountInfo(userProfile, 'processed');
+        case 14:
+          profile = _context5.sent;
+          if (!profile || !profile.value) {
+            instructions.push(createCreateProfileInstruction({
+              user: publicKey,
+              userProfile: userProfile,
+              farmConfig: farmConfigAccount,
+              clock: SYSVAR_CLOCK_PUBKEY
+            }, {
+              role: STAKE_ACCOUNT_ROLE[role].val,
+              access: ACCESS_METHOD.nft.val
+            }, args.programId));
+          }
+          instructions.push(createStakeNftInstruction({
+            user: publicKey,
+            userProfile: userProfile,
+            userNft: userNft,
+            nftVault: nftVault,
+            farmConfig: farmConfigAccount,
+            pdaAccount: pdaAccount,
+            nftMint: new PublicKey(mint),
+            nftMetadata: nftMetadata,
+            clock: SYSVAR_CLOCK_PUBKEY
+          }, args.programId));
+          return _context5.abrupt("return", {
+            instructions: instructions,
+            signers: signers
+          });
+        case 18:
+        case "end":
+          return _context5.stop();
+      }
+    }, _callee5);
+  }));
+  return function createStakeCampaignWithNFTInstructions(_x19, _x20, _x21, _x22, _x23) {
+    return _ref5.apply(this, arguments);
+  };
+}();
+var getTotalAvailableRewards = /*#__PURE__*/function () {
+  var _ref6 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(publicKey, connection, appCampaigns, args) {
+    var _PublicKey$findProgra30, userProfile, profile, role, stakedCampaigns, campaignTitles, totalRewards, totalClaimed;
+    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+      while (1) switch (_context7.prev = _context7.next) {
+        case 0:
+          if (publicKey) {
+            _context7.next = 2;
+            break;
+          }
+          throw new Error('PublicKey is undefined');
+        case 2:
+          if (connection) {
+            _context7.next = 4;
+            break;
+          }
+          throw new Error('Connection is undefined');
+        case 4:
+          _PublicKey$findProgra30 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId), userProfile = _PublicKey$findProgra30[0];
+          _context7.next = 7;
+          return Profile.fromAccountAddress(connection, userProfile, 'processed');
+        case 7:
+          profile = _context7.sent;
+          role = Number(profile.role);
+          if (!(role !== STAKE_ACCOUNT_ROLE.builder.val && role !== STAKE_ACCOUNT_ROLE.validator.val)) {
+            _context7.next = 11;
+            break;
+          }
+          throw new Error('Architects cannot claim!');
+        case 11:
+          stakedCampaigns = appCampaigns.filter(function (campaign) {
+            return role === STAKE_ACCOUNT_ROLE.builder.val && campaign.builderStakeStatus || role === STAKE_ACCOUNT_ROLE.validator.val && campaign.validatorStakeStatus;
+          });
+          campaignTitles = [];
+          totalRewards = 0;
+          totalClaimed = 0;
+          _context7.next = 17;
+          return Promise.all(stakedCampaigns.map( /*#__PURE__*/function () {
+            var _ref7 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(campaign) {
+              var _PublicKey$findProgra31, campaignActivityAccount, campaignActivity, unclaimedReward, claimedReward;
+              return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+                while (1) switch (_context6.prev = _context6.next) {
+                  case 0:
+                    if (publicKey) {
+                      _context6.next = 2;
+                      break;
+                    }
+                    return _context6.abrupt("return");
+                  case 2:
+                    _context6.prev = 2;
+                    _PublicKey$findProgra31 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaign.campaignTitle), publicKey.toBuffer()], args.programId), campaignActivityAccount = _PublicKey$findProgra31[0];
+                    _context6.next = 6;
+                    return CampaignActivity.fromAccountAddress(connection, campaignActivityAccount, 'processed');
+                  case 6:
+                    campaignActivity = _context6.sent;
+                    unclaimedReward = new BN(campaignActivity.unclaimedReward).toNumber();
+                    claimedReward = new BN(campaignActivity.claimedReward).toNumber();
+                    totalRewards += unclaimedReward;
+                    totalClaimed += claimedReward;
+                    if (unclaimedReward > claimedReward) campaignTitles.push(campaign.campaignTitle);
+                    _context6.next = 16;
+                    break;
+                  case 14:
+                    _context6.prev = 14;
+                    _context6.t0 = _context6["catch"](2);
+                  case 16:
+                  case "end":
+                    return _context6.stop();
+                }
+              }, _callee6, null, [[2, 14]]);
+            }));
+            return function (_x28) {
+              return _ref7.apply(this, arguments);
+            };
+          }()));
+        case 17:
+          return _context7.abrupt("return", {
+            rewards: totalRewards,
+            claimed: totalClaimed,
+            campaignTitles: campaignTitles
+          });
+        case 18:
+        case "end":
+          return _context7.stop();
+      }
+    }, _callee7);
+  }));
+  return function getTotalAvailableRewards(_x24, _x25, _x26, _x27) {
+    return _ref6.apply(this, arguments);
+  };
+}();
+var getBuilderActivity = /*#__PURE__*/function () {
+  var _ref8 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(publicKey, args) {
+    var activityInfo;
+    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+      while (1) switch (_context8.prev = _context8.next) {
+        case 0:
+          if (publicKey) {
+            _context8.next = 2;
+            break;
+          }
+          throw new Error('PublicKey is undefined');
+        case 2:
+          _context8.next = 4;
+          return getBuilderActivityInfo(publicKey.toBase58(), {
+            apiHost: args.apiHost,
+            apiAuth: args.apiAuth
+          });
+        case 4:
+          activityInfo = _context8.sent;
+          return _context8.abrupt("return", activityInfo);
+        case 6:
+        case "end":
+          return _context8.stop();
+      }
+    }, _callee8);
+  }));
+  return function getBuilderActivity(_x29, _x30) {
+    return _ref8.apply(this, arguments);
+  };
+}();
+var getValidatorActivity = /*#__PURE__*/function () {
+  var _ref9 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(publicKey, args) {
+    var activityInfo;
+    return _regeneratorRuntime().wrap(function _callee9$(_context9) {
+      while (1) switch (_context9.prev = _context9.next) {
+        case 0:
+          if (publicKey) {
+            _context9.next = 2;
+            break;
+          }
+          throw new Error('PublicKey is undefined');
+        case 2:
+          _context9.next = 4;
+          return getValidatorActivityInfo(publicKey.toBase58(), {
+            apiHost: args.apiHost,
+            apiAuth: args.apiAuth
+          });
+        case 4:
+          activityInfo = _context9.sent;
+          return _context9.abrupt("return", activityInfo);
+        case 6:
+        case "end":
+          return _context9.stop();
+      }
+    }, _callee9);
+  }));
+  return function getValidatorActivity(_x31, _x32) {
+    return _ref9.apply(this, arguments);
+  };
+}();
+var getBuilderSubmissionsToday = /*#__PURE__*/function () {
+  var _ref10 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(publicKey, args) {
+    var recentSubmissions;
+    return _regeneratorRuntime().wrap(function _callee10$(_context10) {
+      while (1) switch (_context10.prev = _context10.next) {
+        case 0:
+          if (publicKey) {
+            _context10.next = 2;
+            break;
+          }
+          throw new Error('PublicKey is undefined');
+        case 2:
+          _context10.next = 4;
+          return getBuilderRecentSubmissions(publicKey.toBase58(), new Date().getTimezoneOffset(), {
+            apiHost: args.apiHost,
+            apiAuth: args.apiAuth
+          });
+        case 4:
+          recentSubmissions = _context10.sent;
+          return _context10.abrupt("return", recentSubmissions);
+        case 6:
+        case "end":
+          return _context10.stop();
+      }
+    }, _callee10);
+  }));
+  return function getBuilderSubmissionsToday(_x33, _x34) {
+    return _ref10.apply(this, arguments);
+  };
+}();
+var getValidatorValidationsToday = /*#__PURE__*/function () {
+  var _ref11 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11(publicKey, args) {
+    var recentValidations;
+    return _regeneratorRuntime().wrap(function _callee11$(_context11) {
+      while (1) switch (_context11.prev = _context11.next) {
+        case 0:
+          if (publicKey) {
+            _context11.next = 2;
+            break;
+          }
+          throw new Error('PublicKey is undefined');
+        case 2:
+          _context11.next = 4;
+          return getValidatorRecentValidations(publicKey.toBase58(), new Date().getTimezoneOffset(), {
+            apiHost: args.apiHost,
+            apiAuth: args.apiAuth
+          });
+        case 4:
+          recentValidations = _context11.sent;
+          return _context11.abrupt("return", recentValidations);
+        case 6:
+        case "end":
+          return _context11.stop();
+      }
+    }, _callee11);
+  }));
+  return function getValidatorValidationsToday(_x35, _x36) {
+    return _ref11.apply(this, arguments);
+  };
+}();
+
 var getCampaignFromCampaignTitle = /*#__PURE__*/function () {
-  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(publicKey, connection, campaignTitle) {
+  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(publicKey, connection, campaignTitle, args) {
     var campaignMeta, _PublicKey$findProgra, campaignAccount, campaign, _PublicKey$findProgra2, campaignActivityAccount, stakeInfo, campaignActivity, _PublicKey$findProgra3, userProfile, profile, _Object$values$find, label;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
@@ -9143,7 +9048,10 @@ var getCampaignFromCampaignTitle = /*#__PURE__*/function () {
           throw new Error('Connection is undefined');
         case 4:
           _context.next = 6;
-          return getCampaginMeta(campaignTitle);
+          return getCampaginMeta(campaignTitle, {
+            apiHost: args.apiHost,
+            apiAuth: args.apiAuth
+          });
         case 6:
           campaignMeta = _context.sent;
           if (campaignMeta) {
@@ -9152,7 +9060,7 @@ var getCampaignFromCampaignTitle = /*#__PURE__*/function () {
           }
           return _context.abrupt("return");
         case 9:
-          _PublicKey$findProgra = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignMeta.dapp_title)], PROGRAM_ID), campaignAccount = _PublicKey$findProgra[0]; // @ts-ignore
+          _PublicKey$findProgra = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignMeta.dapp_title)], args.programId), campaignAccount = _PublicKey$findProgra[0]; // @ts-ignore
           campaign = undefined;
           _context.prev = 11;
           _context.next = 14;
@@ -9171,7 +9079,7 @@ var getCampaignFromCampaignTitle = /*#__PURE__*/function () {
           }
           return _context.abrupt("return");
         case 21:
-          _PublicKey$findProgra2 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignMeta.dapp_title), publicKey.toBuffer()], PROGRAM_ID), campaignActivityAccount = _PublicKey$findProgra2[0];
+          _PublicKey$findProgra2 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignMeta.dapp_title), publicKey.toBuffer()], args.programId), campaignActivityAccount = _PublicKey$findProgra2[0];
           stakeInfo = {
             builderStakeStatus: false,
             validatorStakeStatus: false
@@ -9181,7 +9089,7 @@ var getCampaignFromCampaignTitle = /*#__PURE__*/function () {
           return CampaignActivity.fromAccountAddress(connection, campaignActivityAccount, 'processed');
         case 26:
           campaignActivity = _context.sent;
-          _PublicKey$findProgra3 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], PROGRAM_ID), userProfile = _PublicKey$findProgra3[0];
+          _PublicKey$findProgra3 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId), userProfile = _PublicKey$findProgra3[0];
           _context.next = 30;
           return Profile.fromAccountAddress(connection, userProfile, 'processed');
         case 30:
@@ -9239,12 +9147,12 @@ var getCampaignFromCampaignTitle = /*#__PURE__*/function () {
       }
     }, _callee, null, [[11, 17], [23, 34]]);
   }));
-  return function getCampaignFromCampaignTitle(_x, _x2, _x3) {
+  return function getCampaignFromCampaignTitle(_x, _x2, _x3, _x4) {
     return _ref.apply(this, arguments);
   };
 }();
 var getAllCampaigns = /*#__PURE__*/function () {
-  var _ref2 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection) {
+  var _ref2 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, args) {
     var campaignsInfo, role, _PublicKey$findProgra4, userProfile, profile, stakedCampaignAccounts, campaigns;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
@@ -9262,12 +9170,15 @@ var getAllCampaigns = /*#__PURE__*/function () {
           throw new Error('Connection is undefined');
         case 4:
           _context2.next = 6;
-          return getAllCampaignsInfo();
+          return getAllCampaignsInfo({
+            apiHost: args.apiHost,
+            apiAuth: args.apiAuth
+          });
         case 6:
           campaignsInfo = _context2.sent;
           role = null;
           _context2.prev = 8;
-          _PublicKey$findProgra4 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], PROGRAM_ID), userProfile = _PublicKey$findProgra4[0];
+          _PublicKey$findProgra4 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId), userProfile = _PublicKey$findProgra4[0];
           _context2.next = 12;
           return Profile.fromAccountAddress(connection, userProfile, 'processed');
         case 12:
@@ -9284,7 +9195,9 @@ var getAllCampaigns = /*#__PURE__*/function () {
             break;
           }
           _context2.next = 21;
-          return getRpcListActivity(PROGRAM_ID.toBase58(), publicKey.toBase58(), role);
+          return getRpcListActivity(args.programId.toBase58(), publicKey.toBase58(), role, {
+            rpcHost: args.rpcHost
+          });
         case 21:
           _context2.t1 = _context2.sent;
           _context2.next = 25;
@@ -9309,12 +9222,12 @@ var getAllCampaigns = /*#__PURE__*/function () {
       }
     }, _callee2, null, [[8, 16]]);
   }));
-  return function getAllCampaigns(_x4, _x5) {
+  return function getAllCampaigns(_x5, _x6, _x7) {
     return _ref2.apply(this, arguments);
   };
 }();
 var getAppRole = /*#__PURE__*/function () {
-  var _ref3 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(publicKey) {
+  var _ref3 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(publicKey, args) {
     var role;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
@@ -9326,7 +9239,10 @@ var getAppRole = /*#__PURE__*/function () {
           throw new Error('PublicKey is undefined');
         case 2:
           _context3.next = 4;
-          return checkWhitelist(publicKey.toBase58());
+          return checkWhitelist(publicKey.toBase58(), {
+            apiHost: args.apiHost,
+            apiAuth: args.apiAuth
+          });
         case 4:
           role = _context3.sent;
           return _context3.abrupt("return", role === null ? null : STAKE_ACCOUNT_ROLE[role] ? STAKE_ACCOUNT_ROLE[role].val : STAKE_ACCOUNT_ROLE.builder.val);
@@ -9336,13 +9252,13 @@ var getAppRole = /*#__PURE__*/function () {
       }
     }, _callee3);
   }));
-  return function getAppRole(_x6) {
+  return function getAppRole(_x8, _x9) {
     return _ref3.apply(this, arguments);
   };
 }();
 
 var getIsRpcPermitted = /*#__PURE__*/function () {
-  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(publicKey, connection, role) {
+  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(publicKey, connection, role, args) {
     var _Object$values$find, _PublicKey$findProgra, userProfile, profile, label;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
@@ -9360,7 +9276,7 @@ var getIsRpcPermitted = /*#__PURE__*/function () {
           throw new Error('Connection is undefined');
         case 4:
           _context.prev = 4;
-          _PublicKey$findProgra = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], PROGRAM_ID), userProfile = _PublicKey$findProgra[0];
+          _PublicKey$findProgra = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId), userProfile = _PublicKey$findProgra[0];
           _context.next = 8;
           return Profile.fromAccountAddress(connection, userProfile, 'processed');
         case 8:
@@ -9385,12 +9301,12 @@ var getIsRpcPermitted = /*#__PURE__*/function () {
       }
     }, _callee, null, [[4, 15]]);
   }));
-  return function getIsRpcPermitted(_x, _x2, _x3) {
+  return function getIsRpcPermitted(_x, _x2, _x3, _x4) {
     return _ref.apply(this, arguments);
   };
 }();
 var getIsProfileCreated = /*#__PURE__*/function () {
-  var _ref2 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection) {
+  var _ref2 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, args) {
     var _PublicKey$findProgra2, userProfile, profile;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
@@ -9408,7 +9324,7 @@ var getIsProfileCreated = /*#__PURE__*/function () {
           throw new Error('Connection is undefined');
         case 4:
           _context2.prev = 4;
-          _PublicKey$findProgra2 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], PROGRAM_ID), userProfile = _PublicKey$findProgra2[0];
+          _PublicKey$findProgra2 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId), userProfile = _PublicKey$findProgra2[0];
           _context2.next = 8;
           return Profile.fromAccountAddress(connection, userProfile, 'processed');
         case 8:
@@ -9433,12 +9349,12 @@ var getIsProfileCreated = /*#__PURE__*/function () {
       }
     }, _callee2, null, [[4, 16]]);
   }));
-  return function getIsProfileCreated(_x4, _x5) {
+  return function getIsProfileCreated(_x5, _x6, _x7) {
     return _ref2.apply(this, arguments);
   };
 }();
 var createRpcPermitInstructions = /*#__PURE__*/function () {
-  var _ref3 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(publicKey, connection, role) {
+  var _ref3 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(publicKey, connection, role, args) {
     var instructions, signers, _PublicKey$findProgra3, userProfile, _PublicKey$findProgra4, farmConfigAccount, farmConfig, profile;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
@@ -9457,8 +9373,8 @@ var createRpcPermitInstructions = /*#__PURE__*/function () {
         case 4:
           instructions = [];
           signers = [];
-          _PublicKey$findProgra3 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], PROGRAM_ID), userProfile = _PublicKey$findProgra3[0];
-          _PublicKey$findProgra4 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], PROGRAM_ID), farmConfigAccount = _PublicKey$findProgra4[0];
+          _PublicKey$findProgra3 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId), userProfile = _PublicKey$findProgra3[0];
+          _PublicKey$findProgra4 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], args.programId), farmConfigAccount = _PublicKey$findProgra4[0];
           _context3.next = 10;
           return FarmConfig.fromAccountAddress(connection, farmConfigAccount, 'processed');
         case 10:
@@ -9476,7 +9392,7 @@ var createRpcPermitInstructions = /*#__PURE__*/function () {
             }, {
               role: STAKE_ACCOUNT_ROLE[role].val,
               access: ACCESS_METHOD.nft.val
-            }, PROGRAM_ID));
+            }, args.programId));
           }
           instructions.push(createRpcPermitInstruction({
             user: publicKey,
@@ -9485,7 +9401,7 @@ var createRpcPermitInstructions = /*#__PURE__*/function () {
           }, {
             status: true,
             role: STAKE_ACCOUNT_ROLE[role].val
-          }, PROGRAM_ID));
+          }, args.programId));
           return _context3.abrupt("return", {
             instructions: instructions,
             signers: signers
@@ -9496,12 +9412,12 @@ var createRpcPermitInstructions = /*#__PURE__*/function () {
       }
     }, _callee3);
   }));
-  return function createRpcPermitInstructions(_x6, _x7, _x8) {
+  return function createRpcPermitInstructions(_x8, _x9, _x10, _x11) {
     return _ref3.apply(this, arguments);
   };
 }();
 var getRpcAuthToken = /*#__PURE__*/function () {
-  var _ref4 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(publicKey, signMessage) {
+  var _ref4 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(publicKey, signMessage, args) {
     var preToken, encodedPreToken, signedMessage, signature, token;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
@@ -9519,7 +9435,9 @@ var getRpcAuthToken = /*#__PURE__*/function () {
           throw new Error('signMessage is undefined');
         case 4:
           _context4.next = 6;
-          return rpcRequestAuth(publicKey.toBase58());
+          return rpcRequestAuth(publicKey.toBase58(), {
+            rpcHost: args.rpcHost
+          });
         case 6:
           preToken = _context4.sent;
           if (preToken) {
@@ -9535,7 +9453,9 @@ var getRpcAuthToken = /*#__PURE__*/function () {
           signedMessage = _context4.sent;
           signature = bs58.encode(signedMessage);
           _context4.next = 16;
-          return rpcVerifyAuth(publicKey.toBase58(), signature);
+          return rpcVerifyAuth(publicKey.toBase58(), signature, {
+            rpcHost: args.rpcHost
+          });
         case 16:
           token = _context4.sent;
           if (token) {
@@ -9551,13 +9471,13 @@ var getRpcAuthToken = /*#__PURE__*/function () {
       }
     }, _callee4);
   }));
-  return function getRpcAuthToken(_x9, _x10) {
+  return function getRpcAuthToken(_x12, _x13, _x14) {
     return _ref4.apply(this, arguments);
   };
 }();
 
 var fetchUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
-  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, campaign, latestSubmittedUuids) {
+  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, campaign, latestSubmittedUuids, args) {
     var submissionsAndValidationsInfo, submissionsInfo, validationsInfo, rpcValidations, objValidationsInfo, objRpcValidations, utterancesChecked, utterancesQueued, utterancesExpired, submissionsChecked, submissionsNotValidatedButRpcFinalizedOrExpired, submissionsNotValidatedButRpcPending, utterances;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
@@ -9575,7 +9495,10 @@ var fetchUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
           throw new Error('Connection is undefined');
         case 4:
           _context2.next = 6;
-          return getSubmissionsValidationsInfo(campaign.pubkey);
+          return getSubmissionsValidationsInfo(campaign.pubkey, {
+            apiHost: args.apiHost,
+            apiAuth: args.apiAuth
+          });
         case 6:
           submissionsAndValidationsInfo = _context2.sent;
           submissionsInfo = submissionsAndValidationsInfo.submissions.filter(function (submission) {
@@ -9583,7 +9506,9 @@ var fetchUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
           });
           validationsInfo = submissionsAndValidationsInfo.validations;
           _context2.next = 11;
-          return getRpcValidationStatus(publicKey.toBase58(), campaign.pubkey);
+          return getRpcValidationStatus(publicKey.toBase58(), campaign.pubkey, {
+            rpcHost: args.rpcHost
+          });
         case 11:
           rpcValidations = _context2.sent;
           objValidationsInfo = validationsInfo.reduce(function (all, validation) {
@@ -9659,7 +9584,7 @@ var fetchUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
                     }
                     return _context.abrupt("return");
                   case 2:
-                    _PublicKey$findProgra = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:PHRASE:LOG'), Buffer.from(campaign.campaignTitle), new PublicKey(submission.pubkey).toBuffer(), publicKey.toBuffer()], PROGRAM_ID), historyAccount = _PublicKey$findProgra[0];
+                    _PublicKey$findProgra = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:PHRASE:LOG'), Buffer.from(campaign.campaignTitle), new PublicKey(submission.pubkey).toBuffer(), publicKey.toBuffer()], args.programId), historyAccount = _PublicKey$findProgra[0];
                     histories = (_objValidationsInfo$s4 = objValidationsInfo[submission.pubkey]) != null ? _objValidationsInfo$s4 : [];
                     utterance = {
                       timestamp: submission.timestamp,
@@ -9710,7 +9635,7 @@ var fetchUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
                 }
               }, _callee, null, [[5, 12]]);
             }));
-            return function (_x5) {
+            return function (_x6) {
               return _ref2.apply(this, arguments);
             };
           }()));
@@ -9757,28 +9682,28 @@ var fetchUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
       }
     }, _callee2);
   }));
-  return function fetchUtterancesAndHistoriesForValidator(_x, _x2, _x3, _x4) {
+  return function fetchUtterancesAndHistoriesForValidator(_x, _x2, _x3, _x4, _x5) {
     return _ref.apply(this, arguments);
   };
 }();
-var createValidatorValidateUtterancesInstructions = function createValidatorValidateUtterancesInstructions(publicKey, connection, campaignTitle, validations) {
+var createValidatorValidateUtterancesInstructions = function createValidatorValidateUtterancesInstructions(publicKey, connection, campaignTitle, validations, args) {
   if (!publicKey) throw new Error('PublicKey is undefined');
   if (!connection) throw new Error('Connection is undefined');
   var instructions = [];
   var signers = [];
-  var _PublicKey$findProgra2 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], PROGRAM_ID),
+  var _PublicKey$findProgra2 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], args.programId),
     campaignAccount = _PublicKey$findProgra2[0];
-  var _PublicKey$findProgra3 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], PROGRAM_ID),
+  var _PublicKey$findProgra3 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], args.programId),
     farmConfig = _PublicKey$findProgra3[0];
-  var _PublicKey$findProgra4 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], PROGRAM_ID),
+  var _PublicKey$findProgra4 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId),
     userProfile = _PublicKey$findProgra4[0];
-  var _PublicKey$findProgra5 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), publicKey.toBuffer()], PROGRAM_ID),
+  var _PublicKey$findProgra5 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), publicKey.toBuffer()], args.programId),
     campaignActivity = _PublicKey$findProgra5[0];
   instructions = validations.map(function (validation) {
     var phraseAccount = new PublicKey(validation.utterance);
-    var _PublicKey$findProgra6 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:PHRASE:LOG'), Buffer.from(campaignTitle), phraseAccount.toBuffer(), publicKey.toBuffer()], PROGRAM_ID),
+    var _PublicKey$findProgra6 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:PHRASE:LOG'), Buffer.from(campaignTitle), phraseAccount.toBuffer(), publicKey.toBuffer()], args.programId),
       logAccount = _PublicKey$findProgra6[0];
-    var _PublicKey$findProgra7 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), new PublicKey(validation.builder).toBuffer()], PROGRAM_ID),
+    var _PublicKey$findProgra7 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), new PublicKey(validation.builder).toBuffer()], args.programId),
       builderActivity = _PublicKey$findProgra7[0];
     return createValidatePhraseInstruction({
       user: publicKey,
@@ -9795,19 +9720,19 @@ var createValidatorValidateUtterancesInstructions = function createValidatorVali
       offchainRef: validation.canonical,
       confident: validation.confidence,
       status: validation.vote
-    }, PROGRAM_ID);
+    }, args.programId);
   });
   return {
     instructions: instructions,
     signers: signers
   };
 };
-var createRpcValidateUtterancesPromises = function createRpcValidateUtterancesPromises(publicKey, connection, rpcAuthToken, campaignTitle, batchValidations) {
+var createRpcValidateUtterancesPromises = function createRpcValidateUtterancesPromises(publicKey, connection, rpcAuthToken, campaignTitle, batchValidations, args) {
   if (!publicKey) throw new Error('PublicKey is undefined');
   if (!connection) throw new Error('Connection is undefined');
   if (!rpcAuthToken || rpcAuthToken === '') throw new Error('RPC Auth Token is undefined');
-  var args = batchValidations.map(function (_validations) {
-    return [rpcAuthToken, PROGRAM_ADDRESS, campaignTitle, publicKey.toBase58(), _validations.map(function (validation) {
+  var returnArgs = batchValidations.map(function (_validations) {
+    return [rpcAuthToken, args.programId.toBase58(), campaignTitle, publicKey.toBase58(), _validations.map(function (validation) {
       return validation.builder;
     }), _validations.map(function (validation) {
       return validation.utterance;
@@ -9817,11 +9742,13 @@ var createRpcValidateUtterancesPromises = function createRpcValidateUtterancesPr
       return validation.vote;
     }), _validations.map(function (validation) {
       return validation.confidence;
-    })];
+    }), {
+      rpcHost: args.rpcHost
+    }];
   });
   return {
     promise: rpcBatchValidatePhrase,
-    args: args
+    args: returnArgs
   };
 };
 
@@ -9859,7 +9786,7 @@ var getSolBalance = /*#__PURE__*/function () {
   };
 }();
 var getTokenBalance = /*#__PURE__*/function () {
-  var _ref2 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection) {
+  var _ref2 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, args) {
     var _tokenBalance, ata, tokenAccount;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
@@ -9877,7 +9804,7 @@ var getTokenBalance = /*#__PURE__*/function () {
           throw new Error('Connection is undefined');
         case 4:
           _tokenBalance = 0;
-          ata = getAssociateTokenAccount(new PublicKey(SNS_ADDRESS), publicKey);
+          ata = getAssociateTokenAccount(args.snsMint, publicKey);
           _context2.next = 8;
           return connection.getParsedAccountInfo(ata);
         case 8:
@@ -9892,12 +9819,12 @@ var getTokenBalance = /*#__PURE__*/function () {
       }
     }, _callee2);
   }));
-  return function getTokenBalance(_x3, _x4) {
+  return function getTokenBalance(_x3, _x4, _x5) {
     return _ref2.apply(this, arguments);
   };
 }();
 var getKanonNfts = /*#__PURE__*/function () {
-  var _ref3 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(publicKey, connection) {
+  var _ref3 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(publicKey, connection, args) {
     var nftData, parsedNfts, parsedKanonNftData, arrMetadata;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
@@ -9925,7 +9852,7 @@ var getKanonNfts = /*#__PURE__*/function () {
             return nftData[key];
           });
           parsedKanonNftData = parsedNfts.filter(function (nft) {
-            return nft.data.creators.length === 1 && nft.data.creators[0].address === KANON_NFT_CHARITY_ADDRESS && nft.data.creators[0].share === 100 && nft.updateAuthority === KANON_NFT_AUTHORITY_ADDRESS;
+            return nft.data.creators.length === 1 && nft.data.creators[0].address === args.kanonNftCharity && nft.data.creators[0].share === 100;
           });
           arrMetadata = [];
           _context4.next = 12;
@@ -9954,7 +9881,7 @@ var getKanonNfts = /*#__PURE__*/function () {
                 }
               }, _callee3, null, [[0, 7]]);
             }));
-            return function (_x7) {
+            return function (_x9) {
               return _ref4.apply(this, arguments);
             };
           }()));
@@ -9975,10 +9902,256 @@ var getKanonNfts = /*#__PURE__*/function () {
       }
     }, _callee4);
   }));
-  return function getKanonNfts(_x5, _x6) {
+  return function getKanonNfts(_x6, _x7, _x8) {
     return _ref3.apply(this, arguments);
   };
 }();
 
-export { ACCESS_METHOD, AccessMethod, BError, CError, Campaign, CampaignActivity, CampaignExpiredError, CampaignFinishedAlreadyError, CampaignNotFinishedError, CampaignVault, ConfidentIsInvalidError, DError, DoubleVoteDetectError, EError, FarmConfig, Feed, Guild, InsufficientTokenBalanceError, InvalidAccessMethodError, InvalidMintError, InvalidNFTError, InvalidPDAError, InvalidStakeAccountError, InvalidStakeDelegateError, InvalidStakeStatusError, InvalidStakeTypeError, InvalidTokenMintError, InvalidTokenOwnerError, KANON_NFT_AUTHORITY_ADDRESS, KANON_NFT_CHARITY_ADDRESS, LAMPORTS_PER_USDC, LOOKUP_PROGRAM_ADDRESS, METADATA_PROGRAM_ADDRESS, OFFCHAIN_TYPE, Offchain, PHRASE_TYPE, PROGRAM_ADDRESS, PROGRAM_ID, PermitRpcIsMissedError, Phrase, PhraseType, PhraseValidatedAlreadyError, Profile, ProfileNotMatchWithAuthorityError, RPC_TXN_STATUS, RewardBalanceIsZeroError, RewardIsLowError, Role, RoleMismatchError, RpcSignerMismatchError, SNS_ADDRESS, SNS_PAIR, STAKE_ACCOUNT_ROLE, StakeAccount, StakeAccountRole, StakeAccountType, StakeLockedError, StakingType, Tag, Validate, Validators, accessMethodBeet, accountProviders, addCampaignMeta, adjustRewardInstructionDiscriminator, adjustRewardStruct, airdropInstructionDiscriminator, airdropStruct, allocateTableInstructionDiscriminator, allocateTableStruct, awaitTransactionSignatureConfirmation, campaignActivityBeet, campaignActivityDiscriminator, campaignBeet, campaignDiscriminator, campaignVaultBeet, campaignVaultDiscriminator, checkPriceInstructionDiscriminator, checkPriceStruct, checkWhitelist, claimRewardInstructionDiscriminator, claimRewardStruct, createAdjustRewardInstruction, createAirdropInstruction, createAirdropSNSInstructions, createAllocateTableInstruction, createArchitectCreateCampaignInstructions, createArchitectUpdateCampaignInstructions, createBatchClaimRewardInstructions, createBuilderSubmitUtterancesInstructions, createCampaignInstructionDiscriminator, createCampaignStruct, createCheckPriceInstruction, createClaimRewardInstruction, createClaimRewardInstructions, createCreateCampaignInstruction, createCreateGuildInstruction, createCreateProfileInstruction, createDeactiveTableInstruction, createExtendTableInstruction, createFree2playInstruction, createGuildClaimRewardInstruction, createGuildGrantScholarInstruction, createGuildInstructionDiscriminator, createGuildStakeNftInstruction, createGuildStruct, createGuildUnstakeNftInstruction, createInitializeInstruction, createProfileInstructionDiscriminator, createProfileStruct, createRevokeScholarInstruction, createRpcCloseCampaignInstruction, createRpcClosePhraseInstruction, createRpcCloseValidateInstruction, createRpcPermitInstruction, createRpcPermitInstructions, createRpcSubmitPhraseInstruction, createRpcSubmitUtterancesPromises, createRpcValidatePhraseInstruction, createRpcValidateUtterancesPromises, createScholarSignInstruction, createStakeCampaignInstruction, createStakeCampaignInstructions, createStakeCampaignWithNFTInstructions, createStakeNftInstruction, createSubmitPhraseInstruction, createUnstakeCampaignInstruction, createUnstakeCampaignInstructions, createUnstakeNftInstruction, createUpdateCampaignInstruction, createUtteranceByOntology, createValidatePhraseInstruction, createValidatorValidateUtterancesInstructions, createVerifyPreStakedNftInstruction, deactiveTableInstructionDiscriminator, deactiveTableStruct, decodeText, delCampaignMeta, deleteOntology, deleteOntologyByCanonical, encodeText, errorFromCode, errorFromName, extendTableInstructionDiscriminator, extendTableStruct, farmConfigBeet, farmConfigDiscriminator, feedBeet, feedDiscriminator, fetchUtterancesAndHistoriesForValidator, free2playInstructionDiscriminator, free2playStruct, getAllCampaignTitles, getAllCampaigns, getAllCampaignsInfo, getAppRole, getAssociateTokenAccount, getBuilderActivity, getBuilderActivityInfo, getBuilderRecentSubmissions, getBuilderSubmissionsToday, getCampaginMeta, getCampaignFromCampaignTitle, getIsProfileCreated, getIsRpcPermitted, getKanonNfts, getOrCreateAssociateTokenAccount, getRpcAuthToken, getRpcListActivity, getRpcSubmissionStatus, getRpcValidationStatus, getSolBalance, getSubmissionsInfo, getSubmissionsValidationsInfo, getTokenBalance, getTotalAvailableRewards, getUnusedCampaignTitle, getUtterancesAndHistoriesForArchitect, getUtterancesAndHistoriesForBuilder, getValidationsInfo, getValidatorActivity, getValidatorActivityInfo, getValidatorRecentValidations, getValidatorValidationsToday, guildBeet, guildClaimRewardInstructionDiscriminator, guildClaimRewardStruct, guildDiscriminator, guildGrantScholarInstructionDiscriminator, guildGrantScholarStruct, guildStakeNftInstructionDiscriminator, guildStakeNftStruct, guildUnstakeNftInstructionDiscriminator, guildUnstakeNftStruct, initializeInstructionDiscriminator, initializeStruct, isEmptyAddress, isEqualAddress, isIncludingAddress, isValidAddress, offchainBeet, phraseBeet, phraseDiscriminator, phraseTypeBeet, profileBeet, profileDiscriminator, revokeScholarInstructionDiscriminator, revokeScholarStruct, roleBeet, rpcBatchSubmitPhrases, rpcBatchValidatePhrase, rpcCloseCampaignInstructionDiscriminator, rpcCloseCampaignStruct, rpcClosePhraseInstructionDiscriminator, rpcClosePhraseStruct, rpcCloseValidateInstructionDiscriminator, rpcCloseValidateStruct, rpcPermitInstructionDiscriminator, rpcPermitStruct, rpcRequestAuth, rpcSubmitPhrase, rpcSubmitPhraseInstructionDiscriminator, rpcSubmitPhraseStruct, rpcValidatePhrase, rpcValidatePhraseInstructionDiscriminator, rpcValidatePhraseStruct, rpcVerifyAuth, scholarSignInstructionDiscriminator, scholarSignStruct, sendAndConfirmWithRetry, sendInstructions, sleep, stakeAccountBeet, stakeAccountDiscriminator, stakeAccountRoleBeet, stakeAccountTypeBeet, stakeCampaignInstructionDiscriminator, stakeCampaignStruct, stakeNftInstructionDiscriminator, stakeNftStruct, stakingTypeBeet, submitOntology, submitPhraseInstructionDiscriminator, submitPhraseStruct, tagBeet, unstakeCampaignInstructionDiscriminator, unstakeCampaignStruct, unstakeNftInstructionDiscriminator, unstakeNftStruct, updateCampaignInstructionDiscriminator, updateCampaignStruct, validateBeet, validateDiscriminator, validatePhraseInstructionDiscriminator, validatePhraseStruct, validatorsBeet, validatorsDiscriminator, verifyPreStakedNftInstructionDiscriminator, verifyPreStakedNftStruct };
+var SNS_ADDRESS = 'SNSNkV9zfG5ZKWQs6x4hxvBRV6s8SqMfSGCtECDvdMd';
+var KANON_NFT_CHARITY_ADDRESS = 'CRTegTRWPceXBc7ywwP9NKHXavjcW5HYaN4AxR3AcH9H';
+var DYF_API_HOST = 'https://dyf-dev.synesis.xyz';
+var DYF_API_AUTH = 'Basic YXBpdXNlcjphYmNkZWZnaDEyMzQ1Njc4'; // "apiuser:abcdefgh12345678"
+var DYF_RPC_HOST = 'https://dyf-rpc-dev.synesis.xyz/';
+var Dyfarm = /*#__PURE__*/function () {
+  function Dyfarm(args) {
+    this.PROGRAM_ID = PROGRAM_ID;
+    this.SNS_MINT = new PublicKey(SNS_ADDRESS);
+    this.KANON_NFT_CHARITY = new PublicKey(KANON_NFT_CHARITY_ADDRESS);
+    this.API_HOST = DYF_API_HOST;
+    this.API_AUTH = DYF_API_AUTH;
+    this.RPC_HOST = DYF_RPC_HOST;
+    this.PROGRAM_ID = args.programId;
+    this.SNS_MINT = args.snsMint;
+    this.KANON_NFT_CHARITY = args.nftCharity;
+    this.API_HOST = args.apiHost;
+    this.API_AUTH = args.apiAuth;
+    this.RPC_HOST = args.rpcHost;
+  }
+  // airdrop
+  var _proto = Dyfarm.prototype;
+  _proto.createAirdropSNSInstructions = function createAirdropSNSInstructions$1(publicKey, connection) {
+    return createAirdropSNSInstructions(publicKey, connection, {
+      programId: this.PROGRAM_ID,
+      snsMint: this.SNS_MINT
+    });
+  }
+  // architect
+  ;
+  _proto.getUtterancesAndHistoriesForArchitect = function getUtterancesAndHistoriesForArchitect$1(publicKey, connection, campaign) {
+    return getUtterancesAndHistoriesForArchitect(publicKey, connection, campaign, {
+      apiHost: this.API_HOST,
+      apiAuth: this.API_AUTH
+    });
+  };
+  _proto.createArchitectCreateCampaignInstructions = function createArchitectCreateCampaignInstructions$1(publicKey, connection, data) {
+    return createArchitectCreateCampaignInstructions(publicKey, connection, data, {
+      programId: this.PROGRAM_ID,
+      snsMint: this.SNS_MINT
+    });
+  };
+  _proto.createArchitectUpdateCampaignInstructions = function createArchitectUpdateCampaignInstructions$1(publicKey, connection, data) {
+    return createArchitectUpdateCampaignInstructions(publicKey, connection, data, {
+      programId: this.PROGRAM_ID
+    });
+  };
+  _proto.getUnusedCampaignTitle = function getUnusedCampaignTitle$1(publicKey, connection) {
+    return getUnusedCampaignTitle(publicKey, connection, {
+      apiHost: this.API_HOST,
+      apiAuth: this.API_AUTH,
+      programId: this.PROGRAM_ID
+    });
+  }
+  // builder
+  ;
+  _proto.getUtterancesAndHistoriesForBuilder = function getUtterancesAndHistoriesForBuilder$1(publicKey, connection, campaign, latestSubmittedUuids) {
+    return getUtterancesAndHistoriesForBuilder(publicKey, connection, campaign, latestSubmittedUuids, {
+      apiHost: this.API_HOST,
+      apiAuth: this.API_AUTH,
+      rpcHost: this.RPC_HOST,
+      programId: this.PROGRAM_ID
+    });
+  };
+  _proto.createUtteranceByOntology = function createUtteranceByOntology$1(publicKey, ontology) {
+    return createUtteranceByOntology(publicKey, ontology, {
+      apiHost: this.API_HOST,
+      apiAuth: this.API_AUTH
+    });
+  };
+  _proto.deleteOntologyByCanonical = function deleteOntologyByCanonical$1(canonical) {
+    return deleteOntologyByCanonical(canonical, {
+      apiHost: this.API_HOST,
+      apiAuth: this.API_AUTH
+    });
+  };
+  _proto.createBuilderSubmitUtterancesInstructions = function createBuilderSubmitUtterancesInstructions$1(publicKey, connection, campaignTitle, utterances) {
+    return createBuilderSubmitUtterancesInstructions(publicKey, connection, campaignTitle, utterances, {
+      programId: this.PROGRAM_ID
+    });
+  };
+  _proto.createRpcSubmitUtterancesPromises = function createRpcSubmitUtterancesPromises$1(publicKey, connection, rpcAuthToken, campaignTitle, batchUtterances) {
+    return createRpcSubmitUtterancesPromises(publicKey, connection, rpcAuthToken, campaignTitle, batchUtterances, {
+      programId: this.PROGRAM_ID,
+      rpcHost: this.RPC_HOST
+    });
+  }
+  // campaignActivities
+  ;
+  _proto.createStakeCampaignInstructions = function createStakeCampaignInstructions$1(publicKey, connection, role, amount, campaignTitle) {
+    return createStakeCampaignInstructions(publicKey, connection, role, amount, campaignTitle, {
+      programId: this.PROGRAM_ID,
+      snsMint: this.SNS_MINT
+    });
+  };
+  _proto.createUnstakeCampaignInstructions = function createUnstakeCampaignInstructions$1(publicKey, connection, campaignTitle) {
+    return createUnstakeCampaignInstructions(publicKey, connection, campaignTitle, {
+      programId: this.PROGRAM_ID,
+      snsMint: this.SNS_MINT
+    });
+  };
+  _proto.createClaimRewardInstructions = function createClaimRewardInstructions$1(publicKey, connection, campaignTitle) {
+    return createClaimRewardInstructions(publicKey, connection, campaignTitle, {
+      programId: this.PROGRAM_ID,
+      snsMint: this.SNS_MINT
+    });
+  };
+  _proto.createBatchClaimRewardInstructions = function createBatchClaimRewardInstructions$1(publicKey, connection, campaignTitles) {
+    return createBatchClaimRewardInstructions(publicKey, connection, campaignTitles, {
+      programId: this.PROGRAM_ID,
+      snsMint: this.SNS_MINT
+    });
+  };
+  _proto.createStakeCampaignWithNFTInstructions = function createStakeCampaignWithNFTInstructions$1(publicKey, connection, role, mint) {
+    return createStakeCampaignWithNFTInstructions(publicKey, connection, role, mint, {
+      programId: this.PROGRAM_ID,
+      snsMint: this.SNS_MINT
+    });
+  };
+  _proto.getTotalAvailableRewards = function getTotalAvailableRewards$1(publicKey, connection, appCampaigns) {
+    return getTotalAvailableRewards(publicKey, connection, appCampaigns, {
+      programId: this.PROGRAM_ID
+    });
+  };
+  _proto.getBuilderActivity = function getBuilderActivity$1(publicKey) {
+    return getBuilderActivity(publicKey, {
+      apiHost: this.API_HOST,
+      apiAuth: this.API_AUTH
+    });
+  };
+  _proto.getValidatorActivity = function getValidatorActivity$1(publicKey) {
+    return getValidatorActivity(publicKey, {
+      apiHost: this.API_HOST,
+      apiAuth: this.API_AUTH
+    });
+  };
+  _proto.getBuilderSubmissionsToday = function getBuilderSubmissionsToday$1(publicKey) {
+    return getBuilderSubmissionsToday(publicKey, {
+      apiHost: this.API_HOST,
+      apiAuth: this.API_AUTH
+    });
+  };
+  _proto.getValidatorValidationsToday = function getValidatorValidationsToday$1(publicKey) {
+    return getValidatorValidationsToday(publicKey, {
+      apiHost: this.API_HOST,
+      apiAuth: this.API_AUTH
+    });
+  }
+  // campaigns
+  ;
+  _proto.getCampaignFromCampaignTitle = function getCampaignFromCampaignTitle$1(publicKey, connection, campaignTitle) {
+    return getCampaignFromCampaignTitle(publicKey, connection, campaignTitle, {
+      programId: this.PROGRAM_ID,
+      apiHost: this.API_HOST,
+      apiAuth: this.API_AUTH
+    });
+  };
+  _proto.getAllCampaigns = function getAllCampaigns$1(publicKey, connection) {
+    return getAllCampaigns(publicKey, connection, {
+      programId: this.PROGRAM_ID,
+      apiHost: this.API_HOST,
+      apiAuth: this.API_AUTH,
+      rpcHost: this.RPC_HOST
+    });
+  };
+  _proto.getAppRole = function getAppRole$1(publicKey) {
+    return getAppRole(publicKey, {
+      apiHost: this.API_HOST,
+      apiAuth: this.API_AUTH
+    });
+  }
+  // rpcToken
+  ;
+  _proto.getIsRpcPermitted = function getIsRpcPermitted$1(publicKey, connection, role) {
+    return getIsRpcPermitted(publicKey, connection, role, {
+      programId: this.PROGRAM_ID
+    });
+  };
+  _proto.getIsProfileCreated = function getIsProfileCreated$1(publicKey, connection) {
+    return getIsProfileCreated(publicKey, connection, {
+      programId: this.PROGRAM_ID
+    });
+  };
+  _proto.createRpcPermitInstructions = function createRpcPermitInstructions$1(publicKey, connection, role) {
+    return createRpcPermitInstructions(publicKey, connection, role, {
+      programId: this.PROGRAM_ID
+    });
+  };
+  _proto.getRpcAuthToken = function getRpcAuthToken$1(publicKey, signMessage) {
+    return getRpcAuthToken(publicKey, signMessage, {
+      rpcHost: this.RPC_HOST
+    });
+  }
+  // validator
+  ;
+  _proto.fetchUtterancesAndHistoriesForValidator = function fetchUtterancesAndHistoriesForValidator$1(publicKey, connection, campaign, latestSubmittedUuids) {
+    return fetchUtterancesAndHistoriesForValidator(publicKey, connection, campaign, latestSubmittedUuids, {
+      apiHost: this.API_HOST,
+      apiAuth: this.API_AUTH,
+      rpcHost: this.RPC_HOST,
+      programId: this.PROGRAM_ID
+    });
+  };
+  _proto.createValidatorValidateUtterancesInstructions = function createValidatorValidateUtterancesInstructions$1(publicKey, connection, campaignTitle, validations) {
+    return createValidatorValidateUtterancesInstructions(publicKey, connection, campaignTitle, validations, {
+      programId: this.PROGRAM_ID
+    });
+  };
+  _proto.createRpcValidateUtterancesPromises = function createRpcValidateUtterancesPromises$1(publicKey, connection, rpcAuthToken, campaignTitle, batchValidations) {
+    return createRpcValidateUtterancesPromises(publicKey, connection, rpcAuthToken, campaignTitle, batchValidations, {
+      programId: this.PROGRAM_ID,
+      rpcHost: this.RPC_HOST
+    });
+  }
+  // walletBalance
+  ;
+  _proto.getSolBalance = function getSolBalance$1(publicKey, connection) {
+    return getSolBalance(publicKey, connection);
+  };
+  _proto.getTokenBalance = function getTokenBalance$1(publicKey, connection) {
+    return getTokenBalance(publicKey, connection, {
+      snsMint: this.SNS_MINT
+    });
+  };
+  _proto.getKanonNfts = function getKanonNfts$1(publicKey, connection) {
+    return getKanonNfts(publicKey, connection, {
+      kanonNftCharity: this.KANON_NFT_CHARITY
+    });
+  }
+  // services
+  ;
+  _proto.addCampaignMeta = function addCampaignMeta$1(data) {
+    return addCampaignMeta(data, {
+      apiHost: this.API_HOST,
+      apiAuth: this.API_AUTH
+    });
+  };
+  _proto.delCampaignMeta = function delCampaignMeta$1(data) {
+    return delCampaignMeta(data, {
+      apiHost: this.API_HOST,
+      apiAuth: this.API_AUTH
+    });
+  };
+  return Dyfarm;
+}();
+
+export { ACCESS_METHOD, AccessMethod, BError, CError, Campaign, CampaignActivity, CampaignExpiredError, CampaignFinishedAlreadyError, CampaignNotFinishedError, CampaignVault, ConfidentIsInvalidError, DError, DoubleVoteDetectError, Dyfarm, EError, FarmConfig, Feed, Guild, InsufficientTokenBalanceError, InvalidAccessMethodError, InvalidMintError, InvalidNFTError, InvalidPDAError, InvalidStakeAccountError, InvalidStakeDelegateError, InvalidStakeStatusError, InvalidStakeTypeError, InvalidTokenMintError, InvalidTokenOwnerError, LAMPORTS_PER_USDC, LOOKUP_PROGRAM_ADDRESS, METADATA_PROGRAM_ADDRESS, OFFCHAIN_TYPE, Offchain, PHRASE_TYPE, PROGRAM_ADDRESS, PROGRAM_ID, PermitRpcIsMissedError, Phrase, PhraseType, PhraseValidatedAlreadyError, Profile, ProfileNotMatchWithAuthorityError, RPC_TXN_STATUS, RewardBalanceIsZeroError, RewardIsLowError, Role, RoleMismatchError, RpcSignerMismatchError, SNS_PAIR, STAKE_ACCOUNT_ROLE, StakeAccount, StakeAccountRole, StakeAccountType, StakeLockedError, StakingType, Tag, Validate, Validators, accessMethodBeet, accountProviders, addCampaignMeta, adjustRewardInstructionDiscriminator, adjustRewardStruct, airdropInstructionDiscriminator, airdropStruct, allocateTableInstructionDiscriminator, allocateTableStruct, awaitTransactionSignatureConfirmation, campaignActivityBeet, campaignActivityDiscriminator, campaignBeet, campaignDiscriminator, campaignVaultBeet, campaignVaultDiscriminator, checkPriceInstructionDiscriminator, checkPriceStruct, checkWhitelist, claimRewardInstructionDiscriminator, claimRewardStruct, createAdjustRewardInstruction, createAirdropInstruction, createAirdropSNSInstructions, createAllocateTableInstruction, createArchitectCreateCampaignInstructions, createArchitectUpdateCampaignInstructions, createBatchClaimRewardInstructions, createBuilderSubmitUtterancesInstructions, createCampaignInstructionDiscriminator, createCampaignStruct, createCheckPriceInstruction, createClaimRewardInstruction, createClaimRewardInstructions, createCreateCampaignInstruction, createCreateGuildInstruction, createCreateProfileInstruction, createDeactiveTableInstruction, createExtendTableInstruction, createFree2playInstruction, createGuildClaimRewardInstruction, createGuildGrantScholarInstruction, createGuildInstructionDiscriminator, createGuildStakeNftInstruction, createGuildStruct, createGuildUnstakeNftInstruction, createInitializeInstruction, createProfileInstructionDiscriminator, createProfileStruct, createRevokeScholarInstruction, createRpcCloseCampaignInstruction, createRpcClosePhraseInstruction, createRpcCloseValidateInstruction, createRpcPermitInstruction, createRpcPermitInstructions, createRpcSubmitPhraseInstruction, createRpcSubmitUtterancesPromises, createRpcValidatePhraseInstruction, createRpcValidateUtterancesPromises, createScholarSignInstruction, createStakeCampaignInstruction, createStakeCampaignInstructions, createStakeCampaignWithNFTInstructions, createStakeNftInstruction, createSubmitPhraseInstruction, createUnstakeCampaignInstruction, createUnstakeCampaignInstructions, createUnstakeNftInstruction, createUpdateCampaignInstruction, createUtteranceByOntology, createValidatePhraseInstruction, createValidatorValidateUtterancesInstructions, createVerifyPreStakedNftInstruction, deactiveTableInstructionDiscriminator, deactiveTableStruct, decodeText, delCampaignMeta, deleteOntology, deleteOntologyByCanonical, encodeText, errorFromCode, errorFromName, extendTableInstructionDiscriminator, extendTableStruct, farmConfigBeet, farmConfigDiscriminator, feedBeet, feedDiscriminator, fetchUtterancesAndHistoriesForValidator, free2playInstructionDiscriminator, free2playStruct, getAllCampaignTitles, getAllCampaigns, getAllCampaignsInfo, getAppRole, getAssociateTokenAccount, getBuilderActivity, getBuilderActivityInfo, getBuilderRecentSubmissions, getBuilderSubmissionsToday, getCampaginMeta, getCampaignFromCampaignTitle, getIsProfileCreated, getIsRpcPermitted, getKanonNfts, getOrCreateAssociateTokenAccount, getRpcAuthToken, getRpcListActivity, getRpcSubmissionStatus, getRpcValidationStatus, getSolBalance, getSubmissionsInfo, getSubmissionsValidationsInfo, getTokenBalance, getTotalAvailableRewards, getUnusedCampaignTitle, getUtterancesAndHistoriesForArchitect, getUtterancesAndHistoriesForBuilder, getValidationsInfo, getValidatorActivity, getValidatorActivityInfo, getValidatorRecentValidations, getValidatorValidationsToday, guildBeet, guildClaimRewardInstructionDiscriminator, guildClaimRewardStruct, guildDiscriminator, guildGrantScholarInstructionDiscriminator, guildGrantScholarStruct, guildStakeNftInstructionDiscriminator, guildStakeNftStruct, guildUnstakeNftInstructionDiscriminator, guildUnstakeNftStruct, initializeInstructionDiscriminator, initializeStruct, isEmptyAddress, isEqualAddress, isIncludingAddress, isValidAddress, offchainBeet, phraseBeet, phraseDiscriminator, phraseTypeBeet, profileBeet, profileDiscriminator, revokeScholarInstructionDiscriminator, revokeScholarStruct, roleBeet, rpcBatchSubmitPhrases, rpcBatchValidatePhrase, rpcCloseCampaignInstructionDiscriminator, rpcCloseCampaignStruct, rpcClosePhraseInstructionDiscriminator, rpcClosePhraseStruct, rpcCloseValidateInstructionDiscriminator, rpcCloseValidateStruct, rpcPermitInstructionDiscriminator, rpcPermitStruct, rpcRequestAuth, rpcSubmitPhrase, rpcSubmitPhraseInstructionDiscriminator, rpcSubmitPhraseStruct, rpcValidatePhrase, rpcValidatePhraseInstructionDiscriminator, rpcValidatePhraseStruct, rpcVerifyAuth, scholarSignInstructionDiscriminator, scholarSignStruct, sendAndConfirmWithRetry, sendInstructions, sleep, stakeAccountBeet, stakeAccountDiscriminator, stakeAccountRoleBeet, stakeAccountTypeBeet, stakeCampaignInstructionDiscriminator, stakeCampaignStruct, stakeNftInstructionDiscriminator, stakeNftStruct, stakingTypeBeet, submitOntology, submitPhraseInstructionDiscriminator, submitPhraseStruct, tagBeet, unstakeCampaignInstructionDiscriminator, unstakeCampaignStruct, unstakeNftInstructionDiscriminator, unstakeNftStruct, updateCampaignInstructionDiscriminator, updateCampaignStruct, validateBeet, validateDiscriminator, validatePhraseInstructionDiscriminator, validatePhraseStruct, validatorsBeet, validatorsDiscriminator, verifyPreStakedNftInstructionDiscriminator, verifyPreStakedNftStruct };
 //# sourceMappingURL=dyf.esm.js.map

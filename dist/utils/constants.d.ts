@@ -76,9 +76,6 @@ export declare const RPC_TXN_STATUS: {
         label: string;
     };
 };
-export declare const SNS_ADDRESS = "SNSNkV9zfG5ZKWQs6x4hxvBRV6s8SqMfSGCtECDvdMd";
-export declare const KANON_NFT_CHARITY_ADDRESS = "CRTegTRWPceXBc7ywwP9NKHXavjcW5HYaN4AxR3AcH9H";
-export declare const KANON_NFT_AUTHORITY_ADDRESS = "AfqoHa1MmyBDai5teTLz7H5NcvwYDRCauKgkBFyb1nfV";
 export declare const METADATA_PROGRAM_ADDRESS = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s";
 export declare const SNS_PAIR = "SNS/USD";
 export declare const LOOKUP_PROGRAM_ADDRESS = "AddressLookupTab1e1111111111111111111111111";
