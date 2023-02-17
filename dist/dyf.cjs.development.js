@@ -7128,6 +7128,7 @@ var getAllCampaignsInfo = /*#__PURE__*/function () {
                   finish: campaignInfo.finish_status,
                   progress: campaignInfo.progress,
                   submissions: campaignInfo.submissions,
+                  rejections: campaignInfo.rejections,
                   timestamp: Math.round(Date.parse(String(campaignInfo.timestamp).concat('.000Z')) / 1000)
                 };
               });
@@ -9109,6 +9110,7 @@ var getCampaignFromCampaignTitle = /*#__PURE__*/function () {
             utterances: [],
             progress: 0,
             submissions: 0,
+            rejections: 0,
             timestamp: Math.round(Date.now() / 1000)
           }, stakeInfo));
         case 37:

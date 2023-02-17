@@ -62,6 +62,7 @@ export declare type ApiCampaignInfo = {
     finish: boolean;
     progress: number;
     submissions: number;
+    rejections: number;
     timestamp: number;
 };
 export declare type ApiSubmissionInfo = {

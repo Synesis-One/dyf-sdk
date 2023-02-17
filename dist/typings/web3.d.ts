@@ -59,6 +59,7 @@ export declare type PCampaign = {
     validatorStakeStatus: boolean;
     progress: number;
     submissions: number;
+    rejections: number;
     timestamp: number;
 };
 export declare type CreateCampaignArgs = {
