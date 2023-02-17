@@ -7122,12 +7122,13 @@ var getAllCampaignsInfo = /*#__PURE__*/function () {
                   rpuGeneral: new BN(campaignInfo.rpu_general).divn(web3.LAMPORTS_PER_SOL / 100).toNumber() / 100,
                   rpuCause: new BN(campaignInfo.rpu_cause).divn(web3.LAMPORTS_PER_SOL / 100).toNumber() / 100,
                   rpuEffect: new BN(campaignInfo.rpu_effect).divn(web3.LAMPORTS_PER_SOL / 100).toNumber() / 100,
-                  rpuValidator: campaignInfo.rpu_validator,
+                  rpuValidator: new BN(campaignInfo.rpu_validator).divn(web3.LAMPORTS_PER_SOL / 100).toNumber() / 100,
                   majorityQuorum: campaignInfo.majority_quorum,
                   architect: campaignInfo.architect,
                   finish: campaignInfo.finish_status,
                   progress: campaignInfo.progress,
-                  submissions: campaignInfo.submissions
+                  submissions: campaignInfo.submissions,
+                  timestamp: Math.round(Date.parse(String(campaignInfo.timestamp).concat('.000Z')) / 1000)
                 };
               });
             } else {
@@ -9101,13 +9102,14 @@ var getCampaignFromCampaignTitle = /*#__PURE__*/function () {
             rpuGeneral: new BN(campaign.rpuGeneral).divn(web3.LAMPORTS_PER_SOL / 100).toNumber() / 100,
             rpuCause: new BN(campaign.rpuCause).divn(web3.LAMPORTS_PER_SOL / 100).toNumber() / 100,
             rpuEffect: new BN(campaign.rpuEffect).divn(web3.LAMPORTS_PER_SOL / 100).toNumber() / 100,
-            rpuValidator: Number(campaign.rpuValidator),
+            rpuValidator: new BN(campaign.rpuValidator).divn(web3.LAMPORTS_PER_SOL / 100).toNumber() / 100,
             majorityQuorum: Number(campaign.majorityQuorum),
             architect: campaign.architect.toBase58(),
             finish: campaign.finish,
             utterances: [],
             progress: 0,
-            submissions: 0
+            submissions: 0,
+            timestamp: Math.round(Date.now() / 1000)
           }, stakeInfo));
         case 37:
         case "end":
