@@ -61,6 +61,7 @@ export declare type ApiCampaignInfo = {
     architect: string;
     finish: boolean;
     progress: number;
+    submissions: number;
 };
 export declare type ApiSubmissionInfo = {
     timestamp: number;

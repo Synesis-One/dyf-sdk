@@ -58,6 +58,7 @@ export declare type PCampaign = {
     builderStakeStatus: boolean;
     validatorStakeStatus: boolean;
     progress: number;
+    submissions: number;
 };
 export declare type CreateCampaignArgs = {
     campaignTitle: string;

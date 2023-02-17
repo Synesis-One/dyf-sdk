@@ -7126,7 +7126,8 @@ var getAllCampaignsInfo = /*#__PURE__*/function () {
                   majorityQuorum: campaignInfo.majority_quorum,
                   architect: campaignInfo.architect,
                   finish: campaignInfo.finish_status,
-                  progress: campaignInfo.progress
+                  progress: campaignInfo.progress,
+                  submissions: campaignInfo.submissions
                 };
               });
             } else {
@@ -9105,7 +9106,8 @@ var getCampaignFromCampaignTitle = /*#__PURE__*/function () {
             architect: campaign.architect.toBase58(),
             finish: campaign.finish,
             utterances: [],
-            progress: 0
+            progress: 0,
+            submissions: 0
           }, stakeInfo));
         case 37:
         case "end":
