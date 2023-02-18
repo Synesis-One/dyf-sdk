@@ -9824,10 +9824,11 @@ var getKanonNfts = /*#__PURE__*/function () {
             return nftData[key];
           });
           parsedKanonNftData = parsedNfts.filter(function (nft) {
-            return nft.data.creators.length === 1 && nft.data.creators[0].address === args.kanonNftCharity && nft.data.creators[0].share === 100;
+            return nft.data.creators.length === 1 && isEqualAddress(nft.data.creators[0].address, args.kanonNftCharity) && nft.data.creators[0].share === 100;
           });
+          console.log(parsedNfts, parsedKanonNftData, args.kanonNftCharity);
           arrMetadata = [];
-          _context4.next = 12;
+          _context4.next = 13;
           return Promise.all(parsedKanonNftData.map( /*#__PURE__*/function () {
             var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(nft) {
               var resp;
@@ -9857,7 +9858,7 @@ var getKanonNfts = /*#__PURE__*/function () {
               return _ref4.apply(this, arguments);
             };
           }()));
-        case 12:
+        case 13:
           return _context4.abrupt("return", parsedKanonNftData.map(function (nft, idx) {
             return {
               mint: nft.mint,
@@ -9868,7 +9869,7 @@ var getKanonNfts = /*#__PURE__*/function () {
               imageUri: arrMetadata[idx]
             };
           }));
-        case 13:
+        case 14:
         case "end":
           return _context4.stop();
       }
