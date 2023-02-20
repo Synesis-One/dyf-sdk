@@ -1,6 +1,6 @@
 import { Connection, PublicKey, Signer, TransactionInstruction } from '@solana/web3.js';
-import { PCampaign, PUtterance, ValidationArgs } from '../typings';
-export declare const fetchUtterancesAndHistoriesForValidator: (publicKey: PublicKey, connection: Connection, campaign: PCampaign, latestSubmittedUuids: string[], args: {
+import { PUtterance, ValidationArgs } from '../typings';
+export declare const fetchUtterancesAndHistoriesForValidator: (publicKey: PublicKey, connection: Connection, campaignTitle: string, latestSubmittedUuids: string[], args: {
     apiHost: string;
     apiAuth: string;
     rpcHost: string;

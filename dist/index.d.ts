@@ -41,7 +41,7 @@ export declare class Dyfarm {
         signers: import("@solana/web3.js").Signer[];
     }>;
     getUnusedCampaignTitle(publicKey: PublicKey, connection: Connection): Promise<string>;
-    getUtterancesAndHistoriesForBuilder(publicKey: PublicKey, connection: Connection, campaign: PCampaign, latestSubmittedUuids: string[]): Promise<PUtterance[]>;
+    getUtterancesAndHistoriesForBuilder(publicKey: PublicKey, connection: Connection, campaignTitle: string, latestSubmittedUuids: string[]): Promise<PUtterance[]>;
     createUtteranceByOntology(publicKey: PublicKey, ontology: SubmitOntologyArgs): Promise<PUtterance>;
     deleteOntologyByCanonical(canonical: string): Promise<true>;
     createBuilderSubmitUtterancesInstructions(publicKey: PublicKey, connection: Connection, campaignTitle: string, utterances: PUtterance[]): {
@@ -85,7 +85,8 @@ export declare class Dyfarm {
     getValidatorActivity(publicKey: PublicKey): Promise<import("./typings").ValidatorActivityInfo>;
     getBuilderSubmissionsToday(publicKey: PublicKey): Promise<number>;
     getValidatorValidationsToday(publicKey: PublicKey): Promise<number>;
-    getCampaignFromCampaignTitle(publicKey: PublicKey, connection: Connection, campaignTitle: string): Promise<PCampaign>;
+    getCampaignFromCampaignAccount(publicKey: PublicKey, connection: Connection, campaignTitle: string): Promise<PCampaign>;
+    getCampaignFromCampaignInfo(publicKey: PublicKey, connection: Connection, campaignTitle: string, role: number): Promise<PCampaign>;
     getAllCampaigns(publicKey: PublicKey, connection: Connection): Promise<PCampaign[]>;
     getAppRole(publicKey: PublicKey): Promise<number>;
     getIsRpcPermitted(publicKey: PublicKey, connection: Connection, role: string): Promise<boolean>;
@@ -95,7 +96,7 @@ export declare class Dyfarm {
         signers: import("@solana/web3.js").Signer[];
     }>;
     getRpcAuthToken(publicKey: PublicKey, signMessage: (message: Uint8Array) => Promise<Uint8Array>): Promise<string>;
-    fetchUtterancesAndHistoriesForValidator(publicKey: PublicKey, connection: Connection, campaign: PCampaign, latestSubmittedUuids: string[]): Promise<PUtterance[]>;
+    fetchUtterancesAndHistoriesForValidator(publicKey: PublicKey, connection: Connection, campaignTitle: string, latestSubmittedUuids: string[]): Promise<PUtterance[]>;
     createValidatorValidateUtterancesInstructions(publicKey: PublicKey, connection: Connection, campaignTitle: string, validations: ValidationArgs[]): {
         instructions: import("@solana/web3.js").TransactionInstruction[];
         signers: import("@solana/web3.js").Signer[];

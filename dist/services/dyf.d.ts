@@ -31,6 +31,10 @@ export declare const getCampaginMeta: (dapp_title: string, args: {
     apiHost: string;
     apiAuth: string;
 }) => Promise<ApiCampaignMeta | null>;
+export declare const getCampaignInfo: (dapp_title: string, args: {
+    apiHost: string;
+    apiAuth: string;
+}) => Promise<ApiCampaignInfo | null>;
 export declare const getSubmissionsInfo: (campaign: string, args: {
     apiHost: string;
     apiAuth: string;

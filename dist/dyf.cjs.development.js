@@ -7189,12 +7189,74 @@ var getCampaginMeta = /*#__PURE__*/function () {
     return _ref7.apply(this, arguments);
   };
 }();
-var getSubmissionsInfo = /*#__PURE__*/function () {
-  var _ref8 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(campaign, args) {
+var getCampaignInfo = /*#__PURE__*/function () {
+  var _ref8 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(dapp_title, args) {
     return _regeneratorRuntime().wrap(function _callee8$(_context8) {
       while (1) switch (_context8.prev = _context8.next) {
         case 0:
-          return _context8.abrupt("return", axios.post(args.apiHost + "/submissions-info", {
+          return _context8.abrupt("return", axios.post(args.apiHost + "/campaign-info", {
+            dapp_title: dapp_title
+          }, {
+            headers: {
+              Authorization: args.apiAuth
+            }
+          }).then(function (response) {
+            if (!!response.data && Array.isArray(response.data)) {
+              if (response.data[0].stake_status !== true) return null;else return {
+                campaignTitle: response.data[0].title,
+                tag: response.data[0].campaign_type,
+                pubkey: response.data[0].campaign_acct,
+                industry: response.data[0].industry,
+                domain: response.data[0].domain,
+                subject: response.data[0].subject,
+                explain: response.data[0].explain,
+                organizer: response.data[0].organizer,
+                language: response.data[0].language,
+                specific: response.data[0].phrase_specific,
+                general: response.data[0].phrase_general,
+                cause: response.data[0].phrase_cause,
+                effect: response.data[0].phrase_effect,
+                open: Math.round(Date.parse(String(response.data[0].dapp_open).concat('.000Z')) / 1000),
+                close: Math.round(Date.parse(String(response.data[0].dapp_close).concat('.000Z')) / 1000),
+                expire: Math.round(Date.parse(String(response.data[0].dapp_expire).concat('.000Z')) / 1000),
+                minPhrase: response.data[0].min_phrase,
+                minValidate: response.data[0].min_validate,
+                rpuSpecific: new BN(response.data[0].rpu_specific).divn(web3.LAMPORTS_PER_SOL / 100).toNumber() / 100,
+                rpuGeneral: new BN(response.data[0].rpu_general).divn(web3.LAMPORTS_PER_SOL / 100).toNumber() / 100,
+                rpuCause: new BN(response.data[0].rpu_cause).divn(web3.LAMPORTS_PER_SOL / 100).toNumber() / 100,
+                rpuEffect: new BN(response.data[0].rpu_effect).divn(web3.LAMPORTS_PER_SOL / 100).toNumber() / 100,
+                rpuValidator: new BN(response.data[0].rpu_validator).divn(web3.LAMPORTS_PER_SOL / 100).toNumber() / 100,
+                majorityQuorum: response.data[0].majority_quorum,
+                architect: response.data[0].architect,
+                finish: response.data[0].finish_status,
+                progress: response.data[0].progress,
+                submissions: response.data[0].submissions,
+                rejections: response.data[0].rejections,
+                timestamp: Math.round(Date.parse(String(response.data[0].timestamp).concat('.000Z')) / 1000)
+              };
+            } else {
+              return null;
+            }
+          })["catch"](function (error) {
+            console.log(error);
+            return null;
+          }));
+        case 1:
+        case "end":
+          return _context8.stop();
+      }
+    }, _callee8);
+  }));
+  return function getCampaignInfo(_x14, _x15) {
+    return _ref8.apply(this, arguments);
+  };
+}();
+var getSubmissionsInfo = /*#__PURE__*/function () {
+  var _ref9 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(campaign, args) {
+    return _regeneratorRuntime().wrap(function _callee9$(_context9) {
+      while (1) switch (_context9.prev = _context9.next) {
+        case 0:
+          return _context9.abrupt("return", axios.post(args.apiHost + "/submissions-info", {
             wallet: campaign
           }, {
             headers: {
@@ -7228,20 +7290,20 @@ var getSubmissionsInfo = /*#__PURE__*/function () {
           }));
         case 1:
         case "end":
-          return _context8.stop();
+          return _context9.stop();
       }
-    }, _callee8);
+    }, _callee9);
   }));
-  return function getSubmissionsInfo(_x14, _x15) {
-    return _ref8.apply(this, arguments);
+  return function getSubmissionsInfo(_x16, _x17) {
+    return _ref9.apply(this, arguments);
   };
 }();
 var getValidationsInfo = /*#__PURE__*/function () {
-  var _ref9 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(campaign, args) {
-    return _regeneratorRuntime().wrap(function _callee9$(_context9) {
-      while (1) switch (_context9.prev = _context9.next) {
+  var _ref10 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(campaign, args) {
+    return _regeneratorRuntime().wrap(function _callee10$(_context10) {
+      while (1) switch (_context10.prev = _context10.next) {
         case 0:
-          return _context9.abrupt("return", axios.post(args.apiHost + "/validations-info", {
+          return _context10.abrupt("return", axios.post(args.apiHost + "/validations-info", {
             wallet: campaign
           }, {
             headers: {
@@ -7268,20 +7330,20 @@ var getValidationsInfo = /*#__PURE__*/function () {
           }));
         case 1:
         case "end":
-          return _context9.stop();
+          return _context10.stop();
       }
-    }, _callee9);
+    }, _callee10);
   }));
-  return function getValidationsInfo(_x16, _x17) {
-    return _ref9.apply(this, arguments);
+  return function getValidationsInfo(_x18, _x19) {
+    return _ref10.apply(this, arguments);
   };
 }();
 var getSubmissionsValidationsInfo = /*#__PURE__*/function () {
-  var _ref10 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(campaign, args) {
-    return _regeneratorRuntime().wrap(function _callee10$(_context10) {
-      while (1) switch (_context10.prev = _context10.next) {
+  var _ref11 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11(campaign, args) {
+    return _regeneratorRuntime().wrap(function _callee11$(_context11) {
+      while (1) switch (_context11.prev = _context11.next) {
         case 0:
-          return _context10.abrupt("return", axios.post(args.apiHost + "/submissions-validations-info", {
+          return _context11.abrupt("return", axios.post(args.apiHost + "/submissions-validations-info", {
             wallet: campaign
           }, {
             headers: {
@@ -7333,20 +7395,20 @@ var getSubmissionsValidationsInfo = /*#__PURE__*/function () {
           }));
         case 1:
         case "end":
-          return _context10.stop();
+          return _context11.stop();
       }
-    }, _callee10);
+    }, _callee11);
   }));
-  return function getSubmissionsValidationsInfo(_x18, _x19) {
-    return _ref10.apply(this, arguments);
+  return function getSubmissionsValidationsInfo(_x20, _x21) {
+    return _ref11.apply(this, arguments);
   };
 }();
 var getAllCampaignTitles = /*#__PURE__*/function () {
-  var _ref11 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11(args) {
-    return _regeneratorRuntime().wrap(function _callee11$(_context11) {
-      while (1) switch (_context11.prev = _context11.next) {
+  var _ref12 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12(args) {
+    return _regeneratorRuntime().wrap(function _callee12$(_context12) {
+      while (1) switch (_context12.prev = _context12.next) {
         case 0:
-          return _context11.abrupt("return", axios.get(args.apiHost + "/all-campaign-titles", {
+          return _context12.abrupt("return", axios.get(args.apiHost + "/all-campaign-titles", {
             headers: {
               Authorization: args.apiAuth
             }
@@ -7362,51 +7424,20 @@ var getAllCampaignTitles = /*#__PURE__*/function () {
           }));
         case 1:
         case "end":
-          return _context11.stop();
-      }
-    }, _callee11);
-  }));
-  return function getAllCampaignTitles(_x20) {
-    return _ref11.apply(this, arguments);
-  };
-}();
-var getBuilderActivityInfo = /*#__PURE__*/function () {
-  var _ref12 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12(wallet, args) {
-    return _regeneratorRuntime().wrap(function _callee12$(_context12) {
-      while (1) switch (_context12.prev = _context12.next) {
-        case 0:
-          return _context12.abrupt("return", axios.post(args.apiHost + "/get-builder-activity-info", {
-            wallet: wallet
-          }, {
-            headers: {
-              Authorization: args.apiAuth
-            }
-          }).then(function (response) {
-            if (response.data) {
-              return response.data;
-            } else {
-              return null;
-            }
-          })["catch"](function (error) {
-            console.log(error);
-            return null;
-          }));
-        case 1:
-        case "end":
           return _context12.stop();
       }
     }, _callee12);
   }));
-  return function getBuilderActivityInfo(_x21, _x22) {
+  return function getAllCampaignTitles(_x22) {
     return _ref12.apply(this, arguments);
   };
 }();
-var getValidatorActivityInfo = /*#__PURE__*/function () {
+var getBuilderActivityInfo = /*#__PURE__*/function () {
   var _ref13 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13(wallet, args) {
     return _regeneratorRuntime().wrap(function _callee13$(_context13) {
       while (1) switch (_context13.prev = _context13.next) {
         case 0:
-          return _context13.abrupt("return", axios.post(args.apiHost + "/get-validator-activity-info", {
+          return _context13.abrupt("return", axios.post(args.apiHost + "/get-builder-activity-info", {
             wallet: wallet
           }, {
             headers: {
@@ -7428,16 +7459,47 @@ var getValidatorActivityInfo = /*#__PURE__*/function () {
       }
     }, _callee13);
   }));
-  return function getValidatorActivityInfo(_x23, _x24) {
+  return function getBuilderActivityInfo(_x23, _x24) {
     return _ref13.apply(this, arguments);
   };
 }();
-var getBuilderRecentSubmissions = /*#__PURE__*/function () {
-  var _ref14 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14(pubkey, utc_offset, args) {
+var getValidatorActivityInfo = /*#__PURE__*/function () {
+  var _ref14 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14(wallet, args) {
     return _regeneratorRuntime().wrap(function _callee14$(_context14) {
       while (1) switch (_context14.prev = _context14.next) {
         case 0:
-          return _context14.abrupt("return", axios.post(args.apiHost + "/get-builder-recent-submissions", {
+          return _context14.abrupt("return", axios.post(args.apiHost + "/get-validator-activity-info", {
+            wallet: wallet
+          }, {
+            headers: {
+              Authorization: args.apiAuth
+            }
+          }).then(function (response) {
+            if (response.data) {
+              return response.data;
+            } else {
+              return null;
+            }
+          })["catch"](function (error) {
+            console.log(error);
+            return null;
+          }));
+        case 1:
+        case "end":
+          return _context14.stop();
+      }
+    }, _callee14);
+  }));
+  return function getValidatorActivityInfo(_x25, _x26) {
+    return _ref14.apply(this, arguments);
+  };
+}();
+var getBuilderRecentSubmissions = /*#__PURE__*/function () {
+  var _ref15 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee15(pubkey, utc_offset, args) {
+    return _regeneratorRuntime().wrap(function _callee15$(_context15) {
+      while (1) switch (_context15.prev = _context15.next) {
+        case 0:
+          return _context15.abrupt("return", axios.post(args.apiHost + "/get-builder-recent-submissions", {
             pubkey: pubkey,
             utc_offset: utc_offset
           }, {
@@ -7456,20 +7518,20 @@ var getBuilderRecentSubmissions = /*#__PURE__*/function () {
           }));
         case 1:
         case "end":
-          return _context14.stop();
+          return _context15.stop();
       }
-    }, _callee14);
+    }, _callee15);
   }));
-  return function getBuilderRecentSubmissions(_x25, _x26, _x27) {
-    return _ref14.apply(this, arguments);
+  return function getBuilderRecentSubmissions(_x27, _x28, _x29) {
+    return _ref15.apply(this, arguments);
   };
 }();
 var getValidatorRecentValidations = /*#__PURE__*/function () {
-  var _ref15 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee15(pubkey, utc_offset, args) {
-    return _regeneratorRuntime().wrap(function _callee15$(_context15) {
-      while (1) switch (_context15.prev = _context15.next) {
+  var _ref16 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee16(pubkey, utc_offset, args) {
+    return _regeneratorRuntime().wrap(function _callee16$(_context16) {
+      while (1) switch (_context16.prev = _context16.next) {
         case 0:
-          return _context15.abrupt("return", axios.post(args.apiHost + "/get-validator-recent-submissions", {
+          return _context16.abrupt("return", axios.post(args.apiHost + "/get-validator-recent-submissions", {
             pubkey: pubkey,
             utc_offset: utc_offset
           }, {
@@ -7488,12 +7550,12 @@ var getValidatorRecentValidations = /*#__PURE__*/function () {
           }));
         case 1:
         case "end":
-          return _context15.stop();
+          return _context16.stop();
       }
-    }, _callee15);
+    }, _callee16);
   }));
-  return function getValidatorRecentValidations(_x28, _x29, _x30) {
-    return _ref15.apply(this, arguments);
+  return function getValidatorRecentValidations(_x30, _x31, _x32) {
+    return _ref16.apply(this, arguments);
   };
 }();
 
@@ -8122,7 +8184,7 @@ var getUnusedCampaignTitle = /*#__PURE__*/function () {
 }();
 
 var getUtterancesAndHistoriesForBuilder = /*#__PURE__*/function () {
-  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, campaign, latestSubmittedUuids, args) {
+  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, campaignTitle, latestSubmittedUuids, args) {
     var _PublicKey$findProgra, campaignAccount, submissionsAndValidationsInfo, submissionsInfo, validationsInfo, rpcSubmissions, objSubmissionsInfo, objValidationsInfo, objRpcSubmissions, utterancesChecked, utterancesPre, utterancesQueued, utterancesExpired, submissionsChecked, submissionsPre, submissionsNotSubmittedButRpcFinalizedOrExpired, submissionsNotSubmittedAndRpcPending, utterances;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
@@ -8139,9 +8201,9 @@ var getUtterancesAndHistoriesForBuilder = /*#__PURE__*/function () {
           }
           throw new Error('Connection is undefined');
         case 4:
-          _PublicKey$findProgra = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaign.campaignTitle)], args.programId), campaignAccount = _PublicKey$findProgra[0];
+          _PublicKey$findProgra = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], args.programId), campaignAccount = _PublicKey$findProgra[0];
           _context2.next = 7;
-          return getSubmissionsValidationsInfo(campaign.pubkey, {
+          return getSubmissionsValidationsInfo(campaignAccount.toBase58(), {
             apiHost: args.apiHost,
             apiAuth: args.apiAuth
           });
@@ -8150,7 +8212,7 @@ var getUtterancesAndHistoriesForBuilder = /*#__PURE__*/function () {
           submissionsInfo = submissionsAndValidationsInfo.submissions;
           validationsInfo = submissionsAndValidationsInfo.validations;
           _context2.next = 12;
-          return getRpcSubmissionStatus(publicKey.toBase58(), campaign.pubkey, {
+          return getRpcSubmissionStatus(publicKey.toBase58(), campaignAccount.toBase58(), {
             rpcHost: args.rpcHost
           });
         case 12:
@@ -8998,7 +9060,7 @@ var getValidatorValidationsToday = /*#__PURE__*/function () {
   };
 }();
 
-var getCampaignFromCampaignTitle = /*#__PURE__*/function () {
+var getCampaignFromCampaignAccount = /*#__PURE__*/function () {
   var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(publicKey, connection, campaignTitle, args) {
     var campaignMeta, _PublicKey$findProgra, campaignAccount, campaign, _PublicKey$findProgra2, campaignActivityAccount, stakeInfo, campaignActivity, _PublicKey$findProgra3, userProfile, profile, _Object$values$find, label;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -9119,13 +9181,13 @@ var getCampaignFromCampaignTitle = /*#__PURE__*/function () {
       }
     }, _callee, null, [[11, 17], [23, 34]]);
   }));
-  return function getCampaignFromCampaignTitle(_x, _x2, _x3, _x4) {
+  return function getCampaignFromCampaignAccount(_x, _x2, _x3, _x4) {
     return _ref.apply(this, arguments);
   };
 }();
-var getAllCampaigns = /*#__PURE__*/function () {
-  var _ref2 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, args) {
-    var campaignsInfo, role, _PublicKey$findProgra4, userProfile, profile, stakedCampaignAccounts, campaigns;
+var getCampaignFromCampaignInfo = /*#__PURE__*/function () {
+  var _ref2 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, campaignTitle, role, args) {
+    var campaignInfo, _PublicKey$findProgra4, campaignActivityAccount, stakeInfo, campaignActivity, _Object$values$find2, label;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
@@ -9142,65 +9204,61 @@ var getAllCampaigns = /*#__PURE__*/function () {
           throw new Error('Connection is undefined');
         case 4:
           _context2.next = 6;
-          return getAllCampaignsInfo({
+          return getCampaignInfo(campaignTitle, {
             apiHost: args.apiHost,
             apiAuth: args.apiAuth
           });
         case 6:
-          campaignsInfo = _context2.sent;
-          role = null;
-          _context2.prev = 8;
-          _PublicKey$findProgra4 = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId), userProfile = _PublicKey$findProgra4[0];
-          _context2.next = 12;
-          return Profile.fromAccountAddress(connection, userProfile, 'processed');
-        case 12:
-          profile = _context2.sent;
-          role = exports.Role[profile.role].toLowerCase();
-          _context2.next = 18;
-          break;
-        case 16:
-          _context2.prev = 16;
-          _context2.t0 = _context2["catch"](8);
-        case 18:
-          if (!(role !== null)) {
-            _context2.next = 24;
+          campaignInfo = _context2.sent;
+          if (campaignInfo) {
+            _context2.next = 9;
             break;
           }
-          _context2.next = 21;
-          return getRpcListActivity(args.programId.toBase58(), publicKey.toBase58(), role, {
-            rpcHost: args.rpcHost
-          });
-        case 21:
-          _context2.t1 = _context2.sent;
-          _context2.next = 25;
+          return _context2.abrupt("return");
+        case 9:
+          _PublicKey$findProgra4 = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignInfo.campaignTitle), publicKey.toBuffer()], args.programId), campaignActivityAccount = _PublicKey$findProgra4[0];
+          stakeInfo = {
+            builderStakeStatus: false,
+            validatorStakeStatus: false
+          };
+          _context2.prev = 11;
+          _context2.next = 14;
+          return CampaignActivity.fromAccountAddress(connection, campaignActivityAccount, 'processed');
+        case 14:
+          campaignActivity = _context2.sent;
+          if (!new BN(campaignActivity.stakeAmount).eqn(0)) {
+            label = (_Object$values$find2 = Object.values(STAKE_ACCOUNT_ROLE).find(function (row) {
+              return row.val === role;
+            })) == null ? void 0 : _Object$values$find2.label;
+            stakeInfo = {
+              builderStakeStatus: label === STAKE_ACCOUNT_ROLE.builder.label,
+              validatorStakeStatus: label === STAKE_ACCOUNT_ROLE.validator.label
+            };
+          }
+          _context2.next = 20;
           break;
-        case 24:
-          _context2.t1 = [];
-        case 25:
-          stakedCampaignAccounts = _context2.t1;
-          campaigns = campaignsInfo.map(function (campaignInfo) {
-            return _extends({}, campaignInfo, {
-              stop: campaignInfo.close - 2 * 24 * 3600,
-              minStake: 100,
-              utterances: [],
-              builderStakeStatus: role === null ? false : role !== STAKE_ACCOUNT_ROLE.builder.label ? false : stakedCampaignAccounts.includes(campaignInfo.pubkey),
-              validatorStakeStatus: role === null ? false : role !== STAKE_ACCOUNT_ROLE.validator.label ? false : stakedCampaignAccounts.includes(campaignInfo.pubkey)
-            });
-          });
-          return _context2.abrupt("return", campaigns);
-        case 28:
+        case 18:
+          _context2.prev = 18;
+          _context2.t0 = _context2["catch"](11);
+        case 20:
+          return _context2.abrupt("return", _extends({}, campaignInfo, {
+            stop: campaignInfo.close - 2 * 24 * 3600,
+            minStake: 100,
+            utterances: []
+          }, stakeInfo));
+        case 21:
         case "end":
           return _context2.stop();
       }
-    }, _callee2, null, [[8, 16]]);
+    }, _callee2, null, [[11, 18]]);
   }));
-  return function getAllCampaigns(_x5, _x6, _x7) {
+  return function getCampaignFromCampaignInfo(_x5, _x6, _x7, _x8, _x9) {
     return _ref2.apply(this, arguments);
   };
 }();
-var getAppRole = /*#__PURE__*/function () {
-  var _ref3 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(publicKey, args) {
-    var role;
+var getAllCampaigns = /*#__PURE__*/function () {
+  var _ref3 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(publicKey, connection, args) {
+    var campaignsInfo, role, _PublicKey$findProgra5, userProfile, profile, stakedCampaignAccounts, campaigns;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
@@ -9210,22 +9268,97 @@ var getAppRole = /*#__PURE__*/function () {
           }
           throw new Error('PublicKey is undefined');
         case 2:
-          _context3.next = 4;
+          if (connection) {
+            _context3.next = 4;
+            break;
+          }
+          throw new Error('Connection is undefined');
+        case 4:
+          _context3.next = 6;
+          return getAllCampaignsInfo({
+            apiHost: args.apiHost,
+            apiAuth: args.apiAuth
+          });
+        case 6:
+          campaignsInfo = _context3.sent;
+          role = null;
+          _context3.prev = 8;
+          _PublicKey$findProgra5 = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId), userProfile = _PublicKey$findProgra5[0];
+          _context3.next = 12;
+          return Profile.fromAccountAddress(connection, userProfile, 'processed');
+        case 12:
+          profile = _context3.sent;
+          role = exports.Role[profile.role].toLowerCase();
+          _context3.next = 18;
+          break;
+        case 16:
+          _context3.prev = 16;
+          _context3.t0 = _context3["catch"](8);
+        case 18:
+          if (!(role !== null)) {
+            _context3.next = 24;
+            break;
+          }
+          _context3.next = 21;
+          return getRpcListActivity(args.programId.toBase58(), publicKey.toBase58(), role, {
+            rpcHost: args.rpcHost
+          });
+        case 21:
+          _context3.t1 = _context3.sent;
+          _context3.next = 25;
+          break;
+        case 24:
+          _context3.t1 = [];
+        case 25:
+          stakedCampaignAccounts = _context3.t1;
+          campaigns = campaignsInfo.map(function (campaignInfo) {
+            return _extends({}, campaignInfo, {
+              stop: campaignInfo.close - 2 * 24 * 3600,
+              minStake: 100,
+              utterances: [],
+              builderStakeStatus: role === null ? false : role !== STAKE_ACCOUNT_ROLE.builder.label ? false : stakedCampaignAccounts.includes(campaignInfo.pubkey),
+              validatorStakeStatus: role === null ? false : role !== STAKE_ACCOUNT_ROLE.validator.label ? false : stakedCampaignAccounts.includes(campaignInfo.pubkey)
+            });
+          });
+          return _context3.abrupt("return", campaigns);
+        case 28:
+        case "end":
+          return _context3.stop();
+      }
+    }, _callee3, null, [[8, 16]]);
+  }));
+  return function getAllCampaigns(_x10, _x11, _x12) {
+    return _ref3.apply(this, arguments);
+  };
+}();
+var getAppRole = /*#__PURE__*/function () {
+  var _ref4 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(publicKey, args) {
+    var role;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
+        case 0:
+          if (publicKey) {
+            _context4.next = 2;
+            break;
+          }
+          throw new Error('PublicKey is undefined');
+        case 2:
+          _context4.next = 4;
           return checkWhitelist(publicKey.toBase58(), {
             apiHost: args.apiHost,
             apiAuth: args.apiAuth
           });
         case 4:
-          role = _context3.sent;
-          return _context3.abrupt("return", role === null ? null : STAKE_ACCOUNT_ROLE[role] ? STAKE_ACCOUNT_ROLE[role].val : STAKE_ACCOUNT_ROLE.builder.val);
+          role = _context4.sent;
+          return _context4.abrupt("return", role === null ? null : STAKE_ACCOUNT_ROLE[role] ? STAKE_ACCOUNT_ROLE[role].val : STAKE_ACCOUNT_ROLE.builder.val);
         case 6:
         case "end":
-          return _context3.stop();
+          return _context4.stop();
       }
-    }, _callee3);
+    }, _callee4);
   }));
-  return function getAppRole(_x8, _x9) {
-    return _ref3.apply(this, arguments);
+  return function getAppRole(_x13, _x14) {
+    return _ref4.apply(this, arguments);
   };
 }();
 
@@ -9449,8 +9582,8 @@ var getRpcAuthToken = /*#__PURE__*/function () {
 }();
 
 var fetchUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
-  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, campaign, latestSubmittedUuids, args) {
-    var submissionsAndValidationsInfo, submissionsInfo, validationsInfo, rpcValidations, objValidationsInfo, objRpcValidations, utterancesChecked, utterancesQueued, utterancesExpired, submissionsChecked, submissionsNotValidatedButRpcFinalizedOrExpired, submissionsNotValidatedButRpcPending, utterances;
+  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, campaignTitle, latestSubmittedUuids, args) {
+    var _PublicKey$findProgra, campaignAccount, submissionsAndValidationsInfo, submissionsInfo, validationsInfo, rpcValidations, objValidationsInfo, objRpcValidations, utterancesChecked, utterancesQueued, utterancesExpired, submissionsChecked, submissionsNotValidatedButRpcFinalizedOrExpired, submissionsNotValidatedButRpcPending, utterances;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
@@ -9466,22 +9599,23 @@ var fetchUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
           }
           throw new Error('Connection is undefined');
         case 4:
-          _context2.next = 6;
-          return getSubmissionsValidationsInfo(campaign.pubkey, {
+          _PublicKey$findProgra = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], args.programId), campaignAccount = _PublicKey$findProgra[0];
+          _context2.next = 7;
+          return getSubmissionsValidationsInfo(campaignAccount.toBase58(), {
             apiHost: args.apiHost,
             apiAuth: args.apiAuth
           });
-        case 6:
+        case 7:
           submissionsAndValidationsInfo = _context2.sent;
           submissionsInfo = submissionsAndValidationsInfo.submissions.filter(function (submission) {
             return submission.pubkey && submission.submitted;
           });
           validationsInfo = submissionsAndValidationsInfo.validations;
-          _context2.next = 11;
-          return getRpcValidationStatus(publicKey.toBase58(), campaign.pubkey, {
+          _context2.next = 12;
+          return getRpcValidationStatus(publicKey.toBase58(), campaignAccount.toBase58(), {
             rpcHost: args.rpcHost
           });
-        case 11:
+        case 12:
           rpcValidations = _context2.sent;
           objValidationsInfo = validationsInfo.reduce(function (all, validation) {
             var _all$validation$utter, _extends2;
@@ -9542,11 +9676,11 @@ var fetchUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
               submissionsNotValidatedButRpcFinalizedOrExpired.push(submission);
             }
           });
-          _context2.next = 24;
+          _context2.next = 25;
           return Promise.all(submissionsNotValidatedButRpcFinalizedOrExpired.map( /*#__PURE__*/function () {
             var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(submission) {
               var _objValidationsInfo$s4;
-              var _PublicKey$findProgra, historyAccount, histories, utterance, history;
+              var _PublicKey$findProgra2, historyAccount, histories, utterance, history;
               return _regeneratorRuntime().wrap(function _callee$(_context) {
                 while (1) switch (_context.prev = _context.next) {
                   case 0:
@@ -9556,7 +9690,7 @@ var fetchUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
                     }
                     return _context.abrupt("return");
                   case 2:
-                    _PublicKey$findProgra = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:PHRASE:LOG'), Buffer.from(campaign.campaignTitle), new web3.PublicKey(submission.pubkey).toBuffer(), publicKey.toBuffer()], args.programId), historyAccount = _PublicKey$findProgra[0];
+                    _PublicKey$findProgra2 = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:PHRASE:LOG'), Buffer.from(campaignTitle), new web3.PublicKey(submission.pubkey).toBuffer(), publicKey.toBuffer()], args.programId), historyAccount = _PublicKey$findProgra2[0];
                     histories = (_objValidationsInfo$s4 = objValidationsInfo[submission.pubkey]) != null ? _objValidationsInfo$s4 : [];
                     utterance = {
                       timestamp: submission.timestamp,
@@ -9611,7 +9745,7 @@ var fetchUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
               return _ref2.apply(this, arguments);
             };
           }()));
-        case 24:
+        case 25:
           submissionsNotValidatedButRpcPending = [];
           submissionsInfo.forEach(function (submission) {
             var _objValidationsInfo$s5;
@@ -9648,7 +9782,7 @@ var fetchUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
             return a.timestamp - b.timestamp || a.data.localeCompare(b.data);
           }).reverse();
           return _context2.abrupt("return", utterances);
-        case 29:
+        case 30:
         case "end":
           return _context2.stop();
       }
@@ -9663,20 +9797,20 @@ var createValidatorValidateUtterancesInstructions = function createValidatorVali
   if (!connection) throw new Error('Connection is undefined');
   var instructions = [];
   var signers = [];
-  var _PublicKey$findProgra2 = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], args.programId),
-    campaignAccount = _PublicKey$findProgra2[0];
-  var _PublicKey$findProgra3 = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], args.programId),
-    farmConfig = _PublicKey$findProgra3[0];
-  var _PublicKey$findProgra4 = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId),
-    userProfile = _PublicKey$findProgra4[0];
-  var _PublicKey$findProgra5 = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), publicKey.toBuffer()], args.programId),
-    campaignActivity = _PublicKey$findProgra5[0];
+  var _PublicKey$findProgra3 = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], args.programId),
+    campaignAccount = _PublicKey$findProgra3[0];
+  var _PublicKey$findProgra4 = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], args.programId),
+    farmConfig = _PublicKey$findProgra4[0];
+  var _PublicKey$findProgra5 = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId),
+    userProfile = _PublicKey$findProgra5[0];
+  var _PublicKey$findProgra6 = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), publicKey.toBuffer()], args.programId),
+    campaignActivity = _PublicKey$findProgra6[0];
   instructions = validations.map(function (validation) {
     var phraseAccount = new web3.PublicKey(validation.utterance);
-    var _PublicKey$findProgra6 = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:PHRASE:LOG'), Buffer.from(campaignTitle), phraseAccount.toBuffer(), publicKey.toBuffer()], args.programId),
-      logAccount = _PublicKey$findProgra6[0];
-    var _PublicKey$findProgra7 = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), new web3.PublicKey(validation.builder).toBuffer()], args.programId),
-      builderActivity = _PublicKey$findProgra7[0];
+    var _PublicKey$findProgra7 = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:PHRASE:LOG'), Buffer.from(campaignTitle), phraseAccount.toBuffer(), publicKey.toBuffer()], args.programId),
+      logAccount = _PublicKey$findProgra7[0];
+    var _PublicKey$findProgra8 = web3.PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), new web3.PublicKey(validation.builder).toBuffer()], args.programId),
+      builderActivity = _PublicKey$findProgra8[0];
     return createValidatePhraseInstruction({
       user: publicKey,
       phraseAccount: phraseAccount,
@@ -9826,9 +9960,8 @@ var getKanonNfts = /*#__PURE__*/function () {
           parsedKanonNftData = parsedNfts.filter(function (nft) {
             return nft.data.creators.length === 1 && isEqualAddress(nft.data.creators[0].address, args.kanonNftCharity) && nft.data.creators[0].share === 100;
           });
-          console.log(parsedNfts, parsedKanonNftData, args.kanonNftCharity);
           arrMetadata = [];
-          _context4.next = 13;
+          _context4.next = 12;
           return Promise.all(parsedKanonNftData.map( /*#__PURE__*/function () {
             var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(nft) {
               var resp;
@@ -9858,7 +9991,7 @@ var getKanonNfts = /*#__PURE__*/function () {
               return _ref4.apply(this, arguments);
             };
           }()));
-        case 13:
+        case 12:
           return _context4.abrupt("return", parsedKanonNftData.map(function (nft, idx) {
             return {
               mint: nft.mint,
@@ -9869,7 +10002,7 @@ var getKanonNfts = /*#__PURE__*/function () {
               imageUri: arrMetadata[idx]
             };
           }));
-        case 14:
+        case 13:
         case "end":
           return _context4.stop();
       }
@@ -9936,8 +10069,8 @@ var Dyfarm = /*#__PURE__*/function () {
   }
   // builder
   ;
-  _proto.getUtterancesAndHistoriesForBuilder = function getUtterancesAndHistoriesForBuilder$1(publicKey, connection, campaign, latestSubmittedUuids) {
-    return getUtterancesAndHistoriesForBuilder(publicKey, connection, campaign, latestSubmittedUuids, {
+  _proto.getUtterancesAndHistoriesForBuilder = function getUtterancesAndHistoriesForBuilder$1(publicKey, connection, campaignTitle, latestSubmittedUuids) {
+    return getUtterancesAndHistoriesForBuilder(publicKey, connection, campaignTitle, latestSubmittedUuids, {
       apiHost: this.API_HOST,
       apiAuth: this.API_AUTH,
       rpcHost: this.RPC_HOST,
@@ -10030,8 +10163,15 @@ var Dyfarm = /*#__PURE__*/function () {
   }
   // campaigns
   ;
-  _proto.getCampaignFromCampaignTitle = function getCampaignFromCampaignTitle$1(publicKey, connection, campaignTitle) {
-    return getCampaignFromCampaignTitle(publicKey, connection, campaignTitle, {
+  _proto.getCampaignFromCampaignAccount = function getCampaignFromCampaignAccount$1(publicKey, connection, campaignTitle) {
+    return getCampaignFromCampaignAccount(publicKey, connection, campaignTitle, {
+      programId: this.PROGRAM_ID,
+      apiHost: this.API_HOST,
+      apiAuth: this.API_AUTH
+    });
+  };
+  _proto.getCampaignFromCampaignInfo = function getCampaignFromCampaignInfo$1(publicKey, connection, campaignTitle, role) {
+    return getCampaignFromCampaignInfo(publicKey, connection, campaignTitle, role, {
       programId: this.PROGRAM_ID,
       apiHost: this.API_HOST,
       apiAuth: this.API_AUTH
@@ -10075,8 +10215,8 @@ var Dyfarm = /*#__PURE__*/function () {
   }
   // validator
   ;
-  _proto.fetchUtterancesAndHistoriesForValidator = function fetchUtterancesAndHistoriesForValidator$1(publicKey, connection, campaign, latestSubmittedUuids) {
-    return fetchUtterancesAndHistoriesForValidator(publicKey, connection, campaign, latestSubmittedUuids, {
+  _proto.fetchUtterancesAndHistoriesForValidator = function fetchUtterancesAndHistoriesForValidator$1(publicKey, connection, campaignTitle, latestSubmittedUuids) {
+    return fetchUtterancesAndHistoriesForValidator(publicKey, connection, campaignTitle, latestSubmittedUuids, {
       apiHost: this.API_HOST,
       apiAuth: this.API_AUTH,
       rpcHost: this.RPC_HOST,
@@ -10278,7 +10418,9 @@ exports.getBuilderActivityInfo = getBuilderActivityInfo;
 exports.getBuilderRecentSubmissions = getBuilderRecentSubmissions;
 exports.getBuilderSubmissionsToday = getBuilderSubmissionsToday;
 exports.getCampaginMeta = getCampaginMeta;
-exports.getCampaignFromCampaignTitle = getCampaignFromCampaignTitle;
+exports.getCampaignFromCampaignAccount = getCampaignFromCampaignAccount;
+exports.getCampaignFromCampaignInfo = getCampaignFromCampaignInfo;
+exports.getCampaignInfo = getCampaignInfo;
 exports.getIsProfileCreated = getIsProfileCreated;
 exports.getIsRpcPermitted = getIsRpcPermitted;
 exports.getKanonNfts = getKanonNfts;

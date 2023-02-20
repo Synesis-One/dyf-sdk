@@ -1,6 +1,11 @@
 import { Connection, PublicKey } from '@solana/web3.js';
 import { PCampaign } from '../typings';
-export declare const getCampaignFromCampaignTitle: (publicKey: PublicKey, connection: Connection, campaignTitle: string, args: {
+export declare const getCampaignFromCampaignAccount: (publicKey: PublicKey, connection: Connection, campaignTitle: string, args: {
+    apiHost: string;
+    apiAuth: string;
+    programId: PublicKey;
+}) => Promise<PCampaign>;
+export declare const getCampaignFromCampaignInfo: (publicKey: PublicKey, connection: Connection, campaignTitle: string, role: number, args: {
     apiHost: string;
     apiAuth: string;
     programId: PublicKey;
