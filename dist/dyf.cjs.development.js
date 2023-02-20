@@ -9012,7 +9012,7 @@ var getBuilderSubmissionsToday = /*#__PURE__*/function () {
           throw new Error('PublicKey is undefined');
         case 2:
           _context10.next = 4;
-          return getBuilderRecentSubmissions(publicKey.toBase58(), new Date().getTimezoneOffset(), {
+          return getBuilderRecentSubmissions(publicKey.toBase58(), 0, {
             apiHost: args.apiHost,
             apiAuth: args.apiAuth
           });
@@ -9042,7 +9042,7 @@ var getValidatorValidationsToday = /*#__PURE__*/function () {
           throw new Error('PublicKey is undefined');
         case 2:
           _context11.next = 4;
-          return getValidatorRecentValidations(publicKey.toBase58(), new Date().getTimezoneOffset(), {
+          return getValidatorRecentValidations(publicKey.toBase58(), 0, {
             apiHost: args.apiHost,
             apiAuth: args.apiAuth
           });
