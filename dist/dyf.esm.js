@@ -9189,7 +9189,7 @@ var getCampaignFromCampaignAccount = /*#__PURE__*/function () {
             cause: campaignMeta.phrase_cause,
             effect: campaignMeta.phrase_effect,
             open: new BN(campaign.open).toNumber(),
-            stop: new BN(campaign.close).toNumber() - 2 * 24 * 3600,
+            stop: new BN(campaign.close).toNumber() - args.stopOffset * 24 * 3600,
             close: new BN(campaign.close).toNumber(),
             expire: new BN(campaign.expire).toNumber(),
             minStake: new BN(campaign.minStake).toNumber(),
@@ -9276,7 +9276,7 @@ var getCampaignFromCampaignInfo = /*#__PURE__*/function () {
           _context2.t0 = _context2["catch"](11);
         case 20:
           return _context2.abrupt("return", _extends({}, campaignInfo, {
-            stop: campaignInfo.close - 2 * 24 * 3600,
+            stop: campaignInfo.close - args.stopOffset * 24 * 3600,
             minStake: 100,
             utterances: []
           }, stakeInfo));
@@ -9347,7 +9347,7 @@ var getAllCampaigns = /*#__PURE__*/function () {
           stakedCampaignAccounts = _context3.t1;
           campaigns = campaignsInfo.map(function (campaignInfo) {
             return _extends({}, campaignInfo, {
-              stop: campaignInfo.close - 2 * 24 * 3600,
+              stop: campaignInfo.close - args.stopOffset * 24 * 3600,
               minStake: 100,
               utterances: [],
               builderStakeStatus: role === null ? false : role !== STAKE_ACCOUNT_ROLE.builder.label ? false : stakedCampaignAccounts.includes(campaignInfo.pubkey),
@@ -10060,12 +10060,14 @@ var Dyfarm = /*#__PURE__*/function () {
     this.API_HOST = DYF_API_HOST;
     this.API_AUTH = DYF_API_AUTH;
     this.RPC_HOST = DYF_RPC_HOST;
+    this.STOP_OFFSET = 7;
     this.PROGRAM_ID = args.programId;
     this.SNS_MINT = args.snsMint;
     this.KANON_NFT_CHARITY = args.nftCharity;
     this.API_HOST = args.apiHost;
     this.API_AUTH = args.apiAuth;
     this.RPC_HOST = args.rpcHost;
+    this.STOP_OFFSET = args.stopOffset;
   }
   // airdrop
   var _proto = Dyfarm.prototype;
@@ -10201,14 +10203,16 @@ var Dyfarm = /*#__PURE__*/function () {
     return getCampaignFromCampaignAccount(publicKey, connection, campaignTitle, {
       programId: this.PROGRAM_ID,
       apiHost: this.API_HOST,
-      apiAuth: this.API_AUTH
+      apiAuth: this.API_AUTH,
+      stopOffset: this.STOP_OFFSET
     });
   };
   _proto.getCampaignFromCampaignInfo = function getCampaignFromCampaignInfo$1(publicKey, connection, campaignTitle, role) {
     return getCampaignFromCampaignInfo(publicKey, connection, campaignTitle, role, {
       programId: this.PROGRAM_ID,
       apiHost: this.API_HOST,
-      apiAuth: this.API_AUTH
+      apiAuth: this.API_AUTH,
+      stopOffset: this.STOP_OFFSET
     });
   };
   _proto.getAllCampaigns = function getAllCampaigns$1(publicKey, connection) {
@@ -10216,7 +10220,8 @@ var Dyfarm = /*#__PURE__*/function () {
       programId: this.PROGRAM_ID,
       apiHost: this.API_HOST,
       apiAuth: this.API_AUTH,
-      rpcHost: this.RPC_HOST
+      rpcHost: this.RPC_HOST,
+      stopOffset: this.STOP_OFFSET
     });
   };
   _proto.getAppRole = function getAppRole$1(publicKey) {
