@@ -9291,83 +9291,8 @@ var getCampaignFromCampaignInfo = /*#__PURE__*/function () {
   };
 }();
 var getAllCampaigns = /*#__PURE__*/function () {
-  var _ref3 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(publicKey, connection, args) {
-    var campaignsInfo, role, _PublicKey$findProgra5, userProfile, profile, stakedCampaignAccounts, campaigns;
-    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-      while (1) switch (_context3.prev = _context3.next) {
-        case 0:
-          if (publicKey) {
-            _context3.next = 2;
-            break;
-          }
-          throw new Error('PublicKey is undefined');
-        case 2:
-          if (connection) {
-            _context3.next = 4;
-            break;
-          }
-          throw new Error('Connection is undefined');
-        case 4:
-          _context3.next = 6;
-          return getAllCampaignsInfo({
-            apiHost: args.apiHost,
-            apiAuth: args.apiAuth
-          });
-        case 6:
-          campaignsInfo = _context3.sent;
-          role = null;
-          _context3.prev = 8;
-          _PublicKey$findProgra5 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId), userProfile = _PublicKey$findProgra5[0];
-          _context3.next = 12;
-          return Profile.fromAccountAddress(connection, userProfile, 'processed');
-        case 12:
-          profile = _context3.sent;
-          role = Role[profile.role].toLowerCase();
-          _context3.next = 18;
-          break;
-        case 16:
-          _context3.prev = 16;
-          _context3.t0 = _context3["catch"](8);
-        case 18:
-          if (!(role !== null)) {
-            _context3.next = 24;
-            break;
-          }
-          _context3.next = 21;
-          return getRpcListActivity(args.programId.toBase58(), publicKey.toBase58(), role, {
-            rpcHost: args.rpcHost
-          });
-        case 21:
-          _context3.t1 = _context3.sent;
-          _context3.next = 25;
-          break;
-        case 24:
-          _context3.t1 = [];
-        case 25:
-          stakedCampaignAccounts = _context3.t1;
-          campaigns = campaignsInfo.map(function (campaignInfo) {
-            return _extends({}, campaignInfo, {
-              stop: campaignInfo.close - args.stopOffset * 24 * 3600,
-              minStake: 100,
-              utterances: [],
-              builderStakeStatus: role === null ? false : role !== STAKE_ACCOUNT_ROLE.builder.label ? false : stakedCampaignAccounts.includes(campaignInfo.pubkey),
-              validatorStakeStatus: role === null ? false : role !== STAKE_ACCOUNT_ROLE.validator.label ? false : stakedCampaignAccounts.includes(campaignInfo.pubkey)
-            });
-          });
-          return _context3.abrupt("return", campaigns);
-        case 28:
-        case "end":
-          return _context3.stop();
-      }
-    }, _callee3, null, [[8, 16]]);
-  }));
-  return function getAllCampaigns(_x10, _x11, _x12) {
-    return _ref3.apply(this, arguments);
-  };
-}();
-var getAppRole = /*#__PURE__*/function () {
-  var _ref4 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(publicKey, args) {
-    var role;
+  var _ref3 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(publicKey, connection, isFetchingStakedInfoOnchain, args) {
+    var campaignsInfo, role, _PublicKey$findProgra5, userProfile, profile, campaigns, stakedCampaignAccounts, maxCounter, batchLength, batchCampaignsInfo, _i, arr, j, i, isOnePromiseEnded;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
@@ -9377,22 +9302,183 @@ var getAppRole = /*#__PURE__*/function () {
           }
           throw new Error('PublicKey is undefined');
         case 2:
-          _context4.next = 4;
+          if (connection) {
+            _context4.next = 4;
+            break;
+          }
+          throw new Error('Connection is undefined');
+        case 4:
+          _context4.next = 6;
+          return getAllCampaignsInfo({
+            apiHost: args.apiHost,
+            apiAuth: args.apiAuth
+          });
+        case 6:
+          campaignsInfo = _context4.sent;
+          role = null;
+          _context4.prev = 8;
+          _PublicKey$findProgra5 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId), userProfile = _PublicKey$findProgra5[0];
+          _context4.next = 12;
+          return Profile.fromAccountAddress(connection, userProfile, 'processed');
+        case 12:
+          profile = _context4.sent;
+          role = Role[profile.role].toLowerCase();
+          _context4.next = 18;
+          break;
+        case 16:
+          _context4.prev = 16;
+          _context4.t0 = _context4["catch"](8);
+        case 18:
+          campaigns = [];
+          if (isFetchingStakedInfoOnchain) {
+            _context4.next = 31;
+            break;
+          }
+          if (!(role !== null)) {
+            _context4.next = 26;
+            break;
+          }
+          _context4.next = 23;
+          return getRpcListActivity(args.programId.toBase58(), publicKey.toBase58(), role, {
+            rpcHost: args.rpcHost
+          });
+        case 23:
+          _context4.t1 = _context4.sent;
+          _context4.next = 27;
+          break;
+        case 26:
+          _context4.t1 = [];
+        case 27:
+          stakedCampaignAccounts = _context4.t1;
+          campaigns = campaignsInfo.map(function (campaignInfo) {
+            return _extends({}, campaignInfo, {
+              stop: campaignInfo.close - args.stopOffset * 24 * 3600,
+              minStake: 100,
+              utterances: [],
+              builderStakeStatus: role === null ? false : role !== STAKE_ACCOUNT_ROLE.builder.label ? false : stakedCampaignAccounts.includes(campaignInfo.pubkey),
+              validatorStakeStatus: role === null ? false : role !== STAKE_ACCOUNT_ROLE.validator.label ? false : stakedCampaignAccounts.includes(campaignInfo.pubkey)
+            });
+          });
+          _context4.next = 46;
+          break;
+        case 31:
+          maxCounter = 20;
+          batchLength = Math.ceil(campaignsInfo.length / maxCounter);
+          batchCampaignsInfo = [];
+          for (_i = 0; _i < batchLength; _i++) {
+            arr = [];
+            for (j = 0; j < maxCounter; j++) {
+              if (_i * maxCounter + j < campaignsInfo.length) {
+                arr.push(campaignsInfo[_i * maxCounter + j]);
+              }
+            }
+            batchCampaignsInfo.push(arr);
+          }
+          i = 0;
+          isOnePromiseEnded = true;
+        case 37:
+          if (!(i < batchCampaignsInfo.length)) {
+            _context4.next = 46;
+            break;
+          }
+          if (!isOnePromiseEnded) {
+            _context4.next = 44;
+            break;
+          }
+          isOnePromiseEnded = false;
+          _context4.next = 42;
+          return Promise.all(batchCampaignsInfo[i].map( /*#__PURE__*/function () {
+            var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(campaignInfo) {
+              var _PublicKey$findProgra6, campaignActivityAccount, stakeInfo, campaignActivity, _Object$values$find3, label;
+              return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+                while (1) switch (_context3.prev = _context3.next) {
+                  case 0:
+                    _PublicKey$findProgra6 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignInfo.campaignTitle), publicKey.toBuffer()], args.programId), campaignActivityAccount = _PublicKey$findProgra6[0];
+                    stakeInfo = {
+                      builderStakeStatus: false,
+                      validatorStakeStatus: false
+                    };
+                    _context3.prev = 2;
+                    _context3.next = 5;
+                    return CampaignActivity.fromAccountAddress(connection, campaignActivityAccount, 'processed');
+                  case 5:
+                    campaignActivity = _context3.sent;
+                    if (!new BN(campaignActivity.stakeAmount).eqn(0)) {
+                      label = (_Object$values$find3 = Object.values(STAKE_ACCOUNT_ROLE).find(function (row) {
+                        return row.label === role;
+                      })) == null ? void 0 : _Object$values$find3.label;
+                      stakeInfo = {
+                        builderStakeStatus: label === STAKE_ACCOUNT_ROLE.builder.label,
+                        validatorStakeStatus: label === STAKE_ACCOUNT_ROLE.validator.label
+                      };
+                    }
+                    _context3.next = 11;
+                    break;
+                  case 9:
+                    _context3.prev = 9;
+                    _context3.t0 = _context3["catch"](2);
+                  case 11:
+                    campaigns.push(_extends({}, campaignInfo, {
+                      stop: campaignInfo.close - args.stopOffset * 24 * 3600,
+                      minStake: 100,
+                      utterances: []
+                    }, stakeInfo));
+                  case 12:
+                  case "end":
+                    return _context3.stop();
+                }
+              }, _callee3, null, [[2, 9]]);
+            }));
+            return function (_x14) {
+              return _ref4.apply(this, arguments);
+            };
+          }()));
+        case 42:
+          isOnePromiseEnded = true;
+          i++;
+        case 44:
+          _context4.next = 37;
+          break;
+        case 46:
+          return _context4.abrupt("return", campaigns);
+        case 47:
+        case "end":
+          return _context4.stop();
+      }
+    }, _callee4, null, [[8, 16]]);
+  }));
+  return function getAllCampaigns(_x10, _x11, _x12, _x13) {
+    return _ref3.apply(this, arguments);
+  };
+}();
+var getAppRole = /*#__PURE__*/function () {
+  var _ref5 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(publicKey, args) {
+    var role;
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) switch (_context5.prev = _context5.next) {
+        case 0:
+          if (publicKey) {
+            _context5.next = 2;
+            break;
+          }
+          throw new Error('PublicKey is undefined');
+        case 2:
+          _context5.next = 4;
           return checkWhitelist(publicKey.toBase58(), {
             apiHost: args.apiHost,
             apiAuth: args.apiAuth
           });
         case 4:
-          role = _context4.sent;
-          return _context4.abrupt("return", role === null ? null : STAKE_ACCOUNT_ROLE[role] ? STAKE_ACCOUNT_ROLE[role].val : STAKE_ACCOUNT_ROLE.builder.val);
+          role = _context5.sent;
+          return _context5.abrupt("return", role === null ? null : STAKE_ACCOUNT_ROLE[role] ? STAKE_ACCOUNT_ROLE[role].val : STAKE_ACCOUNT_ROLE.builder.val);
         case 6:
         case "end":
-          return _context4.stop();
+          return _context5.stop();
       }
-    }, _callee4);
+    }, _callee5);
   }));
-  return function getAppRole(_x13, _x14) {
-    return _ref4.apply(this, arguments);
+  return function getAppRole(_x15, _x16) {
+    return _ref5.apply(this, arguments);
   };
 }();
 
@@ -10215,8 +10301,11 @@ var Dyfarm = /*#__PURE__*/function () {
       stopOffset: this.STOP_OFFSET
     });
   };
-  _proto.getAllCampaigns = function getAllCampaigns$1(publicKey, connection) {
-    return getAllCampaigns(publicKey, connection, {
+  _proto.getAllCampaigns = function getAllCampaigns$1(publicKey, connection, isFetchingStakedInfoOnchain) {
+    if (isFetchingStakedInfoOnchain === void 0) {
+      isFetchingStakedInfoOnchain = false;
+    }
+    return getAllCampaigns(publicKey, connection, isFetchingStakedInfoOnchain, {
       programId: this.PROGRAM_ID,
       apiHost: this.API_HOST,
       apiAuth: this.API_AUTH,

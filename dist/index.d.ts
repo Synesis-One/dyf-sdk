@@ -89,7 +89,7 @@ export declare class Dyfarm {
     getValidatorValidationsToday(publicKey: PublicKey): Promise<number>;
     getCampaignFromCampaignAccount(publicKey: PublicKey, connection: Connection, campaignTitle: string): Promise<PCampaign>;
     getCampaignFromCampaignInfo(publicKey: PublicKey, connection: Connection, campaignTitle: string, role: number): Promise<PCampaign>;
-    getAllCampaigns(publicKey: PublicKey, connection: Connection): Promise<PCampaign[]>;
+    getAllCampaigns(publicKey: PublicKey, connection: Connection, isFetchingStakedInfoOnchain?: boolean): Promise<PCampaign[]>;
     getAppRole(publicKey: PublicKey): Promise<number>;
     getIsRpcPermitted(publicKey: PublicKey, connection: Connection, role: string): Promise<boolean>;
     getIsProfileCreated(publicKey: PublicKey, connection: Connection): Promise<boolean>;

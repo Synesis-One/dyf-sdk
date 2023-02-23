@@ -12,7 +12,7 @@ export declare const getCampaignFromCampaignInfo: (publicKey: PublicKey, connect
     programId: PublicKey;
     stopOffset: number;
 }) => Promise<PCampaign>;
-export declare const getAllCampaigns: (publicKey: PublicKey, connection: Connection, args: {
+export declare const getAllCampaigns: (publicKey: PublicKey, connection: Connection, isFetchingStakedInfoOnchain: boolean, args: {
     apiHost: string;
     apiAuth: string;
     programId: PublicKey;
