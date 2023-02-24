@@ -9865,7 +9865,7 @@ var fetchUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
             });
           });
           utterances = utterancesChecked.concat(utterancesQueued).concat(utterancesExpired).sort(function (a, b) {
-            return a.timestamp - b.timestamp || a.data.localeCompare(b.data);
+            return b.timestamp - a.timestamp || b.data.localeCompare(a.data);
           }).reverse();
           return _context2.abrupt("return", utterances);
         case 30:
