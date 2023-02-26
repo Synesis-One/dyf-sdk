@@ -7285,100 +7285,14 @@ var getCampaignInfo = /*#__PURE__*/function () {
     return _ref8.apply(this, arguments);
   };
 }();
-var getSubmissionsInfo = /*#__PURE__*/function () {
-  var _ref9 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(campaign, args) {
+var getSubmissionsValidationsInfo = /*#__PURE__*/function () {
+  var _ref9 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(campaign, wallet, args) {
     return _regeneratorRuntime().wrap(function _callee9$(_context9) {
       while (1) switch (_context9.prev = _context9.next) {
         case 0:
-          return _context9.abrupt("return", axios.post(args.apiHost + "/submissions-info", {
-            wallet: campaign
-          }, {
-            headers: {
-              Authorization: args.apiAuth
-            }
-          }).then(function (response) {
-            if (!!response.data && Array.isArray(response.data)) {
-              return response.data.map(function (submission) {
-                var _Object$values$find, _submission$utterance;
-                return {
-                  timestamp: Math.round(Date.parse(String(submission.timestamp).concat('.000Z')) / 1000),
-                  kind: ((_Object$values$find = Object.values(PHRASE_TYPE).find(function (row) {
-                    return row.val === Number(submission.kind);
-                  })) != null ? _Object$values$find : PHRASE_TYPE.specific)['label'],
-                  data: submission.data,
-                  canonical: submission.reference_id,
-                  builder: submission.builder,
-                  submitted: submission.utterance ? true : false,
-                  pubkey: (_submission$utterance = submission.utterance) != null ? _submission$utterance : undefined,
-                  finish: submission.finish,
-                  correct: submission.correct,
-                  incorrect: submission.incorrect
-                };
-              });
-            } else {
-              return [];
-            }
-          })["catch"](function (error) {
-            console.log(error);
-            return [];
-          }));
-        case 1:
-        case "end":
-          return _context9.stop();
-      }
-    }, _callee9);
-  }));
-  return function getSubmissionsInfo(_x16, _x17) {
-    return _ref9.apply(this, arguments);
-  };
-}();
-var getValidationsInfo = /*#__PURE__*/function () {
-  var _ref10 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(campaign, args) {
-    return _regeneratorRuntime().wrap(function _callee10$(_context10) {
-      while (1) switch (_context10.prev = _context10.next) {
-        case 0:
-          return _context10.abrupt("return", axios.post(args.apiHost + "/validations-info", {
-            wallet: campaign
-          }, {
-            headers: {
-              Authorization: args.apiAuth
-            }
-          }).then(function (response) {
-            if (!!response.data && Array.isArray(response.data)) {
-              return response.data.map(function (validation) {
-                return {
-                  timestamp: Math.round(Date.parse(String(validation.timestamp).concat('.000Z')) / 1000),
-                  utterance: validation.utterance,
-                  validator: validation.validator,
-                  vote: validation.vote,
-                  confidence: validation.vote_confidence,
-                  pubkey: validation.validation
-                };
-              });
-            } else {
-              return [];
-            }
-          })["catch"](function (error) {
-            console.log(error);
-            return [];
-          }));
-        case 1:
-        case "end":
-          return _context10.stop();
-      }
-    }, _callee10);
-  }));
-  return function getValidationsInfo(_x18, _x19) {
-    return _ref10.apply(this, arguments);
-  };
-}();
-var getSubmissionsValidationsInfo = /*#__PURE__*/function () {
-  var _ref11 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11(campaign, args) {
-    return _regeneratorRuntime().wrap(function _callee11$(_context11) {
-      while (1) switch (_context11.prev = _context11.next) {
-        case 0:
-          return _context11.abrupt("return", axios.post(args.apiHost + "/submissions-validations-info", {
-            wallet: campaign
+          return _context9.abrupt("return", axios.post(args.apiHost + "/submissions-validations-info", {
+            campaign: campaign,
+            wallet: wallet
           }, {
             headers: {
               Authorization: args.apiAuth
@@ -7387,17 +7301,17 @@ var getSubmissionsValidationsInfo = /*#__PURE__*/function () {
             if (!!response.data && Array.isArray(response.data)) {
               return {
                 submissions: response.data[0].map(function (submission) {
-                  var _Object$values$find2, _submission$utterance2;
+                  var _Object$values$find, _submission$utterance;
                   return {
                     timestamp: Math.round(Date.parse(String(submission.timestamp).concat('.000Z')) / 1000),
-                    kind: ((_Object$values$find2 = Object.values(PHRASE_TYPE).find(function (row) {
+                    kind: ((_Object$values$find = Object.values(PHRASE_TYPE).find(function (row) {
                       return row.val === Number(submission.kind);
-                    })) != null ? _Object$values$find2 : PHRASE_TYPE.specific)['label'],
+                    })) != null ? _Object$values$find : PHRASE_TYPE.specific)['label'],
                     data: submission.data,
                     canonical: submission.reference_id,
                     builder: submission.builder,
                     submitted: submission.utterance ? true : false,
-                    pubkey: (_submission$utterance2 = submission.utterance) != null ? _submission$utterance2 : undefined,
+                    pubkey: (_submission$utterance = submission.utterance) != null ? _submission$utterance : undefined,
                     finish: submission.finish,
                     correct: submission.correct,
                     incorrect: submission.incorrect
@@ -7429,20 +7343,20 @@ var getSubmissionsValidationsInfo = /*#__PURE__*/function () {
           }));
         case 1:
         case "end":
-          return _context11.stop();
+          return _context9.stop();
       }
-    }, _callee11);
+    }, _callee9);
   }));
-  return function getSubmissionsValidationsInfo(_x20, _x21) {
-    return _ref11.apply(this, arguments);
+  return function getSubmissionsValidationsInfo(_x16, _x17, _x18) {
+    return _ref9.apply(this, arguments);
   };
 }();
 var getAllCampaignTitles = /*#__PURE__*/function () {
-  var _ref12 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12(args) {
-    return _regeneratorRuntime().wrap(function _callee12$(_context12) {
-      while (1) switch (_context12.prev = _context12.next) {
+  var _ref10 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(args) {
+    return _regeneratorRuntime().wrap(function _callee10$(_context10) {
+      while (1) switch (_context10.prev = _context10.next) {
         case 0:
-          return _context12.abrupt("return", axios.get(args.apiHost + "/all-campaign-titles", {
+          return _context10.abrupt("return", axios.get(args.apiHost + "/all-campaign-titles", {
             headers: {
               Authorization: args.apiAuth
             }
@@ -7458,82 +7372,82 @@ var getAllCampaignTitles = /*#__PURE__*/function () {
           }));
         case 1:
         case "end":
+          return _context10.stop();
+      }
+    }, _callee10);
+  }));
+  return function getAllCampaignTitles(_x19) {
+    return _ref10.apply(this, arguments);
+  };
+}();
+var getBuilderActivityInfo = /*#__PURE__*/function () {
+  var _ref11 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11(wallet, args) {
+    return _regeneratorRuntime().wrap(function _callee11$(_context11) {
+      while (1) switch (_context11.prev = _context11.next) {
+        case 0:
+          return _context11.abrupt("return", axios.post(args.apiHost + "/get-builder-activity-info", {
+            wallet: wallet
+          }, {
+            headers: {
+              Authorization: args.apiAuth
+            }
+          }).then(function (response) {
+            if (response.data) {
+              return response.data;
+            } else {
+              return null;
+            }
+          })["catch"](function (error) {
+            console.log(error);
+            return null;
+          }));
+        case 1:
+        case "end":
+          return _context11.stop();
+      }
+    }, _callee11);
+  }));
+  return function getBuilderActivityInfo(_x20, _x21) {
+    return _ref11.apply(this, arguments);
+  };
+}();
+var getValidatorActivityInfo = /*#__PURE__*/function () {
+  var _ref12 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12(wallet, args) {
+    return _regeneratorRuntime().wrap(function _callee12$(_context12) {
+      while (1) switch (_context12.prev = _context12.next) {
+        case 0:
+          return _context12.abrupt("return", axios.post(args.apiHost + "/get-validator-activity-info", {
+            wallet: wallet
+          }, {
+            headers: {
+              Authorization: args.apiAuth
+            }
+          }).then(function (response) {
+            if (response.data) {
+              return response.data;
+            } else {
+              return null;
+            }
+          })["catch"](function (error) {
+            console.log(error);
+            return null;
+          }));
+        case 1:
+        case "end":
           return _context12.stop();
       }
     }, _callee12);
   }));
-  return function getAllCampaignTitles(_x22) {
+  return function getValidatorActivityInfo(_x22, _x23) {
     return _ref12.apply(this, arguments);
   };
 }();
-var getBuilderActivityInfo = /*#__PURE__*/function () {
-  var _ref13 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13(wallet, args) {
+var getBuilderRecentSubmissions = /*#__PURE__*/function () {
+  var _ref13 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13(pubkey, utc_offset, args) {
     return _regeneratorRuntime().wrap(function _callee13$(_context13) {
       while (1) switch (_context13.prev = _context13.next) {
         case 0:
-          return _context13.abrupt("return", axios.post(args.apiHost + "/get-builder-activity-info", {
-            wallet: wallet
-          }, {
-            headers: {
-              Authorization: args.apiAuth
-            }
-          }).then(function (response) {
-            if (response.data) {
-              return response.data;
-            } else {
-              return null;
-            }
-          })["catch"](function (error) {
-            console.log(error);
-            return null;
-          }));
-        case 1:
-        case "end":
-          return _context13.stop();
-      }
-    }, _callee13);
-  }));
-  return function getBuilderActivityInfo(_x23, _x24) {
-    return _ref13.apply(this, arguments);
-  };
-}();
-var getValidatorActivityInfo = /*#__PURE__*/function () {
-  var _ref14 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14(wallet, args) {
-    return _regeneratorRuntime().wrap(function _callee14$(_context14) {
-      while (1) switch (_context14.prev = _context14.next) {
-        case 0:
-          return _context14.abrupt("return", axios.post(args.apiHost + "/get-validator-activity-info", {
-            wallet: wallet
-          }, {
-            headers: {
-              Authorization: args.apiAuth
-            }
-          }).then(function (response) {
-            if (response.data) {
-              return response.data;
-            } else {
-              return null;
-            }
-          })["catch"](function (error) {
-            console.log(error);
-            return null;
-          }));
-        case 1:
-        case "end":
-          return _context14.stop();
-      }
-    }, _callee14);
-  }));
-  return function getValidatorActivityInfo(_x25, _x26) {
-    return _ref14.apply(this, arguments);
-  };
-}();
-var getBuilderRecentSubmissions = /*#__PURE__*/function () {
-  var _ref15 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee15(pubkey, utc_offset, args) {
-    return _regeneratorRuntime().wrap(function _callee15$(_context15) {
-      while (1) switch (_context15.prev = _context15.next) {
-        case 0:
-          return _context15.abrupt("return", axios.post(args.apiHost + "/get-builder-recent-submissions", {
+          return _context13.abrupt("return", axios.post(args.apiHost + "/get-builder-recent-submissions", {
             pubkey: pubkey,
             utc_offset: utc_offset
           }, {
@@ -7552,20 +7466,20 @@ var getBuilderRecentSubmissions = /*#__PURE__*/function () {
           }));
         case 1:
         case "end":
-          return _context15.stop();
+          return _context13.stop();
       }
-    }, _callee15);
+    }, _callee13);
   }));
-  return function getBuilderRecentSubmissions(_x27, _x28, _x29) {
-    return _ref15.apply(this, arguments);
+  return function getBuilderRecentSubmissions(_x24, _x25, _x26) {
+    return _ref13.apply(this, arguments);
   };
 }();
 var getValidatorRecentValidations = /*#__PURE__*/function () {
-  var _ref16 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee16(pubkey, utc_offset, args) {
-    return _regeneratorRuntime().wrap(function _callee16$(_context16) {
-      while (1) switch (_context16.prev = _context16.next) {
+  var _ref14 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14(pubkey, utc_offset, args) {
+    return _regeneratorRuntime().wrap(function _callee14$(_context14) {
+      while (1) switch (_context14.prev = _context14.next) {
         case 0:
-          return _context16.abrupt("return", axios.post(args.apiHost + "/get-validator-recent-submissions", {
+          return _context14.abrupt("return", axios.post(args.apiHost + "/get-validator-recent-submissions", {
             pubkey: pubkey,
             utc_offset: utc_offset
           }, {
@@ -7584,12 +7498,12 @@ var getValidatorRecentValidations = /*#__PURE__*/function () {
           }));
         case 1:
         case "end":
-          return _context16.stop();
+          return _context14.stop();
       }
-    }, _callee16);
+    }, _callee14);
   }));
-  return function getValidatorRecentValidations(_x30, _x31, _x32) {
-    return _ref16.apply(this, arguments);
+  return function getValidatorRecentValidations(_x27, _x28, _x29) {
+    return _ref14.apply(this, arguments);
   };
 }();
 
@@ -7944,7 +7858,7 @@ var getUtterancesAndHistoriesForArchitect = /*#__PURE__*/function () {
           throw new Error('Connection is undefined');
         case 4:
           _context.next = 6;
-          return getSubmissionsValidationsInfo(campaign.pubkey, {
+          return getSubmissionsValidationsInfo(campaign.pubkey, publicKey.toBase58(), {
             apiHost: args.apiHost,
             apiAuth: args.apiAuth
           });
@@ -8237,7 +8151,7 @@ var getUtterancesAndHistoriesForBuilder = /*#__PURE__*/function () {
         case 4:
           _PublicKey$findProgra = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], args.programId), campaignAccount = _PublicKey$findProgra[0];
           _context2.next = 7;
-          return getSubmissionsValidationsInfo(campaignAccount.toBase58(), {
+          return getSubmissionsValidationsInfo(campaignAccount.toBase58(), publicKey.toBase58(), {
             apiHost: args.apiHost,
             apiAuth: args.apiAuth
           });
@@ -9721,7 +9635,7 @@ var fetchUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
         case 4:
           _PublicKey$findProgra = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], args.programId), campaignAccount = _PublicKey$findProgra[0];
           _context2.next = 7;
-          return getSubmissionsValidationsInfo(campaignAccount.toBase58(), {
+          return getSubmissionsValidationsInfo(campaignAccount.toBase58(), publicKey.toBase58(), {
             apiHost: args.apiHost,
             apiAuth: args.apiAuth
           });
@@ -10394,5 +10308,5 @@ var Dyfarm = /*#__PURE__*/function () {
   return Dyfarm;
 }();
 
-export { ACCESS_METHOD, AccessMethod, BError, CError, Campaign, CampaignActivity, CampaignExpiredError, CampaignFinishedAlreadyError, CampaignNotFinishedError, CampaignVault, ConfidentIsInvalidError, DError, DoubleVoteDetectError, Dyfarm, EError, FarmConfig, Feed, Guild, InsufficientTokenBalanceError, InvalidAccessMethodError, InvalidMintError, InvalidNFTError, InvalidPDAError, InvalidStakeAccountError, InvalidStakeDelegateError, InvalidStakeStatusError, InvalidStakeTypeError, InvalidTokenMintError, InvalidTokenOwnerError, LAMPORTS_PER_USDC, LOOKUP_PROGRAM_ADDRESS, METADATA_PROGRAM_ADDRESS, OFFCHAIN_TYPE, Offchain, PHRASE_TYPE, PROGRAM_ADDRESS, PROGRAM_ID, PermitRpcIsMissedError, Phrase, PhraseType, PhraseValidatedAlreadyError, Profile, ProfileNotMatchWithAuthorityError, RPC_TXN_STATUS, RewardBalanceIsZeroError, RewardIsLowError, Role, RoleMismatchError, RpcSignerMismatchError, SNS_PAIR, STAKE_ACCOUNT_ROLE, StakeAccount, StakeAccountRole, StakeAccountType, StakeLockedError, StakingType, Tag, Validate, Validators, accessMethodBeet, accountProviders, addCampaignMeta, adjustRewardInstructionDiscriminator, adjustRewardStruct, airdropInstructionDiscriminator, airdropStruct, allocateTableInstructionDiscriminator, allocateTableStruct, awaitTransactionSignatureConfirmation, campaignActivityBeet, campaignActivityDiscriminator, campaignBeet, campaignDiscriminator, campaignVaultBeet, campaignVaultDiscriminator, checkPriceInstructionDiscriminator, checkPriceStruct, checkWhitelist, claimRewardInstructionDiscriminator, claimRewardStruct, createAdjustRewardInstruction, createAirdropInstruction, createAirdropSNSInstructions, createAllocateTableInstruction, createArchitectCreateCampaignInstructions, createArchitectUpdateCampaignInstructions, createBatchClaimRewardInstructions, createBuilderSubmitUtterancesInstructions, createCampaignInstructionDiscriminator, createCampaignStruct, createCheckPriceInstruction, createClaimRewardInstruction, createClaimRewardInstructions, createCreateCampaignInstruction, createCreateGuildInstruction, createCreateProfileInstruction, createDeactiveTableInstruction, createExtendTableInstruction, createFree2playInstruction, createGuildClaimRewardInstruction, createGuildGrantScholarInstruction, createGuildInstructionDiscriminator, createGuildStakeNftInstruction, createGuildStruct, createGuildUnstakeNftInstruction, createInitializeInstruction, createProfileInstructionDiscriminator, createProfileStruct, createRevokeScholarInstruction, createRpcCloseCampaignInstruction, createRpcClosePhraseInstruction, createRpcCloseValidateInstruction, createRpcPermitInstruction, createRpcPermitInstructions, createRpcSubmitPhraseInstruction, createRpcSubmitUtterancesPromises, createRpcValidatePhraseInstruction, createRpcValidateUtterancesPromises, createScholarSignInstruction, createStakeCampaignInstruction, createStakeCampaignInstructions, createStakeCampaignWithNFTInstructions, createStakeNftInstruction, createSubmitPhraseInstruction, createUnstakeCampaignInstruction, createUnstakeCampaignInstructions, createUnstakeNftInstruction, createUpdateCampaignInstruction, createUtteranceByOntology, createValidatePhraseInstruction, createValidatorValidateUtterancesInstructions, createVerifyPreStakedNftInstruction, deactiveTableInstructionDiscriminator, deactiveTableStruct, decodeText, delCampaignMeta, deleteOntology, deleteOntologyByCanonical, encodeText, errorFromCode, errorFromName, extendTableInstructionDiscriminator, extendTableStruct, farmConfigBeet, farmConfigDiscriminator, feedBeet, feedDiscriminator, fetchUtterancesAndHistoriesForValidator, free2playInstructionDiscriminator, free2playStruct, getAllCampaignTitles, getAllCampaigns, getAllCampaignsInfo, getAppRole, getAssociateTokenAccount, getBuilderActivity, getBuilderActivityInfo, getBuilderRecentSubmissions, getBuilderSubmissionsToday, getCampaginMeta, getCampaignFromCampaignAccount, getCampaignFromCampaignInfo, getCampaignInfo, getIsProfileCreated, getIsRpcPermitted, getKanonNfts, getOrCreateAssociateTokenAccount, getRpcAuthToken, getRpcListActivity, getRpcSubmissionStatus, getRpcValidationStatus, getSolBalance, getSubmissionsInfo, getSubmissionsValidationsInfo, getTokenBalance, getTotalAvailableRewards, getUnusedCampaignTitle, getUtterancesAndHistoriesForArchitect, getUtterancesAndHistoriesForBuilder, getValidationsInfo, getValidatorActivity, getValidatorActivityInfo, getValidatorRecentValidations, getValidatorValidationsToday, guildBeet, guildClaimRewardInstructionDiscriminator, guildClaimRewardStruct, guildDiscriminator, guildGrantScholarInstructionDiscriminator, guildGrantScholarStruct, guildStakeNftInstructionDiscriminator, guildStakeNftStruct, guildUnstakeNftInstructionDiscriminator, guildUnstakeNftStruct, initializeInstructionDiscriminator, initializeStruct, isEmptyAddress, isEqualAddress, isIncludingAddress, isValidAddress, offchainBeet, phraseBeet, phraseDiscriminator, phraseTypeBeet, profileBeet, profileDiscriminator, revokeScholarInstructionDiscriminator, revokeScholarStruct, roleBeet, rpcBatchSubmitPhrases, rpcBatchValidatePhrase, rpcCloseCampaignInstructionDiscriminator, rpcCloseCampaignStruct, rpcClosePhraseInstructionDiscriminator, rpcClosePhraseStruct, rpcCloseValidateInstructionDiscriminator, rpcCloseValidateStruct, rpcPermitInstructionDiscriminator, rpcPermitStruct, rpcRequestAuth, rpcSubmitPhrase, rpcSubmitPhraseInstructionDiscriminator, rpcSubmitPhraseStruct, rpcValidatePhrase, rpcValidatePhraseInstructionDiscriminator, rpcValidatePhraseStruct, rpcVerifyAuth, scholarSignInstructionDiscriminator, scholarSignStruct, sendAndConfirmWithRetry, sendInstructions, sleep, stakeAccountBeet, stakeAccountDiscriminator, stakeAccountRoleBeet, stakeAccountTypeBeet, stakeCampaignInstructionDiscriminator, stakeCampaignStruct, stakeNftInstructionDiscriminator, stakeNftStruct, stakingTypeBeet, submitOntology, submitPhraseInstructionDiscriminator, submitPhraseStruct, tagBeet, unstakeCampaignInstructionDiscriminator, unstakeCampaignStruct, unstakeNftInstructionDiscriminator, unstakeNftStruct, updateCampaignInstructionDiscriminator, updateCampaignStruct, validateBeet, validateDiscriminator, validatePhraseInstructionDiscriminator, validatePhraseStruct, validatorsBeet, validatorsDiscriminator, verifyPreStakedNftInstructionDiscriminator, verifyPreStakedNftStruct };
+export { ACCESS_METHOD, AccessMethod, BError, CError, Campaign, CampaignActivity, CampaignExpiredError, CampaignFinishedAlreadyError, CampaignNotFinishedError, CampaignVault, ConfidentIsInvalidError, DError, DoubleVoteDetectError, Dyfarm, EError, FarmConfig, Feed, Guild, InsufficientTokenBalanceError, InvalidAccessMethodError, InvalidMintError, InvalidNFTError, InvalidPDAError, InvalidStakeAccountError, InvalidStakeDelegateError, InvalidStakeStatusError, InvalidStakeTypeError, InvalidTokenMintError, InvalidTokenOwnerError, LAMPORTS_PER_USDC, LOOKUP_PROGRAM_ADDRESS, METADATA_PROGRAM_ADDRESS, OFFCHAIN_TYPE, Offchain, PHRASE_TYPE, PROGRAM_ADDRESS, PROGRAM_ID, PermitRpcIsMissedError, Phrase, PhraseType, PhraseValidatedAlreadyError, Profile, ProfileNotMatchWithAuthorityError, RPC_TXN_STATUS, RewardBalanceIsZeroError, RewardIsLowError, Role, RoleMismatchError, RpcSignerMismatchError, SNS_PAIR, STAKE_ACCOUNT_ROLE, StakeAccount, StakeAccountRole, StakeAccountType, StakeLockedError, StakingType, Tag, Validate, Validators, accessMethodBeet, accountProviders, addCampaignMeta, adjustRewardInstructionDiscriminator, adjustRewardStruct, airdropInstructionDiscriminator, airdropStruct, allocateTableInstructionDiscriminator, allocateTableStruct, awaitTransactionSignatureConfirmation, campaignActivityBeet, campaignActivityDiscriminator, campaignBeet, campaignDiscriminator, campaignVaultBeet, campaignVaultDiscriminator, checkPriceInstructionDiscriminator, checkPriceStruct, checkWhitelist, claimRewardInstructionDiscriminator, claimRewardStruct, createAdjustRewardInstruction, createAirdropInstruction, createAirdropSNSInstructions, createAllocateTableInstruction, createArchitectCreateCampaignInstructions, createArchitectUpdateCampaignInstructions, createBatchClaimRewardInstructions, createBuilderSubmitUtterancesInstructions, createCampaignInstructionDiscriminator, createCampaignStruct, createCheckPriceInstruction, createClaimRewardInstruction, createClaimRewardInstructions, createCreateCampaignInstruction, createCreateGuildInstruction, createCreateProfileInstruction, createDeactiveTableInstruction, createExtendTableInstruction, createFree2playInstruction, createGuildClaimRewardInstruction, createGuildGrantScholarInstruction, createGuildInstructionDiscriminator, createGuildStakeNftInstruction, createGuildStruct, createGuildUnstakeNftInstruction, createInitializeInstruction, createProfileInstructionDiscriminator, createProfileStruct, createRevokeScholarInstruction, createRpcCloseCampaignInstruction, createRpcClosePhraseInstruction, createRpcCloseValidateInstruction, createRpcPermitInstruction, createRpcPermitInstructions, createRpcSubmitPhraseInstruction, createRpcSubmitUtterancesPromises, createRpcValidatePhraseInstruction, createRpcValidateUtterancesPromises, createScholarSignInstruction, createStakeCampaignInstruction, createStakeCampaignInstructions, createStakeCampaignWithNFTInstructions, createStakeNftInstruction, createSubmitPhraseInstruction, createUnstakeCampaignInstruction, createUnstakeCampaignInstructions, createUnstakeNftInstruction, createUpdateCampaignInstruction, createUtteranceByOntology, createValidatePhraseInstruction, createValidatorValidateUtterancesInstructions, createVerifyPreStakedNftInstruction, deactiveTableInstructionDiscriminator, deactiveTableStruct, decodeText, delCampaignMeta, deleteOntology, deleteOntologyByCanonical, encodeText, errorFromCode, errorFromName, extendTableInstructionDiscriminator, extendTableStruct, farmConfigBeet, farmConfigDiscriminator, feedBeet, feedDiscriminator, fetchUtterancesAndHistoriesForValidator, free2playInstructionDiscriminator, free2playStruct, getAllCampaignTitles, getAllCampaigns, getAllCampaignsInfo, getAppRole, getAssociateTokenAccount, getBuilderActivity, getBuilderActivityInfo, getBuilderRecentSubmissions, getBuilderSubmissionsToday, getCampaginMeta, getCampaignFromCampaignAccount, getCampaignFromCampaignInfo, getCampaignInfo, getIsProfileCreated, getIsRpcPermitted, getKanonNfts, getOrCreateAssociateTokenAccount, getRpcAuthToken, getRpcListActivity, getRpcSubmissionStatus, getRpcValidationStatus, getSolBalance, getSubmissionsValidationsInfo, getTokenBalance, getTotalAvailableRewards, getUnusedCampaignTitle, getUtterancesAndHistoriesForArchitect, getUtterancesAndHistoriesForBuilder, getValidatorActivity, getValidatorActivityInfo, getValidatorRecentValidations, getValidatorValidationsToday, guildBeet, guildClaimRewardInstructionDiscriminator, guildClaimRewardStruct, guildDiscriminator, guildGrantScholarInstructionDiscriminator, guildGrantScholarStruct, guildStakeNftInstructionDiscriminator, guildStakeNftStruct, guildUnstakeNftInstructionDiscriminator, guildUnstakeNftStruct, initializeInstructionDiscriminator, initializeStruct, isEmptyAddress, isEqualAddress, isIncludingAddress, isValidAddress, offchainBeet, phraseBeet, phraseDiscriminator, phraseTypeBeet, profileBeet, profileDiscriminator, revokeScholarInstructionDiscriminator, revokeScholarStruct, roleBeet, rpcBatchSubmitPhrases, rpcBatchValidatePhrase, rpcCloseCampaignInstructionDiscriminator, rpcCloseCampaignStruct, rpcClosePhraseInstructionDiscriminator, rpcClosePhraseStruct, rpcCloseValidateInstructionDiscriminator, rpcCloseValidateStruct, rpcPermitInstructionDiscriminator, rpcPermitStruct, rpcRequestAuth, rpcSubmitPhrase, rpcSubmitPhraseInstructionDiscriminator, rpcSubmitPhraseStruct, rpcValidatePhrase, rpcValidatePhraseInstructionDiscriminator, rpcValidatePhraseStruct, rpcVerifyAuth, scholarSignInstructionDiscriminator, scholarSignStruct, sendAndConfirmWithRetry, sendInstructions, sleep, stakeAccountBeet, stakeAccountDiscriminator, stakeAccountRoleBeet, stakeAccountTypeBeet, stakeCampaignInstructionDiscriminator, stakeCampaignStruct, stakeNftInstructionDiscriminator, stakeNftStruct, stakingTypeBeet, submitOntology, submitPhraseInstructionDiscriminator, submitPhraseStruct, tagBeet, unstakeCampaignInstructionDiscriminator, unstakeCampaignStruct, unstakeNftInstructionDiscriminator, unstakeNftStruct, updateCampaignInstructionDiscriminator, updateCampaignStruct, validateBeet, validateDiscriminator, validatePhraseInstructionDiscriminator, validatePhraseStruct, validatorsBeet, validatorsDiscriminator, verifyPreStakedNftInstructionDiscriminator, verifyPreStakedNftStruct };
 //# sourceMappingURL=dyf.esm.js.map

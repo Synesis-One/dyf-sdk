@@ -35,15 +35,7 @@ export declare const getCampaignInfo: (dapp_title: string, args: {
     apiHost: string;
     apiAuth: string;
 }) => Promise<ApiCampaignInfo | null>;
-export declare const getSubmissionsInfo: (campaign: string, args: {
-    apiHost: string;
-    apiAuth: string;
-}) => Promise<ApiSubmissionInfo[]>;
-export declare const getValidationsInfo: (campaign: string, args: {
-    apiHost: string;
-    apiAuth: string;
-}) => Promise<ApiValidationsInfo[]>;
-export declare const getSubmissionsValidationsInfo: (campaign: string, args: {
+export declare const getSubmissionsValidationsInfo: (campaign: string, wallet: string, args: {
     apiHost: string;
     apiAuth: string;
 }) => Promise<{
