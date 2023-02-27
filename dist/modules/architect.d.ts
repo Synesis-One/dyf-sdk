@@ -1,6 +1,6 @@
 import { Connection, PublicKey, Signer, TransactionInstruction } from '@solana/web3.js';
-import { PCampaign, PUtterance, CreateCampaignArgs, UpdateCampaignArgs } from '../typings';
-export declare const getUtterancesAndHistoriesForArchitect: (publicKey: PublicKey, connection: Connection, campaign: PCampaign, args: {
+import { PUtterance, CreateCampaignArgs, UpdateCampaignArgs } from '../typings';
+export declare const getUtterancesAndHistoriesForArchitect: (publicKey: PublicKey, connection: Connection, campaignAccountPubkey: string, args: {
     apiHost: string;
     apiAuth: string;
 }) => Promise<PUtterance[]>;

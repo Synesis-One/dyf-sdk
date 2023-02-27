@@ -1,6 +1,6 @@
 import { Connection, PublicKey, Signer, TransactionInstruction } from '@solana/web3.js';
 import { SubmitOntologyArgs, PUtterance } from '../typings';
-export declare const getUtterancesAndHistoriesForBuilder: (publicKey: PublicKey, connection: Connection, campaignTitle: string, latestSubmittedUuids: string[], args: {
+export declare const getUtterancesAndHistoriesForBuilder: (publicKey: PublicKey, connection: Connection, campaignAccountPubkey: string, latestSubmittedUuids: string[], args: {
     apiHost: string;
     apiAuth: string;
     rpcHost: string;

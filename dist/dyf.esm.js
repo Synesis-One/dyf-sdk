@@ -7840,8 +7840,8 @@ var getRpcListActivity = /*#__PURE__*/function () {
 }();
 
 var getUtterancesAndHistoriesForArchitect = /*#__PURE__*/function () {
-  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(publicKey, connection, campaign, args) {
-    var submissionsAndValidationsInfo, submissionsInfo, validationsInfo, objValidationsInfo, submissionsChecked, utterances;
+  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(publicKey, connection, campaignAccountPubkey, args) {
+    var campaignAccount, submissionsAndValidationsInfo, submissionsInfo, validationsInfo, objValidationsInfo, submissionsChecked, utterances;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
@@ -7857,12 +7857,13 @@ var getUtterancesAndHistoriesForArchitect = /*#__PURE__*/function () {
           }
           throw new Error('Connection is undefined');
         case 4:
-          _context.next = 6;
-          return getSubmissionsValidationsInfo(campaign.pubkey, publicKey.toBase58(), {
+          campaignAccount = new PublicKey(campaignAccountPubkey);
+          _context.next = 7;
+          return getSubmissionsValidationsInfo(campaignAccount.toBase58(), publicKey.toBase58(), {
             apiHost: args.apiHost,
             apiAuth: args.apiAuth
           });
-        case 6:
+        case 7:
           submissionsAndValidationsInfo = _context.sent;
           submissionsInfo = submissionsAndValidationsInfo.submissions;
           validationsInfo = submissionsAndValidationsInfo.validations;
@@ -7899,7 +7900,7 @@ var getUtterancesAndHistoriesForArchitect = /*#__PURE__*/function () {
             return a.timestamp - b.timestamp || a.data.localeCompare(b.data);
           }).reverse();
           return _context.abrupt("return", utterances);
-        case 13:
+        case 14:
         case "end":
           return _context.stop();
       }
@@ -8132,8 +8133,8 @@ var getUnusedCampaignTitle = /*#__PURE__*/function () {
 }();
 
 var getUtterancesAndHistoriesForBuilder = /*#__PURE__*/function () {
-  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, campaignTitle, latestSubmittedUuids, args) {
-    var _PublicKey$findProgra, campaignAccount, submissionsAndValidationsInfo, submissionsInfo, validationsInfo, rpcSubmissions, objSubmissionsInfo, objValidationsInfo, objRpcSubmissions, utterancesChecked, utterancesPre, utterancesQueued, utterancesExpired, submissionsChecked, submissionsPre, submissionsNotSubmittedButRpcFinalizedOrExpired, submissionsNotSubmittedAndRpcPending, utterances;
+  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, campaignAccountPubkey, latestSubmittedUuids, args) {
+    var campaignAccount, submissionsAndValidationsInfo, submissionsInfo, validationsInfo, rpcSubmissions, objSubmissionsInfo, objValidationsInfo, objRpcSubmissions, utterancesChecked, utterancesPre, utterancesQueued, utterancesExpired, submissionsChecked, submissionsPre, submissionsNotSubmittedButRpcFinalizedOrExpired, submissionsNotSubmittedAndRpcPending, utterances;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
@@ -8149,7 +8150,7 @@ var getUtterancesAndHistoriesForBuilder = /*#__PURE__*/function () {
           }
           throw new Error('Connection is undefined');
         case 4:
-          _PublicKey$findProgra = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], args.programId), campaignAccount = _PublicKey$findProgra[0];
+          campaignAccount = new PublicKey(campaignAccountPubkey);
           _context2.next = 7;
           return getSubmissionsValidationsInfo(campaignAccount.toBase58(), publicKey.toBase58(), {
             apiHost: args.apiHost,
@@ -8229,11 +8230,11 @@ var getUtterancesAndHistoriesForBuilder = /*#__PURE__*/function () {
           _context2.next = 30;
           return Promise.all(submissionsNotSubmittedButRpcFinalizedOrExpired.map( /*#__PURE__*/function () {
             var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(submission) {
-              var _PublicKey$findProgra2, phraseAccount, phrase, _objValidationsInfo$p, _Object$values$find, histories, history;
+              var _PublicKey$findProgra, phraseAccount, phrase, _objValidationsInfo$p, _Object$values$find, histories, history;
               return _regeneratorRuntime().wrap(function _callee$(_context) {
                 while (1) switch (_context.prev = _context.next) {
                   case 0:
-                    _PublicKey$findProgra2 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:PHRASE'), campaignAccount.toBuffer(), Buffer.from(submission.canonical)], args.programId), phraseAccount = _PublicKey$findProgra2[0];
+                    _PublicKey$findProgra = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:PHRASE'), campaignAccount.toBuffer(), Buffer.from(submission.canonical)], args.programId), phraseAccount = _PublicKey$findProgra[0];
                     _context.prev = 1;
                     _context.next = 4;
                     return Phrase.fromAccountAddress(connection, phraseAccount, 'processed');
@@ -8436,17 +8437,17 @@ var createBuilderSubmitUtterancesInstructions = function createBuilderSubmitUtte
   if (!connection) throw new Error('Connection is undefined');
   var instructions = [];
   var signers = [];
-  var _PublicKey$findProgra3 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], args.programId),
-    campaignAccount = _PublicKey$findProgra3[0];
-  var _PublicKey$findProgra4 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], args.programId),
-    farmConfig = _PublicKey$findProgra4[0];
-  var _PublicKey$findProgra5 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId),
-    userProfile = _PublicKey$findProgra5[0];
-  var _PublicKey$findProgra6 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), publicKey.toBuffer()], args.programId),
-    campaignActivity = _PublicKey$findProgra6[0];
+  var _PublicKey$findProgra2 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], args.programId),
+    campaignAccount = _PublicKey$findProgra2[0];
+  var _PublicKey$findProgra3 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], args.programId),
+    farmConfig = _PublicKey$findProgra3[0];
+  var _PublicKey$findProgra4 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId),
+    userProfile = _PublicKey$findProgra4[0];
+  var _PublicKey$findProgra5 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), publicKey.toBuffer()], args.programId),
+    campaignActivity = _PublicKey$findProgra5[0];
   instructions = utterances.map(function (utterance) {
-    var _PublicKey$findProgra7 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:PHRASE'), campaignAccount.toBuffer(), Buffer.from(utterance.canonical)], args.programId),
-      phraseAccount = _PublicKey$findProgra7[0];
+    var _PublicKey$findProgra6 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:PHRASE'), campaignAccount.toBuffer(), Buffer.from(utterance.canonical)], args.programId),
+      phraseAccount = _PublicKey$findProgra6[0];
     return createSubmitPhraseInstruction({
       user: publicKey,
       phraseAccount: phraseAccount,
@@ -9615,9 +9616,9 @@ var getRpcAuthToken = /*#__PURE__*/function () {
   };
 }();
 
-var fetchUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
-  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, campaignTitle, latestSubmittedUuids, args) {
-    var _PublicKey$findProgra, campaignAccount, submissionsAndValidationsInfo, submissionsInfo, validationsInfo, rpcValidations, objValidationsInfo, objRpcValidations, utterancesChecked, utterancesQueued, utterancesExpired, submissionsChecked, submissionsNotValidatedButRpcFinalizedOrExpired, submissionsNotValidatedButRpcPending, utterances;
+var getUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
+  var _ref = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(publicKey, connection, campaignTitle, campaignAccountPubkey, latestSubmittedUuids, args) {
+    var campaignAccount, submissionsAndValidationsInfo, submissionsInfo, validationsInfo, rpcValidations, objValidationsInfo, objRpcValidations, utterancesChecked, utterancesQueued, utterancesExpired, submissionsChecked, submissionsNotValidatedButRpcFinalizedOrExpired, submissionsNotValidatedButRpcPending, utterances;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
@@ -9633,7 +9634,7 @@ var fetchUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
           }
           throw new Error('Connection is undefined');
         case 4:
-          _PublicKey$findProgra = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], args.programId), campaignAccount = _PublicKey$findProgra[0];
+          campaignAccount = new PublicKey(campaignAccountPubkey);
           _context2.next = 7;
           return getSubmissionsValidationsInfo(campaignAccount.toBase58(), publicKey.toBase58(), {
             apiHost: args.apiHost,
@@ -9714,7 +9715,7 @@ var fetchUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
           return Promise.all(submissionsNotValidatedButRpcFinalizedOrExpired.map( /*#__PURE__*/function () {
             var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(submission) {
               var _objValidationsInfo$s4;
-              var _PublicKey$findProgra2, historyAccount, histories, utterance, history;
+              var _PublicKey$findProgra, historyAccount, histories, utterance, history;
               return _regeneratorRuntime().wrap(function _callee$(_context) {
                 while (1) switch (_context.prev = _context.next) {
                   case 0:
@@ -9724,7 +9725,7 @@ var fetchUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
                     }
                     return _context.abrupt("return");
                   case 2:
-                    _PublicKey$findProgra2 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:PHRASE:LOG'), Buffer.from(campaignTitle), new PublicKey(submission.pubkey).toBuffer(), publicKey.toBuffer()], args.programId), historyAccount = _PublicKey$findProgra2[0];
+                    _PublicKey$findProgra = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:PHRASE:LOG'), Buffer.from(campaignTitle), new PublicKey(submission.pubkey).toBuffer(), publicKey.toBuffer()], args.programId), historyAccount = _PublicKey$findProgra[0];
                     histories = (_objValidationsInfo$s4 = objValidationsInfo[submission.pubkey]) != null ? _objValidationsInfo$s4 : [];
                     utterance = {
                       timestamp: submission.timestamp,
@@ -9775,7 +9776,7 @@ var fetchUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
                 }
               }, _callee, null, [[5, 12]]);
             }));
-            return function (_x6) {
+            return function (_x7) {
               return _ref2.apply(this, arguments);
             };
           }()));
@@ -9822,7 +9823,7 @@ var fetchUtterancesAndHistoriesForValidator = /*#__PURE__*/function () {
       }
     }, _callee2);
   }));
-  return function fetchUtterancesAndHistoriesForValidator(_x, _x2, _x3, _x4, _x5) {
+  return function getUtterancesAndHistoriesForValidator(_x, _x2, _x3, _x4, _x5, _x6) {
     return _ref.apply(this, arguments);
   };
 }();
@@ -9831,20 +9832,20 @@ var createValidatorValidateUtterancesInstructions = function createValidatorVali
   if (!connection) throw new Error('Connection is undefined');
   var instructions = [];
   var signers = [];
-  var _PublicKey$findProgra3 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], args.programId),
-    campaignAccount = _PublicKey$findProgra3[0];
-  var _PublicKey$findProgra4 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], args.programId),
-    farmConfig = _PublicKey$findProgra4[0];
-  var _PublicKey$findProgra5 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId),
-    userProfile = _PublicKey$findProgra5[0];
-  var _PublicKey$findProgra6 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), publicKey.toBuffer()], args.programId),
-    campaignActivity = _PublicKey$findProgra6[0];
+  var _PublicKey$findProgra2 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN'), Buffer.from(campaignTitle)], args.programId),
+    campaignAccount = _PublicKey$findProgra2[0];
+  var _PublicKey$findProgra3 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CONFIG')], args.programId),
+    farmConfig = _PublicKey$findProgra3[0];
+  var _PublicKey$findProgra4 = PublicKey.findProgramAddressSync([Buffer.from('DYF:PROFILE'), publicKey.toBuffer()], args.programId),
+    userProfile = _PublicKey$findProgra4[0];
+  var _PublicKey$findProgra5 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), publicKey.toBuffer()], args.programId),
+    campaignActivity = _PublicKey$findProgra5[0];
   instructions = validations.map(function (validation) {
     var phraseAccount = new PublicKey(validation.utterance);
-    var _PublicKey$findProgra7 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:PHRASE:LOG'), Buffer.from(campaignTitle), phraseAccount.toBuffer(), publicKey.toBuffer()], args.programId),
-      logAccount = _PublicKey$findProgra7[0];
-    var _PublicKey$findProgra8 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), new PublicKey(validation.builder).toBuffer()], args.programId),
-      builderActivity = _PublicKey$findProgra8[0];
+    var _PublicKey$findProgra6 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:PHRASE:LOG'), Buffer.from(campaignTitle), phraseAccount.toBuffer(), publicKey.toBuffer()], args.programId),
+      logAccount = _PublicKey$findProgra6[0];
+    var _PublicKey$findProgra7 = PublicKey.findProgramAddressSync([Buffer.from('DYF:CAMPAIGN:ACTIVITY'), Buffer.from(campaignTitle), new PublicKey(validation.builder).toBuffer()], args.programId),
+      builderActivity = _PublicKey$findProgra7[0];
     return createValidatePhraseInstruction({
       user: publicKey,
       phraseAccount: phraseAccount,
@@ -10079,8 +10080,8 @@ var Dyfarm = /*#__PURE__*/function () {
   }
   // architect
   ;
-  _proto.getUtterancesAndHistoriesForArchitect = function getUtterancesAndHistoriesForArchitect$1(publicKey, connection, campaign) {
-    return getUtterancesAndHistoriesForArchitect(publicKey, connection, campaign, {
+  _proto.getUtterancesAndHistoriesForArchitect = function getUtterancesAndHistoriesForArchitect$1(publicKey, connection, campaignAccountPubkey) {
+    return getUtterancesAndHistoriesForArchitect(publicKey, connection, campaignAccountPubkey, {
       apiHost: this.API_HOST,
       apiAuth: this.API_AUTH
     });
@@ -10105,8 +10106,8 @@ var Dyfarm = /*#__PURE__*/function () {
   }
   // builder
   ;
-  _proto.getUtterancesAndHistoriesForBuilder = function getUtterancesAndHistoriesForBuilder$1(publicKey, connection, campaignTitle, latestSubmittedUuids) {
-    return getUtterancesAndHistoriesForBuilder(publicKey, connection, campaignTitle, latestSubmittedUuids, {
+  _proto.getUtterancesAndHistoriesForBuilder = function getUtterancesAndHistoriesForBuilder$1(publicKey, connection, campaignAccountPubkey, latestSubmittedUuids) {
+    return getUtterancesAndHistoriesForBuilder(publicKey, connection, campaignAccountPubkey, latestSubmittedUuids, {
       apiHost: this.API_HOST,
       apiAuth: this.API_AUTH,
       rpcHost: this.RPC_HOST,
@@ -10257,8 +10258,8 @@ var Dyfarm = /*#__PURE__*/function () {
   }
   // validator
   ;
-  _proto.fetchUtterancesAndHistoriesForValidator = function fetchUtterancesAndHistoriesForValidator$1(publicKey, connection, campaignTitle, latestSubmittedUuids) {
-    return fetchUtterancesAndHistoriesForValidator(publicKey, connection, campaignTitle, latestSubmittedUuids, {
+  _proto.getUtterancesAndHistoriesForValidator = function getUtterancesAndHistoriesForValidator$1(publicKey, connection, campaignTitle, campaignAccountPubkey, latestSubmittedUuids) {
+    return getUtterancesAndHistoriesForValidator(publicKey, connection, campaignTitle, campaignAccountPubkey, latestSubmittedUuids, {
       apiHost: this.API_HOST,
       apiAuth: this.API_AUTH,
       rpcHost: this.RPC_HOST,
@@ -10308,5 +10309,5 @@ var Dyfarm = /*#__PURE__*/function () {
   return Dyfarm;
 }();
 
-export { ACCESS_METHOD, AccessMethod, BError, CError, Campaign, CampaignActivity, CampaignExpiredError, CampaignFinishedAlreadyError, CampaignNotFinishedError, CampaignVault, ConfidentIsInvalidError, DError, DoubleVoteDetectError, Dyfarm, EError, FarmConfig, Feed, Guild, InsufficientTokenBalanceError, InvalidAccessMethodError, InvalidMintError, InvalidNFTError, InvalidPDAError, InvalidStakeAccountError, InvalidStakeDelegateError, InvalidStakeStatusError, InvalidStakeTypeError, InvalidTokenMintError, InvalidTokenOwnerError, LAMPORTS_PER_USDC, LOOKUP_PROGRAM_ADDRESS, METADATA_PROGRAM_ADDRESS, OFFCHAIN_TYPE, Offchain, PHRASE_TYPE, PROGRAM_ADDRESS, PROGRAM_ID, PermitRpcIsMissedError, Phrase, PhraseType, PhraseValidatedAlreadyError, Profile, ProfileNotMatchWithAuthorityError, RPC_TXN_STATUS, RewardBalanceIsZeroError, RewardIsLowError, Role, RoleMismatchError, RpcSignerMismatchError, SNS_PAIR, STAKE_ACCOUNT_ROLE, StakeAccount, StakeAccountRole, StakeAccountType, StakeLockedError, StakingType, Tag, Validate, Validators, accessMethodBeet, accountProviders, addCampaignMeta, adjustRewardInstructionDiscriminator, adjustRewardStruct, airdropInstructionDiscriminator, airdropStruct, allocateTableInstructionDiscriminator, allocateTableStruct, awaitTransactionSignatureConfirmation, campaignActivityBeet, campaignActivityDiscriminator, campaignBeet, campaignDiscriminator, campaignVaultBeet, campaignVaultDiscriminator, checkPriceInstructionDiscriminator, checkPriceStruct, checkWhitelist, claimRewardInstructionDiscriminator, claimRewardStruct, createAdjustRewardInstruction, createAirdropInstruction, createAirdropSNSInstructions, createAllocateTableInstruction, createArchitectCreateCampaignInstructions, createArchitectUpdateCampaignInstructions, createBatchClaimRewardInstructions, createBuilderSubmitUtterancesInstructions, createCampaignInstructionDiscriminator, createCampaignStruct, createCheckPriceInstruction, createClaimRewardInstruction, createClaimRewardInstructions, createCreateCampaignInstruction, createCreateGuildInstruction, createCreateProfileInstruction, createDeactiveTableInstruction, createExtendTableInstruction, createFree2playInstruction, createGuildClaimRewardInstruction, createGuildGrantScholarInstruction, createGuildInstructionDiscriminator, createGuildStakeNftInstruction, createGuildStruct, createGuildUnstakeNftInstruction, createInitializeInstruction, createProfileInstructionDiscriminator, createProfileStruct, createRevokeScholarInstruction, createRpcCloseCampaignInstruction, createRpcClosePhraseInstruction, createRpcCloseValidateInstruction, createRpcPermitInstruction, createRpcPermitInstructions, createRpcSubmitPhraseInstruction, createRpcSubmitUtterancesPromises, createRpcValidatePhraseInstruction, createRpcValidateUtterancesPromises, createScholarSignInstruction, createStakeCampaignInstruction, createStakeCampaignInstructions, createStakeCampaignWithNFTInstructions, createStakeNftInstruction, createSubmitPhraseInstruction, createUnstakeCampaignInstruction, createUnstakeCampaignInstructions, createUnstakeNftInstruction, createUpdateCampaignInstruction, createUtteranceByOntology, createValidatePhraseInstruction, createValidatorValidateUtterancesInstructions, createVerifyPreStakedNftInstruction, deactiveTableInstructionDiscriminator, deactiveTableStruct, decodeText, delCampaignMeta, deleteOntology, deleteOntologyByCanonical, encodeText, errorFromCode, errorFromName, extendTableInstructionDiscriminator, extendTableStruct, farmConfigBeet, farmConfigDiscriminator, feedBeet, feedDiscriminator, fetchUtterancesAndHistoriesForValidator, free2playInstructionDiscriminator, free2playStruct, getAllCampaignTitles, getAllCampaigns, getAllCampaignsInfo, getAppRole, getAssociateTokenAccount, getBuilderActivity, getBuilderActivityInfo, getBuilderRecentSubmissions, getBuilderSubmissionsToday, getCampaginMeta, getCampaignFromCampaignAccount, getCampaignFromCampaignInfo, getCampaignInfo, getIsProfileCreated, getIsRpcPermitted, getKanonNfts, getOrCreateAssociateTokenAccount, getRpcAuthToken, getRpcListActivity, getRpcSubmissionStatus, getRpcValidationStatus, getSolBalance, getSubmissionsValidationsInfo, getTokenBalance, getTotalAvailableRewards, getUnusedCampaignTitle, getUtterancesAndHistoriesForArchitect, getUtterancesAndHistoriesForBuilder, getValidatorActivity, getValidatorActivityInfo, getValidatorRecentValidations, getValidatorValidationsToday, guildBeet, guildClaimRewardInstructionDiscriminator, guildClaimRewardStruct, guildDiscriminator, guildGrantScholarInstructionDiscriminator, guildGrantScholarStruct, guildStakeNftInstructionDiscriminator, guildStakeNftStruct, guildUnstakeNftInstructionDiscriminator, guildUnstakeNftStruct, initializeInstructionDiscriminator, initializeStruct, isEmptyAddress, isEqualAddress, isIncludingAddress, isValidAddress, offchainBeet, phraseBeet, phraseDiscriminator, phraseTypeBeet, profileBeet, profileDiscriminator, revokeScholarInstructionDiscriminator, revokeScholarStruct, roleBeet, rpcBatchSubmitPhrases, rpcBatchValidatePhrase, rpcCloseCampaignInstructionDiscriminator, rpcCloseCampaignStruct, rpcClosePhraseInstructionDiscriminator, rpcClosePhraseStruct, rpcCloseValidateInstructionDiscriminator, rpcCloseValidateStruct, rpcPermitInstructionDiscriminator, rpcPermitStruct, rpcRequestAuth, rpcSubmitPhrase, rpcSubmitPhraseInstructionDiscriminator, rpcSubmitPhraseStruct, rpcValidatePhrase, rpcValidatePhraseInstructionDiscriminator, rpcValidatePhraseStruct, rpcVerifyAuth, scholarSignInstructionDiscriminator, scholarSignStruct, sendAndConfirmWithRetry, sendInstructions, sleep, stakeAccountBeet, stakeAccountDiscriminator, stakeAccountRoleBeet, stakeAccountTypeBeet, stakeCampaignInstructionDiscriminator, stakeCampaignStruct, stakeNftInstructionDiscriminator, stakeNftStruct, stakingTypeBeet, submitOntology, submitPhraseInstructionDiscriminator, submitPhraseStruct, tagBeet, unstakeCampaignInstructionDiscriminator, unstakeCampaignStruct, unstakeNftInstructionDiscriminator, unstakeNftStruct, updateCampaignInstructionDiscriminator, updateCampaignStruct, validateBeet, validateDiscriminator, validatePhraseInstructionDiscriminator, validatePhraseStruct, validatorsBeet, validatorsDiscriminator, verifyPreStakedNftInstructionDiscriminator, verifyPreStakedNftStruct };
+export { ACCESS_METHOD, AccessMethod, BError, CError, Campaign, CampaignActivity, CampaignExpiredError, CampaignFinishedAlreadyError, CampaignNotFinishedError, CampaignVault, ConfidentIsInvalidError, DError, DoubleVoteDetectError, Dyfarm, EError, FarmConfig, Feed, Guild, InsufficientTokenBalanceError, InvalidAccessMethodError, InvalidMintError, InvalidNFTError, InvalidPDAError, InvalidStakeAccountError, InvalidStakeDelegateError, InvalidStakeStatusError, InvalidStakeTypeError, InvalidTokenMintError, InvalidTokenOwnerError, LAMPORTS_PER_USDC, LOOKUP_PROGRAM_ADDRESS, METADATA_PROGRAM_ADDRESS, OFFCHAIN_TYPE, Offchain, PHRASE_TYPE, PROGRAM_ADDRESS, PROGRAM_ID, PermitRpcIsMissedError, Phrase, PhraseType, PhraseValidatedAlreadyError, Profile, ProfileNotMatchWithAuthorityError, RPC_TXN_STATUS, RewardBalanceIsZeroError, RewardIsLowError, Role, RoleMismatchError, RpcSignerMismatchError, SNS_PAIR, STAKE_ACCOUNT_ROLE, StakeAccount, StakeAccountRole, StakeAccountType, StakeLockedError, StakingType, Tag, Validate, Validators, accessMethodBeet, accountProviders, addCampaignMeta, adjustRewardInstructionDiscriminator, adjustRewardStruct, airdropInstructionDiscriminator, airdropStruct, allocateTableInstructionDiscriminator, allocateTableStruct, awaitTransactionSignatureConfirmation, campaignActivityBeet, campaignActivityDiscriminator, campaignBeet, campaignDiscriminator, campaignVaultBeet, campaignVaultDiscriminator, checkPriceInstructionDiscriminator, checkPriceStruct, checkWhitelist, claimRewardInstructionDiscriminator, claimRewardStruct, createAdjustRewardInstruction, createAirdropInstruction, createAirdropSNSInstructions, createAllocateTableInstruction, createArchitectCreateCampaignInstructions, createArchitectUpdateCampaignInstructions, createBatchClaimRewardInstructions, createBuilderSubmitUtterancesInstructions, createCampaignInstructionDiscriminator, createCampaignStruct, createCheckPriceInstruction, createClaimRewardInstruction, createClaimRewardInstructions, createCreateCampaignInstruction, createCreateGuildInstruction, createCreateProfileInstruction, createDeactiveTableInstruction, createExtendTableInstruction, createFree2playInstruction, createGuildClaimRewardInstruction, createGuildGrantScholarInstruction, createGuildInstructionDiscriminator, createGuildStakeNftInstruction, createGuildStruct, createGuildUnstakeNftInstruction, createInitializeInstruction, createProfileInstructionDiscriminator, createProfileStruct, createRevokeScholarInstruction, createRpcCloseCampaignInstruction, createRpcClosePhraseInstruction, createRpcCloseValidateInstruction, createRpcPermitInstruction, createRpcPermitInstructions, createRpcSubmitPhraseInstruction, createRpcSubmitUtterancesPromises, createRpcValidatePhraseInstruction, createRpcValidateUtterancesPromises, createScholarSignInstruction, createStakeCampaignInstruction, createStakeCampaignInstructions, createStakeCampaignWithNFTInstructions, createStakeNftInstruction, createSubmitPhraseInstruction, createUnstakeCampaignInstruction, createUnstakeCampaignInstructions, createUnstakeNftInstruction, createUpdateCampaignInstruction, createUtteranceByOntology, createValidatePhraseInstruction, createValidatorValidateUtterancesInstructions, createVerifyPreStakedNftInstruction, deactiveTableInstructionDiscriminator, deactiveTableStruct, decodeText, delCampaignMeta, deleteOntology, deleteOntologyByCanonical, encodeText, errorFromCode, errorFromName, extendTableInstructionDiscriminator, extendTableStruct, farmConfigBeet, farmConfigDiscriminator, feedBeet, feedDiscriminator, free2playInstructionDiscriminator, free2playStruct, getAllCampaignTitles, getAllCampaigns, getAllCampaignsInfo, getAppRole, getAssociateTokenAccount, getBuilderActivity, getBuilderActivityInfo, getBuilderRecentSubmissions, getBuilderSubmissionsToday, getCampaginMeta, getCampaignFromCampaignAccount, getCampaignFromCampaignInfo, getCampaignInfo, getIsProfileCreated, getIsRpcPermitted, getKanonNfts, getOrCreateAssociateTokenAccount, getRpcAuthToken, getRpcListActivity, getRpcSubmissionStatus, getRpcValidationStatus, getSolBalance, getSubmissionsValidationsInfo, getTokenBalance, getTotalAvailableRewards, getUnusedCampaignTitle, getUtterancesAndHistoriesForArchitect, getUtterancesAndHistoriesForBuilder, getUtterancesAndHistoriesForValidator, getValidatorActivity, getValidatorActivityInfo, getValidatorRecentValidations, getValidatorValidationsToday, guildBeet, guildClaimRewardInstructionDiscriminator, guildClaimRewardStruct, guildDiscriminator, guildGrantScholarInstructionDiscriminator, guildGrantScholarStruct, guildStakeNftInstructionDiscriminator, guildStakeNftStruct, guildUnstakeNftInstructionDiscriminator, guildUnstakeNftStruct, initializeInstructionDiscriminator, initializeStruct, isEmptyAddress, isEqualAddress, isIncludingAddress, isValidAddress, offchainBeet, phraseBeet, phraseDiscriminator, phraseTypeBeet, profileBeet, profileDiscriminator, revokeScholarInstructionDiscriminator, revokeScholarStruct, roleBeet, rpcBatchSubmitPhrases, rpcBatchValidatePhrase, rpcCloseCampaignInstructionDiscriminator, rpcCloseCampaignStruct, rpcClosePhraseInstructionDiscriminator, rpcClosePhraseStruct, rpcCloseValidateInstructionDiscriminator, rpcCloseValidateStruct, rpcPermitInstructionDiscriminator, rpcPermitStruct, rpcRequestAuth, rpcSubmitPhrase, rpcSubmitPhraseInstructionDiscriminator, rpcSubmitPhraseStruct, rpcValidatePhrase, rpcValidatePhraseInstructionDiscriminator, rpcValidatePhraseStruct, rpcVerifyAuth, scholarSignInstructionDiscriminator, scholarSignStruct, sendAndConfirmWithRetry, sendInstructions, sleep, stakeAccountBeet, stakeAccountDiscriminator, stakeAccountRoleBeet, stakeAccountTypeBeet, stakeCampaignInstructionDiscriminator, stakeCampaignStruct, stakeNftInstructionDiscriminator, stakeNftStruct, stakingTypeBeet, submitOntology, submitPhraseInstructionDiscriminator, submitPhraseStruct, tagBeet, unstakeCampaignInstructionDiscriminator, unstakeCampaignStruct, unstakeNftInstructionDiscriminator, unstakeNftStruct, updateCampaignInstructionDiscriminator, updateCampaignStruct, validateBeet, validateDiscriminator, validatePhraseInstructionDiscriminator, validatePhraseStruct, validatorsBeet, validatorsDiscriminator, verifyPreStakedNftInstructionDiscriminator, verifyPreStakedNftStruct };
 //# sourceMappingURL=dyf.esm.js.map
