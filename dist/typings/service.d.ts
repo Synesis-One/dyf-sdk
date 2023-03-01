@@ -26,6 +26,16 @@ export declare type BuilderActivityInfo = {
     reviewing: number;
     rejected: number;
     waiting_to_start: number;
+    dapps: {
+        [campaignTitle: string]: {
+            submissions: number;
+            total_submissions: number;
+            rejected: number;
+            total_rejected: number;
+            validated: number;
+            total_validated: number;
+        };
+    };
 };
 export declare type ValidatorActivityInfo = {
     validations_submitted: number;
