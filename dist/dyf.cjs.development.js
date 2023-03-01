@@ -619,7 +619,7 @@ var Campaign = /*#__PURE__*/function () {
   ;
   Campaign.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+      programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
     }
     return beetSolana.GpaBuilder.fromStruct(programId, campaignBeet);
   }
@@ -980,7 +980,7 @@ var CampaignActivity = /*#__PURE__*/function () {
   ;
   CampaignActivity.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+      programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
     }
     return beetSolana.GpaBuilder.fromStruct(programId, campaignActivityBeet);
   }
@@ -1234,7 +1234,7 @@ var CampaignVault = /*#__PURE__*/function () {
   ;
   CampaignVault.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+      programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
     }
     return beetSolana.GpaBuilder.fromStruct(programId, campaignVaultBeet);
   }
@@ -1482,7 +1482,7 @@ var FarmConfig = /*#__PURE__*/function () {
   ;
   FarmConfig.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+      programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
     }
     return beetSolana.GpaBuilder.fromStruct(programId, farmConfigBeet);
   }
@@ -1705,7 +1705,7 @@ var Feed = /*#__PURE__*/function () {
   ;
   Feed.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+      programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
     }
     return beetSolana.GpaBuilder.fromStruct(programId, feedBeet);
   }
@@ -1896,7 +1896,7 @@ var Guild = /*#__PURE__*/function () {
   ;
   Guild.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+      programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
     }
     return beetSolana.GpaBuilder.fromStruct(programId, guildBeet);
   }
@@ -2130,7 +2130,7 @@ var Phrase = /*#__PURE__*/function () {
   ;
   Phrase.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+      programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
     }
     return beetSolana.GpaBuilder.fromStruct(programId, phraseBeet);
   }
@@ -2354,7 +2354,7 @@ var Profile = /*#__PURE__*/function () {
   ;
   Profile.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+      programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
     }
     return beetSolana.GpaBuilder.fromStruct(programId, profileBeet);
   }
@@ -2622,7 +2622,7 @@ var StakeAccount = /*#__PURE__*/function () {
   ;
   StakeAccount.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+      programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
     }
     return beetSolana.GpaBuilder.fromStruct(programId, stakeAccountBeet);
   }
@@ -2893,7 +2893,7 @@ var Validate = /*#__PURE__*/function () {
   ;
   Validate.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+      programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
     }
     return beetSolana.GpaBuilder.fromStruct(programId, validateBeet);
   }
@@ -3072,7 +3072,7 @@ var Validators = /*#__PURE__*/function () {
   ;
   Validators.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+      programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
     }
     return beetSolana.GpaBuilder.fromStruct(programId, validatorsBeet);
   }
@@ -3970,7 +3970,7 @@ var adjustRewardInstructionDiscriminator = [23, 3, 192, 117, 96, 198, 166, 215];
 function createAdjustRewardInstruction(accounts, args, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _adjustRewardStruct$s = adjustRewardStruct.serialize(_extends({
       instructionDiscriminator: adjustRewardInstructionDiscriminator
@@ -4021,7 +4021,7 @@ var airdropInstructionDiscriminator = [113, 173, 36, 238, 38, 152, 22, 117];
 function createAirdropInstruction(accounts, programId) {
   var _accounts$tokenProgra;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _airdropStruct$serial = airdropStruct.serialize({
       instructionDiscriminator: airdropInstructionDiscriminator
@@ -4086,7 +4086,7 @@ var allocateTableInstructionDiscriminator = [51, 148, 3, 2, 77, 128, 58, 80];
 function createAllocateTableInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _allocateTableStruct$ = allocateTableStruct.serialize(_extends({
       instructionDiscriminator: allocateTableInstructionDiscriminator
@@ -4155,7 +4155,7 @@ var checkPriceInstructionDiscriminator = [167, 85, 209, 192, 115, 173, 239, 176]
 function createCheckPriceInstruction(accounts, args, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _checkPriceStruct$ser = checkPriceStruct.serialize(_extends({
       instructionDiscriminator: checkPriceInstructionDiscriminator
@@ -4212,7 +4212,7 @@ var claimRewardInstructionDiscriminator = [149, 95, 181, 242, 94, 90, 158, 162];
 function createClaimRewardInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _claimRewardStruct$se = claimRewardStruct.serialize(_extends({
       instructionDiscriminator: claimRewardInstructionDiscriminator
@@ -4297,7 +4297,7 @@ var createCampaignInstructionDiscriminator = [111, 131, 187, 98, 160, 193, 114, 
 function createCreateCampaignInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _createCampaignStruct = createCampaignStruct.serialize(_extends({
       instructionDiscriminator: createCampaignInstructionDiscriminator
@@ -4398,7 +4398,7 @@ var createGuildInstructionDiscriminator = [163, 27, 97, 167, 132, 198, 53, 168];
 function createCreateGuildInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _createGuildStruct$se = createGuildStruct.serialize(_extends({
       instructionDiscriminator: createGuildInstructionDiscriminator
@@ -4475,7 +4475,7 @@ var createProfileInstructionDiscriminator = [225, 205, 234, 143, 17, 186, 50, 22
 function createCreateProfileInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _createProfileStruct$ = createProfileStruct.serialize(_extends({
       instructionDiscriminator: createProfileInstructionDiscriminator
@@ -4538,7 +4538,7 @@ var deactiveTableInstructionDiscriminator = [145, 99, 175, 188, 124, 217, 141, 7
 function createDeactiveTableInstruction(accounts, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _deactiveTableStruct$ = deactiveTableStruct.serialize({
       instructionDiscriminator: deactiveTableInstructionDiscriminator
@@ -4605,7 +4605,7 @@ var extendTableInstructionDiscriminator = [181, 129, 37, 152, 188, 164, 212, 75]
 function createExtendTableInstruction(accounts, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _extendTableStruct$se = extendTableStruct.serialize({
       instructionDiscriminator: extendTableInstructionDiscriminator
@@ -4672,7 +4672,7 @@ var free2playInstructionDiscriminator = [14, 185, 90, 244, 62, 166, 71, 245];
 function createFree2playInstruction(accounts, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _free2playStruct$seri = free2playStruct.serialize({
       instructionDiscriminator: free2playInstructionDiscriminator
@@ -4741,7 +4741,7 @@ var guildClaimRewardInstructionDiscriminator = [151, 61, 18, 77, 172, 55, 161, 8
 function createGuildClaimRewardInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _guildClaimRewardStru = guildClaimRewardStruct.serialize(_extends({
       instructionDiscriminator: guildClaimRewardInstructionDiscriminator
@@ -4838,7 +4838,7 @@ var guildDeleteInstructionDiscriminator = [156, 15, 205, 147, 171, 210, 90, 132]
 function createGuildDeleteInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _guildDeleteStruct$se = guildDeleteStruct.serialize(_extends({
       instructionDiscriminator: guildDeleteInstructionDiscriminator
@@ -4922,7 +4922,7 @@ var guildGrantScholarInstructionDiscriminator = [246, 74, 234, 202, 61, 146, 196
  */
 function createGuildGrantScholarInstruction(accounts, args, programId) {
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _guildGrantScholarStr = guildGrantScholarStruct.serialize(_extends({
       instructionDiscriminator: guildGrantScholarInstructionDiscriminator
@@ -4979,7 +4979,7 @@ var guildStakeNftInstructionDiscriminator = [84, 239, 169, 71, 243, 35, 180, 158
 function createGuildStakeNftInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _guildStakeNftStruct$ = guildStakeNftStruct.serialize(_extends({
       instructionDiscriminator: guildStakeNftInstructionDiscriminator
@@ -5088,7 +5088,7 @@ var guildUnstakeNftInstructionDiscriminator = [131, 104, 220, 144, 180, 206, 25,
 function createGuildUnstakeNftInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _guildUnstakeNftStruc = guildUnstakeNftStruct.serialize(_extends({
       instructionDiscriminator: guildUnstakeNftInstructionDiscriminator
@@ -5193,7 +5193,7 @@ var initializeInstructionDiscriminator = [175, 175, 109, 31, 13, 152, 155, 237];
 function createInitializeInstruction(accounts, args, programId) {
   var _accounts$tokenProgra, _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _initializeStruct$ser = initializeStruct.serialize(_extends({
       instructionDiscriminator: initializeInstructionDiscriminator
@@ -5278,7 +5278,7 @@ var revokeScholarInstructionDiscriminator = [47, 197, 48, 149, 14, 68, 39, 200];
 function createRevokeScholarInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _revokeScholarStruct$ = revokeScholarStruct.serialize(_extends({
       instructionDiscriminator: revokeScholarInstructionDiscriminator
@@ -5361,7 +5361,7 @@ var rpcCloseCampaignInstructionDiscriminator = [67, 33, 43, 114, 123, 198, 81, 2
 function createRpcCloseCampaignInstruction(accounts, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _rpcCloseCampaignStru = rpcCloseCampaignStruct.serialize({
       instructionDiscriminator: rpcCloseCampaignInstructionDiscriminator
@@ -5424,7 +5424,7 @@ var rpcClosePhraseInstructionDiscriminator = [227, 100, 252, 19, 112, 191, 162, 
 function createRpcClosePhraseInstruction(accounts, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _rpcClosePhraseStruct = rpcClosePhraseStruct.serialize({
       instructionDiscriminator: rpcClosePhraseInstructionDiscriminator
@@ -5487,7 +5487,7 @@ var rpcCloseValidateInstructionDiscriminator = [57, 139, 225, 164, 199, 188, 164
 function createRpcCloseValidateInstruction(accounts, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _rpcCloseValidateStru = rpcCloseValidateStruct.serialize({
       instructionDiscriminator: rpcCloseValidateInstructionDiscriminator
@@ -5552,7 +5552,7 @@ var rpcPermitInstructionDiscriminator = [92, 83, 224, 31, 112, 83, 197, 55];
 function createRpcPermitInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _rpcPermitStruct$seri = rpcPermitStruct.serialize(_extends({
       instructionDiscriminator: rpcPermitInstructionDiscriminator
@@ -5613,7 +5613,7 @@ var rpcSubmitPhraseInstructionDiscriminator = [163, 108, 108, 237, 170, 235, 190
 function createRpcSubmitPhraseInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _rpcSubmitPhraseStruc = rpcSubmitPhraseStruct.serialize(_extends({
       instructionDiscriminator: rpcSubmitPhraseInstructionDiscriminator
@@ -5694,7 +5694,7 @@ var rpcValidatePhraseInstructionDiscriminator = [161, 172, 106, 49, 80, 167, 50,
 function createRpcValidatePhraseInstruction(accounts, args, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _rpcValidatePhraseStr = rpcValidatePhraseStruct.serialize(_extends({
       instructionDiscriminator: rpcValidatePhraseInstructionDiscriminator
@@ -5778,7 +5778,7 @@ var scholarSignInstructionDiscriminator = [124, 192, 76, 227, 147, 194, 65, 121]
  */
 function createScholarSignInstruction(accounts, args, programId) {
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _scholarSignStruct$se = scholarSignStruct.serialize(_extends({
       instructionDiscriminator: scholarSignInstructionDiscriminator
@@ -5839,7 +5839,7 @@ var stakeCampaignInstructionDiscriminator = [147, 38, 195, 247, 115, 100, 125, 3
 function createStakeCampaignInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _stakeCampaignStruct$ = stakeCampaignStruct.serialize(_extends({
       instructionDiscriminator: stakeCampaignInstructionDiscriminator
@@ -5922,7 +5922,7 @@ var stakeNftInstructionDiscriminator = [38, 27, 66, 46, 69, 65, 151, 219];
 function createStakeNftInstruction(accounts, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _stakeNftStruct$seria = stakeNftStruct.serialize({
       instructionDiscriminator: stakeNftInstructionDiscriminator
@@ -6011,7 +6011,7 @@ var submitPhraseInstructionDiscriminator = [201, 89, 230, 171, 244, 100, 6, 127]
 function createSubmitPhraseInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _submitPhraseStruct$s = submitPhraseStruct.serialize(_extends({
       instructionDiscriminator: submitPhraseInstructionDiscriminator
@@ -6088,7 +6088,7 @@ var unstakeCampaignInstructionDiscriminator = [208, 3, 38, 137, 80, 29, 12, 75];
 function createUnstakeCampaignInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _unstakeCampaignStruc = unstakeCampaignStruct.serialize(_extends({
       instructionDiscriminator: unstakeCampaignInstructionDiscriminator
@@ -6179,7 +6179,7 @@ var unstakeNftInstructionDiscriminator = [17, 182, 24, 211, 101, 138, 50, 163];
 function createUnstakeNftInstruction(accounts, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _unstakeNftStruct$ser = unstakeNftStruct.serialize({
       instructionDiscriminator: unstakeNftInstructionDiscriminator
@@ -6264,7 +6264,7 @@ var updateCampaignInstructionDiscriminator = [235, 31, 39, 49, 121, 173, 19, 92]
 function createUpdateCampaignInstruction(accounts, args, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _updateCampaignStruct = updateCampaignStruct.serialize(_extends({
       instructionDiscriminator: updateCampaignInstructionDiscriminator
@@ -6321,7 +6321,7 @@ var validatePhraseInstructionDiscriminator = [131, 138, 249, 228, 211, 54, 251, 
 function createValidatePhraseInstruction(accounts, args, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _validatePhraseStruct = validatePhraseStruct.serialize(_extends({
       instructionDiscriminator: validatePhraseInstructionDiscriminator
@@ -6400,7 +6400,7 @@ var verifyPreStakedNftInstructionDiscriminator = [147, 217, 55, 199, 25, 110, 24
 function createVerifyPreStakedNftInstruction(accounts, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+    programId = new web3.PublicKey('4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C');
   }
   var _verifyPreStakedNftSt = verifyPreStakedNftStruct.serialize({
       instructionDiscriminator: verifyPreStakedNftInstructionDiscriminator
@@ -6475,7 +6475,7 @@ function createVerifyPreStakedNftInstruction(accounts, programId) {
  * @category constants
  * @category generated
  */
-var PROGRAM_ADDRESS = '3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV';
+var PROGRAM_ADDRESS = '4R1QwZpL9L6XSesuSUuojrvUHY6RUJqWcUPTRj21we2C';
 /**
  * Program public key
  *
