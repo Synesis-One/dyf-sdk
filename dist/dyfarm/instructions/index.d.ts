@@ -10,6 +10,7 @@ export * from './deactiveTable';
 export * from './extendTable';
 export * from './free2play';
 export * from './guildClaimReward';
+export * from './guildDelete';
 export * from './guildGrantScholar';
 export * from './guildStakeNft';
 export * from './guildUnstakeNft';

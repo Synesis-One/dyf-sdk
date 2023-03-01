@@ -2268,13 +2268,14 @@ var profileDiscriminator = [184, 101, 165, 188, 95, 63, 127, 188];
  * @category generated
  */
 var Profile = /*#__PURE__*/function () {
-  function Profile(user, kind, nftStaked, nftMint, scholarAccess, scholarSign, nftOwner, nftOwnerShare, nftGuild, nftGuildMaster, nftGuildShare, role, durability, productivity, performance, activity, reject, accept, rewardF2p, offchainPermit, offchainSigner, bump) {
+  function Profile(user, kind, nftStaked, nftMint, scholarAccess, scholarSign, scholarActivate, nftOwner, nftOwnerShare, nftGuild, nftGuildMaster, nftGuildShare, role, durability, productivity, performance, activity, reject, accept, rewardF2p, offchainPermit, offchainSigner, bump) {
     this.user = user;
     this.kind = kind;
     this.nftStaked = nftStaked;
     this.nftMint = nftMint;
     this.scholarAccess = scholarAccess;
     this.scholarSign = scholarSign;
+    this.scholarActivate = scholarActivate;
     this.nftOwner = nftOwner;
     this.nftOwnerShare = nftOwnerShare;
     this.nftGuild = nftGuild;
@@ -2296,7 +2297,7 @@ var Profile = /*#__PURE__*/function () {
    * Creates a {@link Profile} instance from the provided args.
    */
   Profile.fromArgs = function fromArgs(args) {
-    return new Profile(args.user, args.kind, args.nftStaked, args.nftMint, args.scholarAccess, args.scholarSign, args.nftOwner, args.nftOwnerShare, args.nftGuild, args.nftGuildMaster, args.nftGuildShare, args.role, args.durability, args.productivity, args.performance, args.activity, args.reject, args.accept, args.rewardF2p, args.offchainPermit, args.offchainSigner, args.bump);
+    return new Profile(args.user, args.kind, args.nftStaked, args.nftMint, args.scholarAccess, args.scholarSign, args.scholarActivate, args.nftOwner, args.nftOwnerShare, args.nftGuild, args.nftGuildMaster, args.nftGuildShare, args.role, args.durability, args.productivity, args.performance, args.activity, args.reject, args.accept, args.rewardF2p, args.offchainPermit, args.offchainSigner, args.bump);
   }
   /**
    * Deserializes the {@link Profile} from the data of the provided {@link web3.AccountInfo}.
@@ -2431,6 +2432,17 @@ var Profile = /*#__PURE__*/function () {
       nftMint: this.nftMint.toBase58(),
       scholarAccess: this.scholarAccess,
       scholarSign: this.scholarSign,
+      scholarActivate: function () {
+        var x = _this.scholarActivate;
+        if (typeof x.toNumber === 'function') {
+          try {
+            return x.toNumber();
+          } catch (_) {
+            return x;
+          }
+        }
+        return x;
+      }(),
       nftOwner: this.nftOwner.toBase58(),
       nftOwnerShare: this.nftOwnerShare,
       nftGuild: this.nftGuild.toBase58(),
@@ -2465,7 +2477,7 @@ var Profile = /*#__PURE__*/function () {
  * @category Accounts
  * @category generated
  */
-var profileBeet = /*#__PURE__*/new beet.FixableBeetStruct([['accountDiscriminator', /*#__PURE__*/beet.uniformFixedSizeArray(beet.u8, 8)], ['user', beetSolana.publicKey], ['kind', accessMethodBeet], ['nftStaked', beet.bool], ['nftMint', beetSolana.publicKey], ['scholarAccess', beet.bool], ['scholarSign', beet.bool], ['nftOwner', beetSolana.publicKey], ['nftOwnerShare', beet.u8], ['nftGuild', beetSolana.publicKey], ['nftGuildMaster', /*#__PURE__*/beet.coption(beetSolana.publicKey)], ['nftGuildShare', /*#__PURE__*/beet.coption(beet.u8)], ['role', roleBeet], ['durability', beet.u8], ['productivity', beet.u8], ['performance', beet.u8], ['activity', beet.u32], ['reject', beet.u32], ['accept', beet.u32], ['rewardF2p', beet.u64], ['offchainPermit', beet.bool], ['offchainSigner', beetSolana.publicKey], ['bump', beet.u8]], Profile.fromArgs, 'Profile');
+var profileBeet = /*#__PURE__*/new beet.FixableBeetStruct([['accountDiscriminator', /*#__PURE__*/beet.uniformFixedSizeArray(beet.u8, 8)], ['user', beetSolana.publicKey], ['kind', accessMethodBeet], ['nftStaked', beet.bool], ['nftMint', beetSolana.publicKey], ['scholarAccess', beet.bool], ['scholarSign', beet.bool], ['scholarActivate', beet.u64], ['nftOwner', beetSolana.publicKey], ['nftOwnerShare', beet.u8], ['nftGuild', beetSolana.publicKey], ['nftGuildMaster', /*#__PURE__*/beet.coption(beetSolana.publicKey)], ['nftGuildShare', /*#__PURE__*/beet.coption(beet.u8)], ['role', roleBeet], ['durability', beet.u8], ['productivity', beet.u8], ['performance', beet.u8], ['activity', beet.u32], ['reject', beet.u32], ['accept', beet.u32], ['rewardF2p', beet.u64], ['offchainPermit', beet.bool], ['offchainSigner', beetSolana.publicKey], ['bump', beet.u8]], Profile.fromArgs, 'Profile');
 
 /**
  * This code was GENERATED using the solita package.
@@ -3660,26 +3672,52 @@ createErrorFromNameLookup.set('InvalidMint', function () {
   return new InvalidMintError();
 });
 /**
+ * InvalidGuildAdmin: 'the owner of NFT is invalid'
+ *
+ * @category Errors
+ * @category generated
+ */
+var InvalidGuildAdminError = /*#__PURE__*/function (_Error20) {
+  _inheritsLoose(InvalidGuildAdminError, _Error20);
+  function InvalidGuildAdminError() {
+    var _this20;
+    _this20 = _Error20.call(this, 'the owner of NFT is invalid') || this;
+    _this20.code = 0x1783;
+    _this20.name = 'InvalidGuildAdmin';
+    if (typeof Error.captureStackTrace === 'function') {
+      Error.captureStackTrace(_assertThisInitialized(_this20), InvalidGuildAdminError);
+    }
+    return _this20;
+  }
+  return InvalidGuildAdminError;
+}( /*#__PURE__*/_wrapNativeSuper(Error));
+createErrorFromCodeLookup.set(0x1783, function () {
+  return new InvalidGuildAdminError();
+});
+createErrorFromNameLookup.set('InvalidGuildAdmin', function () {
+  return new InvalidGuildAdminError();
+});
+/**
  * InvalidNFT: 'the creator of NFT is invalid'
  *
  * @category Errors
  * @category generated
  */
-var InvalidNFTError = /*#__PURE__*/function (_Error20) {
-  _inheritsLoose(InvalidNFTError, _Error20);
+var InvalidNFTError = /*#__PURE__*/function (_Error21) {
+  _inheritsLoose(InvalidNFTError, _Error21);
   function InvalidNFTError() {
-    var _this20;
-    _this20 = _Error20.call(this, 'the creator of NFT is invalid') || this;
-    _this20.code = 0x1783;
-    _this20.name = 'InvalidNFT';
+    var _this21;
+    _this21 = _Error21.call(this, 'the creator of NFT is invalid') || this;
+    _this21.code = 0x1784;
+    _this21.name = 'InvalidNFT';
     if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(_assertThisInitialized(_this20), InvalidNFTError);
+      Error.captureStackTrace(_assertThisInitialized(_this21), InvalidNFTError);
     }
-    return _this20;
+    return _this21;
   }
   return InvalidNFTError;
 }( /*#__PURE__*/_wrapNativeSuper(Error));
-createErrorFromCodeLookup.set(0x1783, function () {
+createErrorFromCodeLookup.set(0x1784, function () {
   return new InvalidNFTError();
 });
 createErrorFromNameLookup.set('InvalidNFT', function () {
@@ -3691,21 +3729,21 @@ createErrorFromNameLookup.set('InvalidNFT', function () {
  * @category Errors
  * @category generated
  */
-var InvalidAccessMethodError = /*#__PURE__*/function (_Error21) {
-  _inheritsLoose(InvalidAccessMethodError, _Error21);
+var InvalidAccessMethodError = /*#__PURE__*/function (_Error22) {
+  _inheritsLoose(InvalidAccessMethodError, _Error22);
   function InvalidAccessMethodError() {
-    var _this21;
-    _this21 = _Error21.call(this, 'You should have profile with NFT StakingType') || this;
-    _this21.code = 0x1784;
-    _this21.name = 'InvalidAccessMethod';
+    var _this22;
+    _this22 = _Error22.call(this, 'You should have profile with NFT StakingType') || this;
+    _this22.code = 0x1785;
+    _this22.name = 'InvalidAccessMethod';
     if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(_assertThisInitialized(_this21), InvalidAccessMethodError);
+      Error.captureStackTrace(_assertThisInitialized(_this22), InvalidAccessMethodError);
     }
-    return _this21;
+    return _this22;
   }
   return InvalidAccessMethodError;
 }( /*#__PURE__*/_wrapNativeSuper(Error));
-createErrorFromCodeLookup.set(0x1784, function () {
+createErrorFromCodeLookup.set(0x1785, function () {
   return new InvalidAccessMethodError();
 });
 createErrorFromNameLookup.set('InvalidAccessMethod', function () {
@@ -3717,21 +3755,21 @@ createErrorFromNameLookup.set('InvalidAccessMethod', function () {
  * @category Errors
  * @category generated
  */
-var CampaignExpiredError = /*#__PURE__*/function (_Error22) {
-  _inheritsLoose(CampaignExpiredError, _Error22);
+var CampaignExpiredError = /*#__PURE__*/function (_Error23) {
+  _inheritsLoose(CampaignExpiredError, _Error23);
   function CampaignExpiredError() {
-    var _this22;
-    _this22 = _Error22.call(this, 'the campaign is expired') || this;
-    _this22.code = 0x1785;
-    _this22.name = 'CampaignExpired';
+    var _this23;
+    _this23 = _Error23.call(this, 'the campaign is expired') || this;
+    _this23.code = 0x1786;
+    _this23.name = 'CampaignExpired';
     if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(_assertThisInitialized(_this22), CampaignExpiredError);
+      Error.captureStackTrace(_assertThisInitialized(_this23), CampaignExpiredError);
     }
-    return _this22;
+    return _this23;
   }
   return CampaignExpiredError;
 }( /*#__PURE__*/_wrapNativeSuper(Error));
-createErrorFromCodeLookup.set(0x1785, function () {
+createErrorFromCodeLookup.set(0x1786, function () {
   return new CampaignExpiredError();
 });
 createErrorFromNameLookup.set('CampaignExpired', function () {
@@ -3743,21 +3781,21 @@ createErrorFromNameLookup.set('CampaignExpired', function () {
  * @category Errors
  * @category generated
  */
-var CampaignNotFinishedError = /*#__PURE__*/function (_Error23) {
-  _inheritsLoose(CampaignNotFinishedError, _Error23);
+var CampaignNotFinishedError = /*#__PURE__*/function (_Error24) {
+  _inheritsLoose(CampaignNotFinishedError, _Error24);
   function CampaignNotFinishedError() {
-    var _this23;
-    _this23 = _Error23.call(this, 'the campaign is not finished') || this;
-    _this23.code = 0x1786;
-    _this23.name = 'CampaignNotFinished';
+    var _this24;
+    _this24 = _Error24.call(this, 'the campaign is not finished') || this;
+    _this24.code = 0x1787;
+    _this24.name = 'CampaignNotFinished';
     if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(_assertThisInitialized(_this23), CampaignNotFinishedError);
+      Error.captureStackTrace(_assertThisInitialized(_this24), CampaignNotFinishedError);
     }
-    return _this23;
+    return _this24;
   }
   return CampaignNotFinishedError;
 }( /*#__PURE__*/_wrapNativeSuper(Error));
-createErrorFromCodeLookup.set(0x1786, function () {
+createErrorFromCodeLookup.set(0x1787, function () {
   return new CampaignNotFinishedError();
 });
 createErrorFromNameLookup.set('CampaignNotFinished', function () {
@@ -3769,21 +3807,21 @@ createErrorFromNameLookup.set('CampaignNotFinished', function () {
  * @category Errors
  * @category generated
  */
-var RewardIsLowError = /*#__PURE__*/function (_Error24) {
-  _inheritsLoose(RewardIsLowError, _Error24);
+var RewardIsLowError = /*#__PURE__*/function (_Error25) {
+  _inheritsLoose(RewardIsLowError, _Error25);
   function RewardIsLowError() {
-    var _this24;
-    _this24 = _Error24.call(this, 'aaaaaaaaaaaaaaaaaaaaaaaaaaa') || this;
-    _this24.code = 0x1787;
-    _this24.name = 'RewardIsLow';
+    var _this25;
+    _this25 = _Error25.call(this, 'aaaaaaaaaaaaaaaaaaaaaaaaaaa') || this;
+    _this25.code = 0x1788;
+    _this25.name = 'RewardIsLow';
     if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(_assertThisInitialized(_this24), RewardIsLowError);
+      Error.captureStackTrace(_assertThisInitialized(_this25), RewardIsLowError);
     }
-    return _this24;
+    return _this25;
   }
   return RewardIsLowError;
 }( /*#__PURE__*/_wrapNativeSuper(Error));
-createErrorFromCodeLookup.set(0x1787, function () {
+createErrorFromCodeLookup.set(0x1788, function () {
   return new RewardIsLowError();
 });
 createErrorFromNameLookup.set('RewardIsLow', function () {
@@ -3795,21 +3833,21 @@ createErrorFromNameLookup.set('RewardIsLow', function () {
  * @category Errors
  * @category generated
  */
-var BError = /*#__PURE__*/function (_Error25) {
-  _inheritsLoose(BError, _Error25);
+var BError = /*#__PURE__*/function (_Error26) {
+  _inheritsLoose(BError, _Error26);
   function BError() {
-    var _this25;
-    _this25 = _Error25.call(this, 'bbbbbbbbbbbbbbbbbbbbbbbbbbb') || this;
-    _this25.code = 0x1788;
-    _this25.name = 'B';
+    var _this26;
+    _this26 = _Error26.call(this, 'bbbbbbbbbbbbbbbbbbbbbbbbbbb') || this;
+    _this26.code = 0x1789;
+    _this26.name = 'B';
     if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(_assertThisInitialized(_this25), BError);
+      Error.captureStackTrace(_assertThisInitialized(_this26), BError);
     }
-    return _this25;
+    return _this26;
   }
   return BError;
 }( /*#__PURE__*/_wrapNativeSuper(Error));
-createErrorFromCodeLookup.set(0x1788, function () {
+createErrorFromCodeLookup.set(0x1789, function () {
   return new BError();
 });
 createErrorFromNameLookup.set('B', function () {
@@ -3821,21 +3859,21 @@ createErrorFromNameLookup.set('B', function () {
  * @category Errors
  * @category generated
  */
-var CError = /*#__PURE__*/function (_Error26) {
-  _inheritsLoose(CError, _Error26);
+var CError = /*#__PURE__*/function (_Error27) {
+  _inheritsLoose(CError, _Error27);
   function CError() {
-    var _this26;
-    _this26 = _Error26.call(this, 'ccccccccccccccccccccccccccc') || this;
-    _this26.code = 0x1789;
-    _this26.name = 'C';
+    var _this27;
+    _this27 = _Error27.call(this, 'ccccccccccccccccccccccccccc') || this;
+    _this27.code = 0x178a;
+    _this27.name = 'C';
     if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(_assertThisInitialized(_this26), CError);
+      Error.captureStackTrace(_assertThisInitialized(_this27), CError);
     }
-    return _this26;
+    return _this27;
   }
   return CError;
 }( /*#__PURE__*/_wrapNativeSuper(Error));
-createErrorFromCodeLookup.set(0x1789, function () {
+createErrorFromCodeLookup.set(0x178a, function () {
   return new CError();
 });
 createErrorFromNameLookup.set('C', function () {
@@ -3847,21 +3885,21 @@ createErrorFromNameLookup.set('C', function () {
  * @category Errors
  * @category generated
  */
-var DError = /*#__PURE__*/function (_Error27) {
-  _inheritsLoose(DError, _Error27);
+var DError = /*#__PURE__*/function (_Error28) {
+  _inheritsLoose(DError, _Error28);
   function DError() {
-    var _this27;
-    _this27 = _Error27.call(this, 'ddddddddddddddddddddddddddd') || this;
-    _this27.code = 0x178a;
-    _this27.name = 'D';
+    var _this28;
+    _this28 = _Error28.call(this, 'ddddddddddddddddddddddddddd') || this;
+    _this28.code = 0x178b;
+    _this28.name = 'D';
     if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(_assertThisInitialized(_this27), DError);
+      Error.captureStackTrace(_assertThisInitialized(_this28), DError);
     }
-    return _this27;
+    return _this28;
   }
   return DError;
 }( /*#__PURE__*/_wrapNativeSuper(Error));
-createErrorFromCodeLookup.set(0x178a, function () {
+createErrorFromCodeLookup.set(0x178b, function () {
   return new DError();
 });
 createErrorFromNameLookup.set('D', function () {
@@ -3873,21 +3911,21 @@ createErrorFromNameLookup.set('D', function () {
  * @category Errors
  * @category generated
  */
-var EError = /*#__PURE__*/function (_Error28) {
-  _inheritsLoose(EError, _Error28);
+var EError = /*#__PURE__*/function (_Error29) {
+  _inheritsLoose(EError, _Error29);
   function EError() {
-    var _this28;
-    _this28 = _Error28.call(this, 'eeeeeeeeeeeeeeeeeeeeeeeeeee') || this;
-    _this28.code = 0x178b;
-    _this28.name = 'E';
+    var _this29;
+    _this29 = _Error29.call(this, 'eeeeeeeeeeeeeeeeeeeeeeeeeee') || this;
+    _this29.code = 0x178c;
+    _this29.name = 'E';
     if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(_assertThisInitialized(_this28), EError);
+      Error.captureStackTrace(_assertThisInitialized(_this29), EError);
     }
-    return _this28;
+    return _this29;
   }
   return EError;
 }( /*#__PURE__*/_wrapNativeSuper(Error));
-createErrorFromCodeLookup.set(0x178b, function () {
+createErrorFromCodeLookup.set(0x178c, function () {
   return new EError();
 });
 createErrorFromNameLookup.set('E', function () {
@@ -4782,6 +4820,91 @@ function createGuildClaimRewardInstruction(accounts, args, programId) {
 
 /**
  * @category Instructions
+ * @category GuildDelete
+ * @category generated
+ */
+var guildDeleteStruct = /*#__PURE__*/new beet.FixableBeetArgsStruct([['instructionDiscriminator', /*#__PURE__*/beet.uniformFixedSizeArray(beet.u8, 8)], ['guildTitle', beet.utf8String]], 'GuildDeleteInstructionArgs');
+var guildDeleteInstructionDiscriminator = [156, 15, 205, 147, 171, 210, 90, 132];
+/**
+ * Creates a _GuildDelete_ instruction.
+ *
+ * @param accounts that will be accessed while the instruction is processed
+ * @param args to provide as instruction data to the program
+ *
+ * @category Instructions
+ * @category GuildDelete
+ * @category generated
+ */
+function createGuildDeleteInstruction(accounts, args, programId) {
+  var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
+  if (programId === void 0) {
+    programId = new web3.PublicKey('3oNes87hGqT1Vq5MQA2JH8q2xSEUUbbQ7SS7M9YzhaeV');
+  }
+  var _guildDeleteStruct$se = guildDeleteStruct.serialize(_extends({
+      instructionDiscriminator: guildDeleteInstructionDiscriminator
+    }, args)),
+    data = _guildDeleteStruct$se[0];
+  var keys = [{
+    pubkey: accounts.master,
+    isWritable: true,
+    isSigner: true
+  }, {
+    pubkey: accounts.guildAccount,
+    isWritable: true,
+    isSigner: false
+  }, {
+    pubkey: accounts.farmConfig,
+    isWritable: true,
+    isSigner: false
+  }, {
+    pubkey: accounts.pdaAccount,
+    isWritable: true,
+    isSigner: false
+  }, {
+    pubkey: accounts.scholarTable,
+    isWritable: true,
+    isSigner: false
+  }, {
+    pubkey: accounts.nftTable,
+    isWritable: true,
+    isSigner: false
+  }, {
+    pubkey: accounts.lookupProgram,
+    isWritable: false,
+    isSigner: false
+  }, {
+    pubkey: (_accounts$systemProgr = accounts.systemProgram) != null ? _accounts$systemProgr : web3.SystemProgram.programId,
+    isWritable: false,
+    isSigner: false
+  }, {
+    pubkey: (_accounts$tokenProgra = accounts.tokenProgram) != null ? _accounts$tokenProgra : splToken.TOKEN_PROGRAM_ID,
+    isWritable: false,
+    isSigner: false
+  }, {
+    pubkey: accounts.clock,
+    isWritable: false,
+    isSigner: false
+  }, {
+    pubkey: (_accounts$rent = accounts.rent) != null ? _accounts$rent : web3.SYSVAR_RENT_PUBKEY,
+    isWritable: false,
+    isSigner: false
+  }];
+  if (accounts.anchorRemainingAccounts != null) {
+    for (var _iterator = _createForOfIteratorHelperLoose(accounts.anchorRemainingAccounts), _step; !(_step = _iterator()).done;) {
+      var acc = _step.value;
+      keys.push(acc);
+    }
+  }
+  var ix = new web3.TransactionInstruction({
+    programId: programId,
+    keys: keys,
+    data: data
+  });
+  return ix;
+}
+
+/**
+ * @category Instructions
  * @category GuildGrantScholar
  * @category generated
  */
@@ -4950,7 +5073,7 @@ function createGuildStakeNftInstruction(accounts, args, programId) {
  * @category GuildUnstakeNft
  * @category generated
  */
-var guildUnstakeNftStruct = /*#__PURE__*/new beet.FixableBeetArgsStruct([['instructionDiscriminator', /*#__PURE__*/beet.uniformFixedSizeArray(beet.u8, 8)], ['guildTitle', beet.utf8String]], 'GuildUnstakeNftInstructionArgs');
+var guildUnstakeNftStruct = /*#__PURE__*/new beet.FixableBeetArgsStruct([['instructionDiscriminator', /*#__PURE__*/beet.uniformFixedSizeArray(beet.u8, 8)], ['guildTitle', beet.utf8String], ['newScholarSlot', beet.u64]], 'GuildUnstakeNftInstructionArgs');
 var guildUnstakeNftInstructionDiscriminator = [131, 104, 220, 144, 180, 206, 25, 140];
 /**
  * Creates a _GuildUnstakeNft_ instruction.
@@ -4977,7 +5100,7 @@ function createGuildUnstakeNftInstruction(accounts, args, programId) {
     isSigner: true
   }, {
     pubkey: accounts.guildAccount,
-    isWritable: false,
+    isWritable: true,
     isSigner: false
   }, {
     pubkey: accounts.user,
@@ -5006,6 +5129,18 @@ function createGuildUnstakeNftInstruction(accounts, args, programId) {
   }, {
     pubkey: accounts.nftMint,
     isWritable: true,
+    isSigner: false
+  }, {
+    pubkey: accounts.oldScholarTable,
+    isWritable: true,
+    isSigner: false
+  }, {
+    pubkey: accounts.newScholarTable,
+    isWritable: true,
+    isSigner: false
+  }, {
+    pubkey: accounts.lookupProgram,
+    isWritable: false,
     isSigner: false
   }, {
     pubkey: (_accounts$systemProgr = accounts.systemProgram) != null ? _accounts$systemProgr : web3.SystemProgram.programId,
@@ -10294,6 +10429,7 @@ exports.Feed = Feed;
 exports.Guild = Guild;
 exports.InsufficientTokenBalanceError = InsufficientTokenBalanceError;
 exports.InvalidAccessMethodError = InvalidAccessMethodError;
+exports.InvalidGuildAdminError = InvalidGuildAdminError;
 exports.InvalidMintError = InvalidMintError;
 exports.InvalidNFTError = InvalidNFTError;
 exports.InvalidPDAError = InvalidPDAError;
@@ -10367,6 +10503,7 @@ exports.createDeactiveTableInstruction = createDeactiveTableInstruction;
 exports.createExtendTableInstruction = createExtendTableInstruction;
 exports.createFree2playInstruction = createFree2playInstruction;
 exports.createGuildClaimRewardInstruction = createGuildClaimRewardInstruction;
+exports.createGuildDeleteInstruction = createGuildDeleteInstruction;
 exports.createGuildGrantScholarInstruction = createGuildGrantScholarInstruction;
 exports.createGuildInstructionDiscriminator = createGuildInstructionDiscriminator;
 exports.createGuildStakeNftInstruction = createGuildStakeNftInstruction;
@@ -10452,6 +10589,8 @@ exports.getValidatorValidationsToday = getValidatorValidationsToday;
 exports.guildBeet = guildBeet;
 exports.guildClaimRewardInstructionDiscriminator = guildClaimRewardInstructionDiscriminator;
 exports.guildClaimRewardStruct = guildClaimRewardStruct;
+exports.guildDeleteInstructionDiscriminator = guildDeleteInstructionDiscriminator;
+exports.guildDeleteStruct = guildDeleteStruct;
 exports.guildDiscriminator = guildDiscriminator;
 exports.guildGrantScholarInstructionDiscriminator = guildGrantScholarInstructionDiscriminator;
 exports.guildGrantScholarStruct = guildGrantScholarStruct;

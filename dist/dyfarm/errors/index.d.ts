@@ -218,6 +218,17 @@ export declare class InvalidMintError extends Error {
     constructor();
 }
 /**
+ * InvalidGuildAdmin: 'the owner of NFT is invalid'
+ *
+ * @category Errors
+ * @category generated
+ */
+export declare class InvalidGuildAdminError extends Error {
+    readonly code: number;
+    readonly name: string;
+    constructor();
+}
+/**
  * InvalidNFT: 'the creator of NFT is invalid'
  *
  * @category Errors

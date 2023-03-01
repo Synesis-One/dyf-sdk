@@ -8,53 +8,42 @@ import * as beet from '@metaplex-foundation/beet';
 import * as web3 from '@solana/web3.js';
 /**
  * @category Instructions
- * @category GuildUnstakeNft
+ * @category GuildDelete
  * @category generated
  */
-export declare type GuildUnstakeNftInstructionArgs = {
+export declare type GuildDeleteInstructionArgs = {
     guildTitle: string;
-    newScholarSlot: beet.bignum;
 };
 /**
  * @category Instructions
- * @category GuildUnstakeNft
+ * @category GuildDelete
  * @category generated
  */
-export declare const guildUnstakeNftStruct: beet.FixableBeetArgsStruct<GuildUnstakeNftInstructionArgs & {
+export declare const guildDeleteStruct: beet.FixableBeetArgsStruct<GuildDeleteInstructionArgs & {
     instructionDiscriminator: number[];
 }>;
 /**
- * Accounts required by the _guildUnstakeNft_ instruction
+ * Accounts required by the _guildDelete_ instruction
  *
  * @property [_writable_, **signer**] master
  * @property [_writable_] guildAccount
- * @property [] user
- * @property [_writable_] userProfile
- * @property [_writable_] masterNft
- * @property [_writable_] nftVault
  * @property [_writable_] farmConfig
  * @property [_writable_] pdaAccount
- * @property [_writable_] nftMint
- * @property [_writable_] oldScholarTable
- * @property [_writable_] newScholarTable
+ * @property [_writable_] scholarTable
+ * @property [_writable_] nftTable
  * @property [] lookupProgram
  * @property [] clock
  * @category Instructions
- * @category GuildUnstakeNft
+ * @category GuildDelete
  * @category generated
  */
-export declare type GuildUnstakeNftInstructionAccounts = {
+export declare type GuildDeleteInstructionAccounts = {
     master: web3.PublicKey;
     guildAccount: web3.PublicKey;
-    user: web3.PublicKey;
-    userProfile: web3.PublicKey;
-    masterNft: web3.PublicKey;
-    nftVault: web3.PublicKey;
     farmConfig: web3.PublicKey;
     pdaAccount: web3.PublicKey;
-    nftMint: web3.PublicKey;
-    oldScholarTable: web3.PublicKey;
-    newScholarTable: web3.PublicKey;
+    scholarTable: web3.PublicKey;
+    nftTable: web3.PublicKey;
     lookupProgram: web3.PublicKey;
     systemProgram?: web3.PublicKey;
     tokenProgram?: web3.PublicKey;
@@ -62,15 +51,15 @@ export declare type GuildUnstakeNftInstructionAccounts = {
     rent?: web3.PublicKey;
     anchorRemainingAccounts?: web3.AccountMeta[];
 };
-export declare const guildUnstakeNftInstructionDiscriminator: number[];
+export declare const guildDeleteInstructionDiscriminator: number[];
 /**
- * Creates a _GuildUnstakeNft_ instruction.
+ * Creates a _GuildDelete_ instruction.
  *
  * @param accounts that will be accessed while the instruction is processed
  * @param args to provide as instruction data to the program
  *
  * @category Instructions
- * @category GuildUnstakeNft
+ * @category GuildDelete
  * @category generated
  */
-export declare function createGuildUnstakeNftInstruction(accounts: GuildUnstakeNftInstructionAccounts, args: GuildUnstakeNftInstructionArgs, programId?: web3.PublicKey): web3.TransactionInstruction;
+export declare function createGuildDeleteInstruction(accounts: GuildDeleteInstructionAccounts, args: GuildDeleteInstructionArgs, programId?: web3.PublicKey): web3.TransactionInstruction;

@@ -22,6 +22,7 @@ export declare type ProfileArgs = {
     nftMint: web3.PublicKey;
     scholarAccess: boolean;
     scholarSign: boolean;
+    scholarActivate: beet.bignum;
     nftOwner: web3.PublicKey;
     nftOwnerShare: number;
     nftGuild: web3.PublicKey;
@@ -54,6 +55,7 @@ export declare class Profile implements ProfileArgs {
     readonly nftMint: web3.PublicKey;
     readonly scholarAccess: boolean;
     readonly scholarSign: boolean;
+    readonly scholarActivate: beet.bignum;
     readonly nftOwner: web3.PublicKey;
     readonly nftOwnerShare: number;
     readonly nftGuild: web3.PublicKey;
@@ -134,6 +136,9 @@ export declare class Profile implements ProfileArgs {
         nftMint: string;
         scholarAccess: boolean;
         scholarSign: boolean;
+        scholarActivate: number | {
+            toNumber: () => number;
+        };
         nftOwner: string;
         nftOwnerShare: number;
         nftGuild: string;
