@@ -7264,7 +7264,8 @@ var getAllCampaignsInfo = /*#__PURE__*/function () {
                   progress: campaignInfo.progress,
                   submissions: campaignInfo.submissions,
                   rejections: campaignInfo.rejections,
-                  timestamp: Math.round(Date.parse(String(campaignInfo.timestamp).concat('.000Z')) / 1000)
+                  timestamp: Math.round(Date.parse(String(campaignInfo.timestamp).concat('.000Z')) / 1000),
+                  deployment: campaignInfo.deployment
                 };
               });
             } else {
@@ -7367,7 +7368,8 @@ var getCampaignInfo = /*#__PURE__*/function () {
                 progress: response.data[0].progress,
                 submissions: response.data[0].submissions,
                 rejections: response.data[0].rejections,
-                timestamp: Math.round(Date.parse(String(response.data[0].timestamp).concat('.000Z')) / 1000)
+                timestamp: Math.round(Date.parse(String(response.data[0].timestamp).concat('.000Z')) / 1000),
+                deployment: response.data[0].deployment
               };
             } else {
               return null;
@@ -9223,7 +9225,8 @@ var getCampaignFromCampaignAccount = /*#__PURE__*/function () {
             progress: 0,
             submissions: 0,
             rejections: 0,
-            timestamp: Math.round(Date.now() / 1000)
+            timestamp: Math.round(Date.now() / 1000),
+            deployment: args.deployment
           }, stakeInfo));
         case 37:
         case "end":
@@ -10154,6 +10157,7 @@ var KANON_NFT_CHARITY_ADDRESS = 'CRTegTRWPceXBc7ywwP9NKHXavjcW5HYaN4AxR3AcH9H';
 var DYF_API_HOST = 'https://dyf-dev.synesis.xyz';
 var DYF_API_AUTH = 'Basic YXBpdXNlcjphYmNkZWZnaDEyMzQ1Njc4'; // "apiuser:abcdefgh12345678"
 var DYF_RPC_HOST = 'https://dyf-rpc-dev.synesis.xyz/';
+var DYF_DEPLOYMENT = 'dev';
 var Dyfarm = /*#__PURE__*/function () {
   function Dyfarm(args) {
     this.PROGRAM_ID = PROGRAM_ID;
@@ -10162,6 +10166,7 @@ var Dyfarm = /*#__PURE__*/function () {
     this.API_HOST = DYF_API_HOST;
     this.API_AUTH = DYF_API_AUTH;
     this.RPC_HOST = DYF_RPC_HOST;
+    this.DEPLOYMENT = DYF_DEPLOYMENT;
     this.STOP_OFFSET = 7;
     this.PROGRAM_ID = args.programId;
     this.SNS_MINT = args.snsMint;
@@ -10170,6 +10175,7 @@ var Dyfarm = /*#__PURE__*/function () {
     this.API_AUTH = args.apiAuth;
     this.RPC_HOST = args.rpcHost;
     this.STOP_OFFSET = args.stopOffset;
+    this.DEPLOYMENT = args.deployment;
   }
   // airdrop
   var _proto = Dyfarm.prototype;
@@ -10306,7 +10312,8 @@ var Dyfarm = /*#__PURE__*/function () {
       programId: this.PROGRAM_ID,
       apiHost: this.API_HOST,
       apiAuth: this.API_AUTH,
-      stopOffset: this.STOP_OFFSET
+      stopOffset: this.STOP_OFFSET,
+      deployment: this.DEPLOYMENT
     });
   };
   _proto.getCampaignFromCampaignInfo = function getCampaignFromCampaignInfo$1(publicKey, connection, campaignTitle, role) {

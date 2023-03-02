@@ -61,6 +61,7 @@ export declare type PCampaign = {
     submissions: number;
     rejections: number;
     timestamp: number;
+    deployment: string;
 };
 export declare type CreateCampaignArgs = {
     campaignTitle: string;

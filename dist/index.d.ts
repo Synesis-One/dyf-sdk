@@ -19,6 +19,7 @@ export declare class Dyfarm {
     API_HOST: string;
     API_AUTH: string;
     RPC_HOST: string;
+    DEPLOYMENT: string;
     STOP_OFFSET: number;
     constructor(args: {
         programId: PublicKey;
@@ -28,6 +29,7 @@ export declare class Dyfarm {
         apiAuth: string;
         rpcHost: string;
         stopOffset: number;
+        deployment: string;
     });
     createAirdropSNSInstructions(publicKey: PublicKey, connection: Connection): Promise<{
         instructions: import("@solana/web3.js").TransactionInstruction[];

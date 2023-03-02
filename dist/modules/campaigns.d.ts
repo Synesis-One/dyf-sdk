@@ -5,6 +5,7 @@ export declare const getCampaignFromCampaignAccount: (publicKey: PublicKey, conn
     apiAuth: string;
     programId: PublicKey;
     stopOffset: number;
+    deployment: string;
 }) => Promise<PCampaign>;
 export declare const getCampaignFromCampaignInfo: (publicKey: PublicKey, connection: Connection, campaignTitle: string, role: number, args: {
     apiHost: string;

@@ -28,8 +28,8 @@ export declare type BuilderActivityInfo = {
     waiting_to_start: number;
     dapps: {
         [campaignTitle: string]: {
-            submissions: number;
-            total_submissions: number;
+            submitted: number;
+            total_submitted: number;
             rejected: number;
             total_rejected: number;
             validated: number;
@@ -74,6 +74,7 @@ export declare type ApiCampaignInfo = {
     submissions: number;
     rejections: number;
     timestamp: number;
+    deployment: string;
 };
 export declare type ApiSubmissionInfo = {
     timestamp: number;
