@@ -7945,7 +7945,7 @@ var getRpcValidationStatus = /*#__PURE__*/function () {
   };
 }();
 var getRpcListActivity = /*#__PURE__*/function () {
-  var _ref9 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(dyfarmContract, wallet, role, args) {
+  var _ref9 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(dyfarmContract, wallet, args) {
     return _regeneratorRuntime().wrap(function _callee9$(_context9) {
       while (1) switch (_context9.prev = _context9.next) {
         case 0:
@@ -7957,7 +7957,7 @@ var getRpcListActivity = /*#__PURE__*/function () {
           }).then(function (response) {
             if (response.status === 200 && response.data && response.data.result && Array.isArray(response.data.result)) {
               return response.data.result.filter(function (row) {
-                return String(row.role).toLowerCase() === role && row.stake_status === true && row.campaign !== null && row.campaign !== '';
+                return row.stake_status === true && row.campaign !== null && row.campaign !== '';
               }).map(function (row) {
                 return String(row.campaign);
               });
@@ -7971,7 +7971,7 @@ var getRpcListActivity = /*#__PURE__*/function () {
       }
     }, _callee9);
   }));
-  return function getRpcListActivity(_x50, _x51, _x52, _x53) {
+  return function getRpcListActivity(_x50, _x51, _x52) {
     return _ref9.apply(this, arguments);
   };
 }();
@@ -9392,7 +9392,7 @@ var getAllCampaigns = /*#__PURE__*/function () {
             break;
           }
           _context4.next = 23;
-          return getRpcListActivity(args.programId.toBase58(), publicKey.toBase58(), role, {
+          return getRpcListActivity(args.programId.toBase58(), publicKey.toBase58(), {
             rpcHost: args.rpcHost
           });
         case 23:

@@ -23,6 +23,6 @@ export declare const getRpcSubmissionStatus: (wallet: string, campaign: string, 
 export declare const getRpcValidationStatus: (wallet: string, campaign: string, args: {
     rpcHost: string;
 }) => Promise<RpcValidationsInfo[]>;
-export declare const getRpcListActivity: (dyfarmContract: string, wallet: string, role: string, args: {
+export declare const getRpcListActivity: (dyfarmContract: string, wallet: string, args: {
     rpcHost: string;
 }) => Promise<string[]>;
