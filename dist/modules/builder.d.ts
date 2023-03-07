@@ -31,3 +31,12 @@ export declare const createRpcSubmitUtterancesPromises: (publicKey: PublicKey, c
         rpcHost: string;
     })[][];
 };
+export declare const createRpcSubmitVerifiableUtterancesPromises: (publicKey: PublicKey, signMessage: (message: Uint8Array) => Promise<Uint8Array>, connection: Connection, rpcAuthToken: string, campaignTitle: string, batchUtterances: PUtterance[][], args: {
+    programId: PublicKey;
+    rpcHost: string;
+}) => Promise<{
+    promise: (params: (string | number)[], args: {
+        rpcHost: string;
+    }) => Promise<import("../typings").RpcBatchSubmissionResponse[]>;
+    args: any[];
+}>;

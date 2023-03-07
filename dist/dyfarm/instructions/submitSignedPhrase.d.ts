@@ -8,25 +8,25 @@ import * as beet from '@metaplex-foundation/beet';
 import * as web3 from '@solana/web3.js';
 /**
  * @category Instructions
- * @category RpcSubmitPhrase
+ * @category SubmitSignedPhrase
  * @category generated
  */
-export declare type RpcSubmitPhraseInstructionArgs = {
+export declare type SubmitSignedPhraseInstructionArgs = {
     campaignTitle: string;
     offchainRef: string;
-    offchainType: number;
-    kind: number;
+    phrase: string;
+    ixBuffer: Uint8Array;
 };
 /**
  * @category Instructions
- * @category RpcSubmitPhrase
+ * @category SubmitSignedPhrase
  * @category generated
  */
-export declare const rpcSubmitPhraseStruct: beet.FixableBeetArgsStruct<RpcSubmitPhraseInstructionArgs & {
+export declare const submitSignedPhraseStruct: beet.FixableBeetArgsStruct<SubmitSignedPhraseInstructionArgs & {
     instructionDiscriminator: number[];
 }>;
 /**
- * Accounts required by the _rpcSubmitPhrase_ instruction
+ * Accounts required by the _submitSignedPhrase_ instruction
  *
  * @property [_writable_, **signer**] authority
  * @property [] user
@@ -35,12 +35,13 @@ export declare const rpcSubmitPhraseStruct: beet.FixableBeetArgsStruct<RpcSubmit
  * @property [_writable_] campaignActivity
  * @property [_writable_] campaignAccount
  * @property [] farmConfig
+ * @property [] ixSysvar
  * @property [] clock
  * @category Instructions
- * @category RpcSubmitPhrase
+ * @category SubmitSignedPhrase
  * @category generated
  */
-export declare type RpcSubmitPhraseInstructionAccounts = {
+export declare type SubmitSignedPhraseInstructionAccounts = {
     authority: web3.PublicKey;
     user: web3.PublicKey;
     phraseAccount: web3.PublicKey;
@@ -48,20 +49,21 @@ export declare type RpcSubmitPhraseInstructionAccounts = {
     campaignActivity: web3.PublicKey;
     campaignAccount: web3.PublicKey;
     farmConfig: web3.PublicKey;
+    ixSysvar: web3.PublicKey;
     systemProgram?: web3.PublicKey;
     clock: web3.PublicKey;
     rent?: web3.PublicKey;
     anchorRemainingAccounts?: web3.AccountMeta[];
 };
-export declare const rpcSubmitPhraseInstructionDiscriminator: number[];
+export declare const submitSignedPhraseInstructionDiscriminator: number[];
 /**
- * Creates a _RpcSubmitPhrase_ instruction.
+ * Creates a _SubmitSignedPhrase_ instruction.
  *
  * @param accounts that will be accessed while the instruction is processed
  * @param args to provide as instruction data to the program
  *
  * @category Instructions
- * @category RpcSubmitPhrase
+ * @category SubmitSignedPhrase
  * @category generated
  */
-export declare function createRpcSubmitPhraseInstruction(accounts: RpcSubmitPhraseInstructionAccounts, args: RpcSubmitPhraseInstructionArgs, programId?: web3.PublicKey): web3.TransactionInstruction;
+export declare function createSubmitSignedPhraseInstruction(accounts: SubmitSignedPhraseInstructionAccounts, args: SubmitSignedPhraseInstructionArgs, programId?: web3.PublicKey): web3.TransactionInstruction;

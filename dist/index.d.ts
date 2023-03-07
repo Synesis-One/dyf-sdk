@@ -60,6 +60,12 @@ export declare class Dyfarm {
             rpcHost: string;
         })[][];
     };
+    createRpcSubmitVerifiableUtterancesPromises(publicKey: PublicKey, signMessage: (message: Uint8Array) => Promise<Uint8Array>, connection: Connection, rpcAuthToken: string, campaignTitle: string, batchUtterances: PUtterance[][]): Promise<{
+        promise: (params: (string | number)[], args: {
+            rpcHost: string;
+        }) => Promise<import("./typings").RpcBatchSubmissionResponse[]>;
+        args: any[];
+    }>;
     createStakeCampaignInstructions(publicKey: PublicKey, connection: Connection, role: number, amount: number, campaignTitle: string): Promise<{
         instructions: import("@solana/web3.js").TransactionInstruction[];
         signers: import("@solana/web3.js").Signer[];

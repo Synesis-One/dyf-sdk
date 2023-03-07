@@ -11,6 +11,9 @@ export declare const rpcSubmitPhrase: (token: string, dyfarmContract: string, ca
 export declare const rpcBatchSubmitPhrases: (token: string, dyfarmContract: string, campaignTitle: string, wallet: string, offchainReferences: string[], offchainTypes: number[], kinds: number[], args: {
     rpcHost: string;
 }) => Promise<RpcBatchSubmissionResponse[]>;
+export declare const rpcBatchSubmitVerifiablePhrases: (params: (number | string)[], args: {
+    rpcHost: string;
+}) => Promise<RpcBatchSubmissionResponse[]>;
 export declare const rpcValidatePhrase: (token: string, dyfarmContract: string, campaignTitle: string, wallet: string, builder: string, phraseAccount: string, canonical: string, value: boolean, confidence: number, id: number, args: {
     rpcHost: string;
 }) => Promise<string | null>;
