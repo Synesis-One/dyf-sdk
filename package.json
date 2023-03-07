@@ -1,7 +1,7 @@
 {
   "name": "@synesis-one/dyf",
   "description": "dyf",
-  "version": "0.1.230307",
+  "version": "0.1.230307-2",
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "umd:main": "dist/dyf.umd.production.js",
