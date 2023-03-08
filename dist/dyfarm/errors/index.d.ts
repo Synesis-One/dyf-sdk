@@ -273,7 +273,7 @@ export declare class CampaignNotFinishedError extends Error {
     constructor();
 }
 /**
- * RewardIsLow: 'Reward is low'
+ * RewardIsLow: 'aaaaaaaaaaaaaaaaaaaaaaaaaaa'
  *
  * @category Errors
  * @category generated
@@ -284,34 +284,34 @@ export declare class RewardIsLowError extends Error {
     constructor();
 }
 /**
- * InvalidMerkleProof: 'Invalid Merkle Proof'
+ * B: 'bbbbbbbbbbbbbbbbbbbbbbbbbbb'
  *
  * @category Errors
  * @category generated
  */
-export declare class InvalidMerkleProofError extends Error {
+export declare class BError extends Error {
     readonly code: number;
     readonly name: string;
     constructor();
 }
 /**
- * InvalidSignature: 'Invalid Signature'
+ * C: 'ccccccccccccccccccccccccccc'
  *
  * @category Errors
  * @category generated
  */
-export declare class InvalidSignatureError extends Error {
+export declare class CError extends Error {
     readonly code: number;
     readonly name: string;
     constructor();
 }
 /**
- * InvalidInput: 'Invalid Input on kind or phrase_type'
+ * D: 'ddddddddddddddddddddddddddd'
  *
  * @category Errors
  * @category generated
  */
-export declare class InvalidInputError extends Error {
+export declare class DError extends Error {
     readonly code: number;
     readonly name: string;
     constructor();

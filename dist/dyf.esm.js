@@ -1,5 +1,5 @@
 import { PublicKey, TransactionInstruction, SystemProgram, SYSVAR_RENT_PUBKEY, Transaction, SYSVAR_CLOCK_PUBKEY, LAMPORTS_PER_SOL } from '@solana/web3.js';
-import { fixedScalarEnum, BeetStruct, uniformFixedSizeArray, u8, u64, u16, bool, FixableBeetStruct, utf8String, coption, u32, i64, array, BeetArgsStruct, FixableBeetArgsStruct, bytes } from '@metaplex-foundation/beet';
+import { fixedScalarEnum, BeetStruct, uniformFixedSizeArray, u8, u64, u16, bool, FixableBeetStruct, utf8String, coption, u32, i64, array, BeetArgsStruct, FixableBeetArgsStruct } from '@metaplex-foundation/beet';
 import { publicKey, GpaBuilder } from '@metaplex-foundation/beet-solana';
 import { TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID, createAssociatedTokenAccountInstruction } from '@solana/spl-token';
 import BN from 'bn.js';
@@ -621,7 +621,7 @@ var Campaign = /*#__PURE__*/function () {
   ;
   Campaign.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+      programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
     }
     return GpaBuilder.fromStruct(programId, campaignBeet);
   }
@@ -987,7 +987,7 @@ var CampaignActivity = /*#__PURE__*/function () {
   ;
   CampaignActivity.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+      programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
     }
     return GpaBuilder.fromStruct(programId, campaignActivityBeet);
   }
@@ -1241,7 +1241,7 @@ var CampaignVault = /*#__PURE__*/function () {
   ;
   CampaignVault.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+      programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
     }
     return GpaBuilder.fromStruct(programId, campaignVaultBeet);
   }
@@ -1489,7 +1489,7 @@ var FarmConfig = /*#__PURE__*/function () {
   ;
   FarmConfig.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+      programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
     }
     return GpaBuilder.fromStruct(programId, farmConfigBeet);
   }
@@ -1712,7 +1712,7 @@ var Feed = /*#__PURE__*/function () {
   ;
   Feed.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+      programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
     }
     return GpaBuilder.fromStruct(programId, feedBeet);
   }
@@ -1903,7 +1903,7 @@ var Guild = /*#__PURE__*/function () {
   ;
   Guild.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+      programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
     }
     return GpaBuilder.fromStruct(programId, guildBeet);
   }
@@ -2147,7 +2147,7 @@ var Phrase = /*#__PURE__*/function () {
   ;
   Phrase.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+      programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
     }
     return GpaBuilder.fromStruct(programId, phraseBeet);
   }
@@ -2376,7 +2376,7 @@ var Profile = /*#__PURE__*/function () {
   ;
   Profile.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+      programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
     }
     return GpaBuilder.fromStruct(programId, profileBeet);
   }
@@ -2659,7 +2659,7 @@ var StakeAccount = /*#__PURE__*/function () {
   ;
   StakeAccount.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+      programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
     }
     return GpaBuilder.fromStruct(programId, stakeAccountBeet);
   }
@@ -2930,7 +2930,7 @@ var Validate = /*#__PURE__*/function () {
   ;
   Validate.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+      programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
     }
     return GpaBuilder.fromStruct(programId, validateBeet);
   }
@@ -3109,7 +3109,7 @@ var Validators = /*#__PURE__*/function () {
   ;
   Validators.gpaBuilder = function gpaBuilder(programId) {
     if (programId === void 0) {
-      programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+      programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
     }
     return GpaBuilder.fromStruct(programId, validatorsBeet);
   }
@@ -3839,7 +3839,7 @@ createErrorFromNameLookup.set('CampaignNotFinished', function () {
   return new CampaignNotFinishedError();
 });
 /**
- * RewardIsLow: 'Reward is low'
+ * RewardIsLow: 'aaaaaaaaaaaaaaaaaaaaaaaaaaa'
  *
  * @category Errors
  * @category generated
@@ -3848,7 +3848,7 @@ var RewardIsLowError = /*#__PURE__*/function (_Error25) {
   _inheritsLoose(RewardIsLowError, _Error25);
   function RewardIsLowError() {
     var _this25;
-    _this25 = _Error25.call(this, 'Reward is low') || this;
+    _this25 = _Error25.call(this, 'aaaaaaaaaaaaaaaaaaaaaaaaaaa') || this;
     _this25.code = 0x1788;
     _this25.name = 'RewardIsLow';
     if (typeof Error.captureStackTrace === 'function') {
@@ -3865,82 +3865,82 @@ createErrorFromNameLookup.set('RewardIsLow', function () {
   return new RewardIsLowError();
 });
 /**
- * InvalidMerkleProof: 'Invalid Merkle Proof'
+ * B: 'bbbbbbbbbbbbbbbbbbbbbbbbbbb'
  *
  * @category Errors
  * @category generated
  */
-var InvalidMerkleProofError = /*#__PURE__*/function (_Error26) {
-  _inheritsLoose(InvalidMerkleProofError, _Error26);
-  function InvalidMerkleProofError() {
+var BError = /*#__PURE__*/function (_Error26) {
+  _inheritsLoose(BError, _Error26);
+  function BError() {
     var _this26;
-    _this26 = _Error26.call(this, 'Invalid Merkle Proof') || this;
+    _this26 = _Error26.call(this, 'bbbbbbbbbbbbbbbbbbbbbbbbbbb') || this;
     _this26.code = 0x1789;
-    _this26.name = 'InvalidMerkleProof';
+    _this26.name = 'B';
     if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(_assertThisInitialized(_this26), InvalidMerkleProofError);
+      Error.captureStackTrace(_assertThisInitialized(_this26), BError);
     }
     return _this26;
   }
-  return InvalidMerkleProofError;
+  return BError;
 }( /*#__PURE__*/_wrapNativeSuper(Error));
 createErrorFromCodeLookup.set(0x1789, function () {
-  return new InvalidMerkleProofError();
+  return new BError();
 });
-createErrorFromNameLookup.set('InvalidMerkleProof', function () {
-  return new InvalidMerkleProofError();
+createErrorFromNameLookup.set('B', function () {
+  return new BError();
 });
 /**
- * InvalidSignature: 'Invalid Signature'
+ * C: 'ccccccccccccccccccccccccccc'
  *
  * @category Errors
  * @category generated
  */
-var InvalidSignatureError = /*#__PURE__*/function (_Error27) {
-  _inheritsLoose(InvalidSignatureError, _Error27);
-  function InvalidSignatureError() {
+var CError = /*#__PURE__*/function (_Error27) {
+  _inheritsLoose(CError, _Error27);
+  function CError() {
     var _this27;
-    _this27 = _Error27.call(this, 'Invalid Signature') || this;
+    _this27 = _Error27.call(this, 'ccccccccccccccccccccccccccc') || this;
     _this27.code = 0x178a;
-    _this27.name = 'InvalidSignature';
+    _this27.name = 'C';
     if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(_assertThisInitialized(_this27), InvalidSignatureError);
+      Error.captureStackTrace(_assertThisInitialized(_this27), CError);
     }
     return _this27;
   }
-  return InvalidSignatureError;
+  return CError;
 }( /*#__PURE__*/_wrapNativeSuper(Error));
 createErrorFromCodeLookup.set(0x178a, function () {
-  return new InvalidSignatureError();
+  return new CError();
 });
-createErrorFromNameLookup.set('InvalidSignature', function () {
-  return new InvalidSignatureError();
+createErrorFromNameLookup.set('C', function () {
+  return new CError();
 });
 /**
- * InvalidInput: 'Invalid Input on kind or phrase_type'
+ * D: 'ddddddddddddddddddddddddddd'
  *
  * @category Errors
  * @category generated
  */
-var InvalidInputError = /*#__PURE__*/function (_Error28) {
-  _inheritsLoose(InvalidInputError, _Error28);
-  function InvalidInputError() {
+var DError = /*#__PURE__*/function (_Error28) {
+  _inheritsLoose(DError, _Error28);
+  function DError() {
     var _this28;
-    _this28 = _Error28.call(this, 'Invalid Input on kind or phrase_type') || this;
+    _this28 = _Error28.call(this, 'ddddddddddddddddddddddddddd') || this;
     _this28.code = 0x178b;
-    _this28.name = 'InvalidInput';
+    _this28.name = 'D';
     if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(_assertThisInitialized(_this28), InvalidInputError);
+      Error.captureStackTrace(_assertThisInitialized(_this28), DError);
     }
     return _this28;
   }
-  return InvalidInputError;
+  return DError;
 }( /*#__PURE__*/_wrapNativeSuper(Error));
 createErrorFromCodeLookup.set(0x178b, function () {
-  return new InvalidInputError();
+  return new DError();
 });
-createErrorFromNameLookup.set('InvalidInput', function () {
-  return new InvalidInputError();
+createErrorFromNameLookup.set('D', function () {
+  return new DError();
 });
 /**
  * E: 'eeeeeeeeeeeeeeeeeeeeeeeeeee'
@@ -4007,7 +4007,7 @@ var adjustRewardInstructionDiscriminator = [23, 3, 192, 117, 96, 198, 166, 215];
 function createAdjustRewardInstruction(accounts, args, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _adjustRewardStruct$s = adjustRewardStruct.serialize(_extends({
       instructionDiscriminator: adjustRewardInstructionDiscriminator
@@ -4058,7 +4058,7 @@ var airdropInstructionDiscriminator = [113, 173, 36, 238, 38, 152, 22, 117];
 function createAirdropInstruction(accounts, programId) {
   var _accounts$tokenProgra;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _airdropStruct$serial = airdropStruct.serialize({
       instructionDiscriminator: airdropInstructionDiscriminator
@@ -4123,7 +4123,7 @@ var allocateTableInstructionDiscriminator = [51, 148, 3, 2, 77, 128, 58, 80];
 function createAllocateTableInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _allocateTableStruct$ = allocateTableStruct.serialize(_extends({
       instructionDiscriminator: allocateTableInstructionDiscriminator
@@ -4192,7 +4192,7 @@ var checkPriceInstructionDiscriminator = [167, 85, 209, 192, 115, 173, 239, 176]
 function createCheckPriceInstruction(accounts, args, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _checkPriceStruct$ser = checkPriceStruct.serialize(_extends({
       instructionDiscriminator: checkPriceInstructionDiscriminator
@@ -4249,7 +4249,7 @@ var claimRewardInstructionDiscriminator = [149, 95, 181, 242, 94, 90, 158, 162];
 function createClaimRewardInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _claimRewardStruct$se = claimRewardStruct.serialize(_extends({
       instructionDiscriminator: claimRewardInstructionDiscriminator
@@ -4334,7 +4334,7 @@ var createCampaignInstructionDiscriminator = [111, 131, 187, 98, 160, 193, 114, 
 function createCreateCampaignInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _createCampaignStruct = createCampaignStruct.serialize(_extends({
       instructionDiscriminator: createCampaignInstructionDiscriminator
@@ -4435,7 +4435,7 @@ var createGuildInstructionDiscriminator = [163, 27, 97, 167, 132, 198, 53, 168];
 function createCreateGuildInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _createGuildStruct$se = createGuildStruct.serialize(_extends({
       instructionDiscriminator: createGuildInstructionDiscriminator
@@ -4512,7 +4512,7 @@ var createProfileInstructionDiscriminator = [225, 205, 234, 143, 17, 186, 50, 22
 function createCreateProfileInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _createProfileStruct$ = createProfileStruct.serialize(_extends({
       instructionDiscriminator: createProfileInstructionDiscriminator
@@ -4575,7 +4575,7 @@ var deactiveTableInstructionDiscriminator = [145, 99, 175, 188, 124, 217, 141, 7
 function createDeactiveTableInstruction(accounts, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _deactiveTableStruct$ = deactiveTableStruct.serialize({
       instructionDiscriminator: deactiveTableInstructionDiscriminator
@@ -4642,7 +4642,7 @@ var extendTableInstructionDiscriminator = [181, 129, 37, 152, 188, 164, 212, 75]
 function createExtendTableInstruction(accounts, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _extendTableStruct$se = extendTableStruct.serialize({
       instructionDiscriminator: extendTableInstructionDiscriminator
@@ -4709,7 +4709,7 @@ var free2playInstructionDiscriminator = [14, 185, 90, 244, 62, 166, 71, 245];
 function createFree2playInstruction(accounts, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _free2playStruct$seri = free2playStruct.serialize({
       instructionDiscriminator: free2playInstructionDiscriminator
@@ -4778,7 +4778,7 @@ var guildClaimRewardInstructionDiscriminator = [151, 61, 18, 77, 172, 55, 161, 8
 function createGuildClaimRewardInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _guildClaimRewardStru = guildClaimRewardStruct.serialize(_extends({
       instructionDiscriminator: guildClaimRewardInstructionDiscriminator
@@ -4875,7 +4875,7 @@ var guildDeleteInstructionDiscriminator = [156, 15, 205, 147, 171, 210, 90, 132]
 function createGuildDeleteInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _guildDeleteStruct$se = guildDeleteStruct.serialize(_extends({
       instructionDiscriminator: guildDeleteInstructionDiscriminator
@@ -4959,7 +4959,7 @@ var guildGrantScholarInstructionDiscriminator = [246, 74, 234, 202, 61, 146, 196
  */
 function createGuildGrantScholarInstruction(accounts, args, programId) {
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _guildGrantScholarStr = guildGrantScholarStruct.serialize(_extends({
       instructionDiscriminator: guildGrantScholarInstructionDiscriminator
@@ -5016,7 +5016,7 @@ var guildStakeNftInstructionDiscriminator = [84, 239, 169, 71, 243, 35, 180, 158
 function createGuildStakeNftInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _guildStakeNftStruct$ = guildStakeNftStruct.serialize(_extends({
       instructionDiscriminator: guildStakeNftInstructionDiscriminator
@@ -5125,7 +5125,7 @@ var guildUnstakeNftInstructionDiscriminator = [131, 104, 220, 144, 180, 206, 25,
 function createGuildUnstakeNftInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _guildUnstakeNftStruc = guildUnstakeNftStruct.serialize(_extends({
       instructionDiscriminator: guildUnstakeNftInstructionDiscriminator
@@ -5230,7 +5230,7 @@ var initializeInstructionDiscriminator = [175, 175, 109, 31, 13, 152, 155, 237];
 function createInitializeInstruction(accounts, args, programId) {
   var _accounts$tokenProgra, _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _initializeStruct$ser = initializeStruct.serialize(_extends({
       instructionDiscriminator: initializeInstructionDiscriminator
@@ -5315,7 +5315,7 @@ var revokeScholarInstructionDiscriminator = [47, 197, 48, 149, 14, 68, 39, 200];
 function createRevokeScholarInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _revokeScholarStruct$ = revokeScholarStruct.serialize(_extends({
       instructionDiscriminator: revokeScholarInstructionDiscriminator
@@ -5398,7 +5398,7 @@ var rpcCloseCampaignInstructionDiscriminator = [67, 33, 43, 114, 123, 198, 81, 2
 function createRpcCloseCampaignInstruction(accounts, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _rpcCloseCampaignStru = rpcCloseCampaignStruct.serialize({
       instructionDiscriminator: rpcCloseCampaignInstructionDiscriminator
@@ -5461,7 +5461,7 @@ var rpcClosePhraseInstructionDiscriminator = [227, 100, 252, 19, 112, 191, 162, 
 function createRpcClosePhraseInstruction(accounts, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _rpcClosePhraseStruct = rpcClosePhraseStruct.serialize({
       instructionDiscriminator: rpcClosePhraseInstructionDiscriminator
@@ -5524,7 +5524,7 @@ var rpcCloseValidateInstructionDiscriminator = [57, 139, 225, 164, 199, 188, 164
 function createRpcCloseValidateInstruction(accounts, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _rpcCloseValidateStru = rpcCloseValidateStruct.serialize({
       instructionDiscriminator: rpcCloseValidateInstructionDiscriminator
@@ -5589,7 +5589,7 @@ var rpcPermitInstructionDiscriminator = [92, 83, 224, 31, 112, 83, 197, 55];
 function createRpcPermitInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _rpcPermitStruct$seri = rpcPermitStruct.serialize(_extends({
       instructionDiscriminator: rpcPermitInstructionDiscriminator
@@ -5632,6 +5632,87 @@ function createRpcPermitInstruction(accounts, args, programId) {
 
 /**
  * @category Instructions
+ * @category RpcSubmitPhrase
+ * @category generated
+ */
+var rpcSubmitPhraseStruct = /*#__PURE__*/new FixableBeetArgsStruct([['instructionDiscriminator', /*#__PURE__*/uniformFixedSizeArray(u8, 8)], ['campaignTitle', utf8String], ['offchainRef', utf8String], ['offchainType', u8], ['kind', u8]], 'RpcSubmitPhraseInstructionArgs');
+var rpcSubmitPhraseInstructionDiscriminator = [163, 108, 108, 237, 170, 235, 190, 83];
+/**
+ * Creates a _RpcSubmitPhrase_ instruction.
+ *
+ * @param accounts that will be accessed while the instruction is processed
+ * @param args to provide as instruction data to the program
+ *
+ * @category Instructions
+ * @category RpcSubmitPhrase
+ * @category generated
+ */
+function createRpcSubmitPhraseInstruction(accounts, args, programId) {
+  var _accounts$systemProgr, _accounts$rent;
+  if (programId === void 0) {
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
+  }
+  var _rpcSubmitPhraseStruc = rpcSubmitPhraseStruct.serialize(_extends({
+      instructionDiscriminator: rpcSubmitPhraseInstructionDiscriminator
+    }, args)),
+    data = _rpcSubmitPhraseStruc[0];
+  var keys = [{
+    pubkey: accounts.authority,
+    isWritable: true,
+    isSigner: true
+  }, {
+    pubkey: accounts.user,
+    isWritable: false,
+    isSigner: false
+  }, {
+    pubkey: accounts.phraseAccount,
+    isWritable: true,
+    isSigner: false
+  }, {
+    pubkey: accounts.userProfile,
+    isWritable: true,
+    isSigner: false
+  }, {
+    pubkey: accounts.campaignActivity,
+    isWritable: true,
+    isSigner: false
+  }, {
+    pubkey: accounts.campaignAccount,
+    isWritable: true,
+    isSigner: false
+  }, {
+    pubkey: accounts.farmConfig,
+    isWritable: false,
+    isSigner: false
+  }, {
+    pubkey: (_accounts$systemProgr = accounts.systemProgram) != null ? _accounts$systemProgr : SystemProgram.programId,
+    isWritable: false,
+    isSigner: false
+  }, {
+    pubkey: accounts.clock,
+    isWritable: false,
+    isSigner: false
+  }, {
+    pubkey: (_accounts$rent = accounts.rent) != null ? _accounts$rent : SYSVAR_RENT_PUBKEY,
+    isWritable: false,
+    isSigner: false
+  }];
+  if (accounts.anchorRemainingAccounts != null) {
+    for (var _iterator = _createForOfIteratorHelperLoose(accounts.anchorRemainingAccounts), _step; !(_step = _iterator()).done;) {
+      var acc = _step.value;
+      keys.push(acc);
+    }
+  }
+  var ix = new TransactionInstruction({
+    programId: programId,
+    keys: keys,
+    data: data
+  });
+  return ix;
+}
+
+/**
+ * @category Instructions
  * @category RpcValidatePhrase
  * @category generated
  */
@@ -5650,7 +5731,7 @@ var rpcValidatePhraseInstructionDiscriminator = [161, 172, 106, 49, 80, 167, 50,
 function createRpcValidatePhraseInstruction(accounts, args, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _rpcValidatePhraseStr = rpcValidatePhraseStruct.serialize(_extends({
       instructionDiscriminator: rpcValidatePhraseInstructionDiscriminator
@@ -5734,7 +5815,7 @@ var scholarSignInstructionDiscriminator = [124, 192, 76, 227, 147, 194, 65, 121]
  */
 function createScholarSignInstruction(accounts, args, programId) {
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _scholarSignStruct$se = scholarSignStruct.serialize(_extends({
       instructionDiscriminator: scholarSignInstructionDiscriminator
@@ -5795,7 +5876,7 @@ var stakeCampaignInstructionDiscriminator = [147, 38, 195, 247, 115, 100, 125, 3
 function createStakeCampaignInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _stakeCampaignStruct$ = stakeCampaignStruct.serialize(_extends({
       instructionDiscriminator: stakeCampaignInstructionDiscriminator
@@ -5878,7 +5959,7 @@ var stakeNftInstructionDiscriminator = [38, 27, 66, 46, 69, 65, 151, 219];
 function createStakeNftInstruction(accounts, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _stakeNftStruct$seria = stakeNftStruct.serialize({
       instructionDiscriminator: stakeNftInstructionDiscriminator
@@ -5967,7 +6048,7 @@ var submitPhraseInstructionDiscriminator = [201, 89, 230, 171, 244, 100, 6, 127]
 function createSubmitPhraseInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _submitPhraseStruct$s = submitPhraseStruct.serialize(_extends({
       instructionDiscriminator: submitPhraseInstructionDiscriminator
@@ -6026,91 +6107,6 @@ function createSubmitPhraseInstruction(accounts, args, programId) {
 
 /**
  * @category Instructions
- * @category SubmitSignedPhrase
- * @category generated
- */
-var submitSignedPhraseStruct = /*#__PURE__*/new FixableBeetArgsStruct([['instructionDiscriminator', /*#__PURE__*/uniformFixedSizeArray(u8, 8)], ['campaignTitle', utf8String], ['offchainRef', utf8String], ['phrase', utf8String], ['ixBuffer', bytes]], 'SubmitSignedPhraseInstructionArgs');
-var submitSignedPhraseInstructionDiscriminator = [3, 170, 96, 36, 90, 102, 203, 20];
-/**
- * Creates a _SubmitSignedPhrase_ instruction.
- *
- * @param accounts that will be accessed while the instruction is processed
- * @param args to provide as instruction data to the program
- *
- * @category Instructions
- * @category SubmitSignedPhrase
- * @category generated
- */
-function createSubmitSignedPhraseInstruction(accounts, args, programId) {
-  var _accounts$systemProgr, _accounts$rent;
-  if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
-  }
-  var _submitSignedPhraseSt = submitSignedPhraseStruct.serialize(_extends({
-      instructionDiscriminator: submitSignedPhraseInstructionDiscriminator
-    }, args)),
-    data = _submitSignedPhraseSt[0];
-  var keys = [{
-    pubkey: accounts.authority,
-    isWritable: true,
-    isSigner: true
-  }, {
-    pubkey: accounts.user,
-    isWritable: false,
-    isSigner: false
-  }, {
-    pubkey: accounts.phraseAccount,
-    isWritable: true,
-    isSigner: false
-  }, {
-    pubkey: accounts.userProfile,
-    isWritable: true,
-    isSigner: false
-  }, {
-    pubkey: accounts.campaignActivity,
-    isWritable: true,
-    isSigner: false
-  }, {
-    pubkey: accounts.campaignAccount,
-    isWritable: true,
-    isSigner: false
-  }, {
-    pubkey: accounts.farmConfig,
-    isWritable: false,
-    isSigner: false
-  }, {
-    pubkey: accounts.ixSysvar,
-    isWritable: false,
-    isSigner: false
-  }, {
-    pubkey: (_accounts$systemProgr = accounts.systemProgram) != null ? _accounts$systemProgr : SystemProgram.programId,
-    isWritable: false,
-    isSigner: false
-  }, {
-    pubkey: accounts.clock,
-    isWritable: false,
-    isSigner: false
-  }, {
-    pubkey: (_accounts$rent = accounts.rent) != null ? _accounts$rent : SYSVAR_RENT_PUBKEY,
-    isWritable: false,
-    isSigner: false
-  }];
-  if (accounts.anchorRemainingAccounts != null) {
-    for (var _iterator = _createForOfIteratorHelperLoose(accounts.anchorRemainingAccounts), _step; !(_step = _iterator()).done;) {
-      var acc = _step.value;
-      keys.push(acc);
-    }
-  }
-  var ix = new TransactionInstruction({
-    programId: programId,
-    keys: keys,
-    data: data
-  });
-  return ix;
-}
-
-/**
- * @category Instructions
  * @category UnstakeCampaign
  * @category generated
  */
@@ -6129,7 +6125,7 @@ var unstakeCampaignInstructionDiscriminator = [208, 3, 38, 137, 80, 29, 12, 75];
 function createUnstakeCampaignInstruction(accounts, args, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _unstakeCampaignStruc = unstakeCampaignStruct.serialize(_extends({
       instructionDiscriminator: unstakeCampaignInstructionDiscriminator
@@ -6220,7 +6216,7 @@ var unstakeNftInstructionDiscriminator = [17, 182, 24, 211, 101, 138, 50, 163];
 function createUnstakeNftInstruction(accounts, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _unstakeNftStruct$ser = unstakeNftStruct.serialize({
       instructionDiscriminator: unstakeNftInstructionDiscriminator
@@ -6305,7 +6301,7 @@ var updateCampaignInstructionDiscriminator = [235, 31, 39, 49, 121, 173, 19, 92]
 function createUpdateCampaignInstruction(accounts, args, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _updateCampaignStruct = updateCampaignStruct.serialize(_extends({
       instructionDiscriminator: updateCampaignInstructionDiscriminator
@@ -6362,7 +6358,7 @@ var validatePhraseInstructionDiscriminator = [131, 138, 249, 228, 211, 54, 251, 
 function createValidatePhraseInstruction(accounts, args, programId) {
   var _accounts$systemProgr;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _validatePhraseStruct = validatePhraseStruct.serialize(_extends({
       instructionDiscriminator: validatePhraseInstructionDiscriminator
@@ -6441,7 +6437,7 @@ var verifyPreStakedNftInstructionDiscriminator = [147, 217, 55, 199, 25, 110, 24
 function createVerifyPreStakedNftInstruction(accounts, programId) {
   var _accounts$systemProgr, _accounts$tokenProgra, _accounts$rent;
   if (programId === void 0) {
-    programId = new PublicKey('BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c');
+    programId = new PublicKey('4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ');
   }
   var _verifyPreStakedNftSt = verifyPreStakedNftStruct.serialize({
       instructionDiscriminator: verifyPreStakedNftInstructionDiscriminator
@@ -6516,7 +6512,7 @@ function createVerifyPreStakedNftInstruction(accounts, programId) {
  * @category constants
  * @category generated
  */
-var PROGRAM_ADDRESS = 'BdarBd6iKcAKGHuXsTWdQVS6QQ7Gxww2thEJ5bmnLg5c';
+var PROGRAM_ADDRESS = '4HrvV9t73hKoNUmNLggM6MPca4dUYCiwtQqH5T6t5UdJ';
 /**
  * Program public key
  *
@@ -10605,5 +10601,5 @@ var Dyfarm = /*#__PURE__*/function () {
   return Dyfarm;
 }();
 
-export { ACCESS_METHOD, AccessMethod, Campaign, CampaignActivity, CampaignExpiredError, CampaignFinishedAlreadyError, CampaignNotFinishedError, CampaignVault, ConfidentIsInvalidError, DoubleVoteDetectError, Dyfarm, EError, FarmConfig, Feed, Guild, InsufficientTokenBalanceError, InvalidAccessMethodError, InvalidGuildAdminError, InvalidInputError, InvalidMerkleProofError, InvalidMintError, InvalidNFTError, InvalidPDAError, InvalidSignatureError, InvalidStakeAccountError, InvalidStakeDelegateError, InvalidStakeStatusError, InvalidStakeTypeError, InvalidTokenMintError, InvalidTokenOwnerError, LAMPORTS_PER_USDC, LOOKUP_PROGRAM_ADDRESS, METADATA_PROGRAM_ADDRESS, OFFCHAIN_TYPE, Offchain, PHRASE_TYPE, PROGRAM_ADDRESS, PROGRAM_ID, PermitRpcIsMissedError, Phrase, PhraseType, PhraseValidatedAlreadyError, Profile, ProfileNotMatchWithAuthorityError, RPC_TXN_STATUS, RewardBalanceIsZeroError, RewardIsLowError, Role, RoleMismatchError, RpcSignerMismatchError, SNS_PAIR, STAKE_ACCOUNT_ROLE, StakeAccount, StakeAccountRole, StakeAccountType, StakeLockedError, StakingType, Tag, Validate, Validators, accessMethodBeet, accountProviders, addCampaignMeta, adjustRewardInstructionDiscriminator, adjustRewardStruct, airdropInstructionDiscriminator, airdropStruct, allocateTableInstructionDiscriminator, allocateTableStruct, awaitTransactionSignatureConfirmation, campaignActivityBeet, campaignActivityDiscriminator, campaignBeet, campaignDiscriminator, campaignVaultBeet, campaignVaultDiscriminator, checkPriceInstructionDiscriminator, checkPriceStruct, checkWhitelist, claimRewardInstructionDiscriminator, claimRewardStruct, createAdjustRewardInstruction, createAirdropInstruction, createAirdropSNSInstructions, createAllocateTableInstruction, createArchitectCreateCampaignInstructions, createArchitectUpdateCampaignInstructions, createBatchClaimRewardInstructions, createBuilderSubmitUtterancesInstructions, createCampaignInstructionDiscriminator, createCampaignStruct, createCheckPriceInstruction, createClaimRewardInstruction, createClaimRewardInstructions, createCreateCampaignInstruction, createCreateGuildInstruction, createCreateProfileInstruction, createDeactiveTableInstruction, createExtendTableInstruction, createFree2playInstruction, createGuildClaimRewardInstruction, createGuildDeleteInstruction, createGuildGrantScholarInstruction, createGuildInstructionDiscriminator, createGuildStakeNftInstruction, createGuildStruct, createGuildUnstakeNftInstruction, createInitializeInstruction, createProfileInstructionDiscriminator, createProfileStruct, createRevokeScholarInstruction, createRpcCloseCampaignInstruction, createRpcClosePhraseInstruction, createRpcCloseValidateInstruction, createRpcPermitInstruction, createRpcPermitInstructions, createRpcSubmitUtterancesPromises, createRpcSubmitVerifiableUtterancesPromises, createRpcValidatePhraseInstruction, createRpcValidateUtterancesPromises, createScholarSignInstruction, createStakeCampaignInstruction, createStakeCampaignInstructions, createStakeCampaignWithNFTInstructions, createStakeNftInstruction, createSubmitPhraseInstruction, createSubmitSignedPhraseInstruction, createUnstakeCampaignInstruction, createUnstakeCampaignInstructions, createUnstakeNftInstruction, createUpdateCampaignInstruction, createUtteranceByOntology, createValidatePhraseInstruction, createValidatorValidateUtterancesInstructions, createVerifyPreStakedNftInstruction, deactiveTableInstructionDiscriminator, deactiveTableStruct, decodeText, delCampaignMeta, deleteOntology, deleteOntologyByCanonical, encodeText, errorFromCode, errorFromName, extendTableInstructionDiscriminator, extendTableStruct, farmConfigBeet, farmConfigDiscriminator, feedBeet, feedDiscriminator, free2playInstructionDiscriminator, free2playStruct, getAllCampaignTitles, getAllCampaigns, getAllCampaignsInfo, getAppRole, getAssociateTokenAccount, getBuilderActivity, getBuilderActivityInfo, getBuilderRecentSubmissions, getBuilderSubmissionsToday, getCampaginMeta, getCampaignFromCampaignAccount, getCampaignFromCampaignInfo, getCampaignInfo, getIsProfileCreated, getIsRpcPermitted, getKanonNfts, getOrCreateAssociateTokenAccount, getRpcAuthToken, getRpcListActivity, getRpcSubmissionStatus, getRpcValidationStatus, getSolBalance, getSubmissionsValidationsInfo, getTokenBalance, getTotalAvailableRewards, getUnusedCampaignTitle, getUtterancesAndHistoriesForArchitect, getUtterancesAndHistoriesForBuilder, getUtterancesAndHistoriesForValidator, getValidatorActivity, getValidatorActivityInfo, getValidatorRecentValidations, getValidatorValidationsToday, guildBeet, guildClaimRewardInstructionDiscriminator, guildClaimRewardStruct, guildDeleteInstructionDiscriminator, guildDeleteStruct, guildDiscriminator, guildGrantScholarInstructionDiscriminator, guildGrantScholarStruct, guildStakeNftInstructionDiscriminator, guildStakeNftStruct, guildUnstakeNftInstructionDiscriminator, guildUnstakeNftStruct, initializeInstructionDiscriminator, initializeStruct, isEmptyAddress, isEqualAddress, isIncludingAddress, isValidAddress, offchainBeet, phraseBeet, phraseDiscriminator, phraseTypeBeet, profileBeet, profileDiscriminator, revokeScholarInstructionDiscriminator, revokeScholarStruct, roleBeet, rpcBatchSubmitPhrases, rpcBatchSubmitVerifiablePhrases, rpcBatchValidatePhrase, rpcCloseCampaignInstructionDiscriminator, rpcCloseCampaignStruct, rpcClosePhraseInstructionDiscriminator, rpcClosePhraseStruct, rpcCloseValidateInstructionDiscriminator, rpcCloseValidateStruct, rpcPermitInstructionDiscriminator, rpcPermitStruct, rpcRequestAuth, rpcSubmitPhrase, rpcValidatePhrase, rpcValidatePhraseInstructionDiscriminator, rpcValidatePhraseStruct, rpcVerifyAuth, scholarSignInstructionDiscriminator, scholarSignStruct, sendAndConfirmWithRetry, sendInstructions, sleep, stakeAccountBeet, stakeAccountDiscriminator, stakeAccountRoleBeet, stakeAccountTypeBeet, stakeCampaignInstructionDiscriminator, stakeCampaignStruct, stakeNftInstructionDiscriminator, stakeNftStruct, stakingTypeBeet, submitOntology, submitPhraseInstructionDiscriminator, submitPhraseStruct, submitSignedPhraseInstructionDiscriminator, submitSignedPhraseStruct, tagBeet, unstakeCampaignInstructionDiscriminator, unstakeCampaignStruct, unstakeNftInstructionDiscriminator, unstakeNftStruct, updateCampaignInstructionDiscriminator, updateCampaignStruct, validateBeet, validateDiscriminator, validatePhraseInstructionDiscriminator, validatePhraseStruct, validatorsBeet, validatorsDiscriminator, verifyPreStakedNftInstructionDiscriminator, verifyPreStakedNftStruct };
+export { ACCESS_METHOD, AccessMethod, BError, CError, Campaign, CampaignActivity, CampaignExpiredError, CampaignFinishedAlreadyError, CampaignNotFinishedError, CampaignVault, ConfidentIsInvalidError, DError, DoubleVoteDetectError, Dyfarm, EError, FarmConfig, Feed, Guild, InsufficientTokenBalanceError, InvalidAccessMethodError, InvalidGuildAdminError, InvalidMintError, InvalidNFTError, InvalidPDAError, InvalidStakeAccountError, InvalidStakeDelegateError, InvalidStakeStatusError, InvalidStakeTypeError, InvalidTokenMintError, InvalidTokenOwnerError, LAMPORTS_PER_USDC, LOOKUP_PROGRAM_ADDRESS, METADATA_PROGRAM_ADDRESS, OFFCHAIN_TYPE, Offchain, PHRASE_TYPE, PROGRAM_ADDRESS, PROGRAM_ID, PermitRpcIsMissedError, Phrase, PhraseType, PhraseValidatedAlreadyError, Profile, ProfileNotMatchWithAuthorityError, RPC_TXN_STATUS, RewardBalanceIsZeroError, RewardIsLowError, Role, RoleMismatchError, RpcSignerMismatchError, SNS_PAIR, STAKE_ACCOUNT_ROLE, StakeAccount, StakeAccountRole, StakeAccountType, StakeLockedError, StakingType, Tag, Validate, Validators, accessMethodBeet, accountProviders, addCampaignMeta, adjustRewardInstructionDiscriminator, adjustRewardStruct, airdropInstructionDiscriminator, airdropStruct, allocateTableInstructionDiscriminator, allocateTableStruct, awaitTransactionSignatureConfirmation, campaignActivityBeet, campaignActivityDiscriminator, campaignBeet, campaignDiscriminator, campaignVaultBeet, campaignVaultDiscriminator, checkPriceInstructionDiscriminator, checkPriceStruct, checkWhitelist, claimRewardInstructionDiscriminator, claimRewardStruct, createAdjustRewardInstruction, createAirdropInstruction, createAirdropSNSInstructions, createAllocateTableInstruction, createArchitectCreateCampaignInstructions, createArchitectUpdateCampaignInstructions, createBatchClaimRewardInstructions, createBuilderSubmitUtterancesInstructions, createCampaignInstructionDiscriminator, createCampaignStruct, createCheckPriceInstruction, createClaimRewardInstruction, createClaimRewardInstructions, createCreateCampaignInstruction, createCreateGuildInstruction, createCreateProfileInstruction, createDeactiveTableInstruction, createExtendTableInstruction, createFree2playInstruction, createGuildClaimRewardInstruction, createGuildDeleteInstruction, createGuildGrantScholarInstruction, createGuildInstructionDiscriminator, createGuildStakeNftInstruction, createGuildStruct, createGuildUnstakeNftInstruction, createInitializeInstruction, createProfileInstructionDiscriminator, createProfileStruct, createRevokeScholarInstruction, createRpcCloseCampaignInstruction, createRpcClosePhraseInstruction, createRpcCloseValidateInstruction, createRpcPermitInstruction, createRpcPermitInstructions, createRpcSubmitPhraseInstruction, createRpcSubmitUtterancesPromises, createRpcSubmitVerifiableUtterancesPromises, createRpcValidatePhraseInstruction, createRpcValidateUtterancesPromises, createScholarSignInstruction, createStakeCampaignInstruction, createStakeCampaignInstructions, createStakeCampaignWithNFTInstructions, createStakeNftInstruction, createSubmitPhraseInstruction, createUnstakeCampaignInstruction, createUnstakeCampaignInstructions, createUnstakeNftInstruction, createUpdateCampaignInstruction, createUtteranceByOntology, createValidatePhraseInstruction, createValidatorValidateUtterancesInstructions, createVerifyPreStakedNftInstruction, deactiveTableInstructionDiscriminator, deactiveTableStruct, decodeText, delCampaignMeta, deleteOntology, deleteOntologyByCanonical, encodeText, errorFromCode, errorFromName, extendTableInstructionDiscriminator, extendTableStruct, farmConfigBeet, farmConfigDiscriminator, feedBeet, feedDiscriminator, free2playInstructionDiscriminator, free2playStruct, getAllCampaignTitles, getAllCampaigns, getAllCampaignsInfo, getAppRole, getAssociateTokenAccount, getBuilderActivity, getBuilderActivityInfo, getBuilderRecentSubmissions, getBuilderSubmissionsToday, getCampaginMeta, getCampaignFromCampaignAccount, getCampaignFromCampaignInfo, getCampaignInfo, getIsProfileCreated, getIsRpcPermitted, getKanonNfts, getOrCreateAssociateTokenAccount, getRpcAuthToken, getRpcListActivity, getRpcSubmissionStatus, getRpcValidationStatus, getSolBalance, getSubmissionsValidationsInfo, getTokenBalance, getTotalAvailableRewards, getUnusedCampaignTitle, getUtterancesAndHistoriesForArchitect, getUtterancesAndHistoriesForBuilder, getUtterancesAndHistoriesForValidator, getValidatorActivity, getValidatorActivityInfo, getValidatorRecentValidations, getValidatorValidationsToday, guildBeet, guildClaimRewardInstructionDiscriminator, guildClaimRewardStruct, guildDeleteInstructionDiscriminator, guildDeleteStruct, guildDiscriminator, guildGrantScholarInstructionDiscriminator, guildGrantScholarStruct, guildStakeNftInstructionDiscriminator, guildStakeNftStruct, guildUnstakeNftInstructionDiscriminator, guildUnstakeNftStruct, initializeInstructionDiscriminator, initializeStruct, isEmptyAddress, isEqualAddress, isIncludingAddress, isValidAddress, offchainBeet, phraseBeet, phraseDiscriminator, phraseTypeBeet, profileBeet, profileDiscriminator, revokeScholarInstructionDiscriminator, revokeScholarStruct, roleBeet, rpcBatchSubmitPhrases, rpcBatchSubmitVerifiablePhrases, rpcBatchValidatePhrase, rpcCloseCampaignInstructionDiscriminator, rpcCloseCampaignStruct, rpcClosePhraseInstructionDiscriminator, rpcClosePhraseStruct, rpcCloseValidateInstructionDiscriminator, rpcCloseValidateStruct, rpcPermitInstructionDiscriminator, rpcPermitStruct, rpcRequestAuth, rpcSubmitPhrase, rpcSubmitPhraseInstructionDiscriminator, rpcSubmitPhraseStruct, rpcValidatePhrase, rpcValidatePhraseInstructionDiscriminator, rpcValidatePhraseStruct, rpcVerifyAuth, scholarSignInstructionDiscriminator, scholarSignStruct, sendAndConfirmWithRetry, sendInstructions, sleep, stakeAccountBeet, stakeAccountDiscriminator, stakeAccountRoleBeet, stakeAccountTypeBeet, stakeCampaignInstructionDiscriminator, stakeCampaignStruct, stakeNftInstructionDiscriminator, stakeNftStruct, stakingTypeBeet, submitOntology, submitPhraseInstructionDiscriminator, submitPhraseStruct, tagBeet, unstakeCampaignInstructionDiscriminator, unstakeCampaignStruct, unstakeNftInstructionDiscriminator, unstakeNftStruct, updateCampaignInstructionDiscriminator, updateCampaignStruct, validateBeet, validateDiscriminator, validatePhraseInstructionDiscriminator, validatePhraseStruct, validatorsBeet, validatorsDiscriminator, verifyPreStakedNftInstructionDiscriminator, verifyPreStakedNftStruct };
 //# sourceMappingURL=dyf.esm.js.map
