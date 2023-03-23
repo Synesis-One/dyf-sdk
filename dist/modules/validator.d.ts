@@ -23,3 +23,6 @@ export declare const createRpcValidateUtterancesPromises: (publicKey: PublicKey,
         rpcHost: string;
     })[][];
 };
+export declare const createRpcValidateVerifiableUtterancesPromise: (publicKey: PublicKey, signMessage: (message: Uint8Array) => Promise<Uint8Array>, rpcAuthToken: string, campaignTitle: string, validations: ValidationArgs[], args: {
+    programId: PublicKey;
+}) => Promise<(string | number | boolean)[][]>;

@@ -17,6 +17,13 @@ export declare const createArchitectUpdateCampaignInstructions: (publicKey: Publ
     instructions: TransactionInstruction[];
     signers: Signer[];
 }>;
+export declare const createArchitectClaimCampaignInstructions: (publicKey: PublicKey, connection: Connection, campaignTitle: string, args: {
+    programId: PublicKey;
+    snsMint: PublicKey;
+}) => Promise<{
+    instructions: TransactionInstruction[];
+    signers: Signer[];
+}>;
 export declare const getUnusedCampaignTitle: (publicKey: PublicKey, connection: Connection, args: {
     apiHost: string;
     apiAuth: string;

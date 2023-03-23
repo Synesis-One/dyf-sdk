@@ -8,63 +8,71 @@ import * as beet from '@metaplex-foundation/beet';
 import * as web3 from '@solana/web3.js';
 /**
  * @category Instructions
- * @category RpcValidatePhrase
+ * @category ValidateSignedPhrase
  * @category generated
  */
-export declare type RpcValidatePhraseInstructionArgs = {
+export declare type ValidateSignedPhraseInstructionArgs = {
     campaignTitle: string;
     offchainRef: string;
     confident: number;
     status: boolean;
+    validate: string;
+    rawProof: Uint8Array;
 };
 /**
  * @category Instructions
- * @category RpcValidatePhrase
+ * @category ValidateSignedPhrase
  * @category generated
  */
-export declare const rpcValidatePhraseStruct: beet.FixableBeetArgsStruct<RpcValidatePhraseInstructionArgs & {
+export declare const validateSignedPhraseStruct: beet.FixableBeetArgsStruct<ValidateSignedPhraseInstructionArgs & {
     instructionDiscriminator: number[];
 }>;
 /**
- * Accounts required by the _rpcValidatePhrase_ instruction
+ * Accounts required by the _validateSignedPhrase_ instruction
  *
  * @property [_writable_, **signer**] authority
  * @property [] user
+ * @property [] builder
  * @property [_writable_] phraseAccount
  * @property [_writable_] userProfile
  * @property [_writable_] campaignActivity
+ * @property [_writable_] builderProfile
  * @property [_writable_] builderActivity
  * @property [_writable_] logAccount
  * @property [_writable_] campaignAccount
  * @property [] farmConfig
+ * @property [] ixSysvar
  * @property [] clock
  * @category Instructions
- * @category RpcValidatePhrase
+ * @category ValidateSignedPhrase
  * @category generated
  */
-export declare type RpcValidatePhraseInstructionAccounts = {
+export declare type ValidateSignedPhraseInstructionAccounts = {
     authority: web3.PublicKey;
     user: web3.PublicKey;
+    builder: web3.PublicKey;
     phraseAccount: web3.PublicKey;
     userProfile: web3.PublicKey;
     campaignActivity: web3.PublicKey;
+    builderProfile: web3.PublicKey;
     builderActivity: web3.PublicKey;
     logAccount: web3.PublicKey;
     campaignAccount: web3.PublicKey;
     farmConfig: web3.PublicKey;
+    ixSysvar: web3.PublicKey;
     systemProgram?: web3.PublicKey;
     clock: web3.PublicKey;
     anchorRemainingAccounts?: web3.AccountMeta[];
 };
-export declare const rpcValidatePhraseInstructionDiscriminator: number[];
+export declare const validateSignedPhraseInstructionDiscriminator: number[];
 /**
- * Creates a _RpcValidatePhrase_ instruction.
+ * Creates a _ValidateSignedPhrase_ instruction.
  *
  * @param accounts that will be accessed while the instruction is processed
  * @param args to provide as instruction data to the program
  *
  * @category Instructions
- * @category RpcValidatePhrase
+ * @category ValidateSignedPhrase
  * @category generated
  */
-export declare function createRpcValidatePhraseInstruction(accounts: RpcValidatePhraseInstructionAccounts, args: RpcValidatePhraseInstructionArgs, programId?: web3.PublicKey): web3.TransactionInstruction;
+export declare function createValidateSignedPhraseInstruction(accounts: ValidateSignedPhraseInstructionAccounts, args: ValidateSignedPhraseInstructionArgs, programId?: web3.PublicKey): web3.TransactionInstruction;

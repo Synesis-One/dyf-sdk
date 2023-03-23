@@ -1,6 +1,5 @@
 export * from './Campaign';
 export * from './CampaignActivity';
-export * from './CampaignVault';
 export * from './FarmConfig';
 export * from './Feed';
 export * from './Guild';
@@ -13,7 +12,6 @@ import { FarmConfig } from './FarmConfig';
 import { Guild } from './Guild';
 import { Profile } from './Profile';
 import { CampaignActivity } from './CampaignActivity';
-import { CampaignVault } from './CampaignVault';
 import { Campaign } from './Campaign';
 import { Phrase } from './Phrase';
 import { Validate } from './Validate';
@@ -25,7 +23,6 @@ export declare const accountProviders: {
     Guild: typeof Guild;
     Profile: typeof Profile;
     CampaignActivity: typeof CampaignActivity;
-    CampaignVault: typeof CampaignVault;
     Campaign: typeof Campaign;
     Phrase: typeof Phrase;
     Validate: typeof Validate;

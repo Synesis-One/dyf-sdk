@@ -11,7 +11,15 @@ import * as web3 from '@solana/web3.js';
  * @category RpcCloseCampaign
  * @category generated
  */
-export declare const rpcCloseCampaignStruct: beet.BeetArgsStruct<{
+export declare type RpcCloseCampaignInstructionArgs = {
+    campaignTitle: string;
+};
+/**
+ * @category Instructions
+ * @category RpcCloseCampaign
+ * @category generated
+ */
+export declare const rpcCloseCampaignStruct: beet.FixableBeetArgsStruct<RpcCloseCampaignInstructionArgs & {
     instructionDiscriminator: number[];
 }>;
 /**
@@ -20,6 +28,8 @@ export declare const rpcCloseCampaignStruct: beet.BeetArgsStruct<{
  * @property [_writable_, **signer**] authority
  * @property [_writable_] rentOwner
  * @property [_writable_] campaign
+ * @property [_writable_] campaignVault
+ * @property [_writable_] pdaAccount
  * @property [] farmConfig
  * @property [] clock
  * @category Instructions
@@ -30,6 +40,8 @@ export declare type RpcCloseCampaignInstructionAccounts = {
     authority: web3.PublicKey;
     rentOwner: web3.PublicKey;
     campaign: web3.PublicKey;
+    campaignVault: web3.PublicKey;
+    pdaAccount: web3.PublicKey;
     farmConfig: web3.PublicKey;
     systemProgram?: web3.PublicKey;
     clock: web3.PublicKey;
@@ -40,8 +52,10 @@ export declare const rpcCloseCampaignInstructionDiscriminator: number[];
  * Creates a _RpcCloseCampaign_ instruction.
  *
  * @param accounts that will be accessed while the instruction is processed
+ * @param args to provide as instruction data to the program
+ *
  * @category Instructions
  * @category RpcCloseCampaign
  * @category generated
  */
-export declare function createRpcCloseCampaignInstruction(accounts: RpcCloseCampaignInstructionAccounts, programId?: web3.PublicKey): web3.TransactionInstruction;
+export declare function createRpcCloseCampaignInstruction(accounts: RpcCloseCampaignInstructionAccounts, args: RpcCloseCampaignInstructionArgs, programId?: web3.PublicKey): web3.TransactionInstruction;

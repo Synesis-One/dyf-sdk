@@ -19,6 +19,14 @@ export declare type FarmConfigArgs = {
     stakingContract: web3.PublicKey;
     nftTvl: beet.bignum;
     snsTvl: beet.bignum;
+    claimPeriod: beet.bignum;
+    rpcClosePeriod: beet.bignum;
+    fundClaimPeriod: beet.bignum;
+    platformFee: number;
+    platformOverrunBuffer: number;
+    platformVault: web3.PublicKey;
+    burnWallet: web3.PublicKey;
+    platformRewardTires: number[];
     authority: web3.PublicKey;
     oracle: web3.PublicKey;
     snsFeed: web3.PublicKey;
@@ -46,6 +54,14 @@ export declare class FarmConfig implements FarmConfigArgs {
     readonly stakingContract: web3.PublicKey;
     readonly nftTvl: beet.bignum;
     readonly snsTvl: beet.bignum;
+    readonly claimPeriod: beet.bignum;
+    readonly rpcClosePeriod: beet.bignum;
+    readonly fundClaimPeriod: beet.bignum;
+    readonly platformFee: number;
+    readonly platformOverrunBuffer: number;
+    readonly platformVault: web3.PublicKey;
+    readonly burnWallet: web3.PublicKey;
+    readonly platformRewardTires: number[];
     readonly authority: web3.PublicKey;
     readonly oracle: web3.PublicKey;
     readonly snsFeed: web3.PublicKey;
@@ -87,6 +103,14 @@ export declare class FarmConfig implements FarmConfigArgs {
         stakingContract: any;
         nftTvl: any;
         snsTvl: any;
+        claimPeriod: any;
+        rpcClosePeriod: any;
+        fundClaimPeriod: any;
+        platformFee: any;
+        platformOverrunBuffer: any;
+        platformVault: any;
+        burnWallet: any;
+        platformRewardTires: any;
         authority: any;
         oracle: any;
         snsFeed: any;
@@ -142,6 +166,20 @@ export declare class FarmConfig implements FarmConfigArgs {
         snsTvl: number | {
             toNumber: () => number;
         };
+        claimPeriod: number | {
+            toNumber: () => number;
+        };
+        rpcClosePeriod: number | {
+            toNumber: () => number;
+        };
+        fundClaimPeriod: number | {
+            toNumber: () => number;
+        };
+        platformFee: number;
+        platformOverrunBuffer: number;
+        platformVault: string;
+        burnWallet: string;
+        platformRewardTires: number[];
         authority: string;
         oracle: string;
         snsFeed: string;

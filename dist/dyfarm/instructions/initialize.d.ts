@@ -18,6 +18,12 @@ export declare type InitializeInstructionArgs = {
     stakingContract: web3.PublicKey;
     oracle: web3.PublicKey;
     snsFeed: web3.PublicKey;
+    claimPeriod: beet.bignum;
+    rpcClosePeriod: beet.bignum;
+    fundClaimPeriod: beet.bignum;
+    platformTiers: Uint8Array;
+    platformFee: number;
+    platformOverrunBuffer: number;
     slot: beet.bignum;
 };
 /**
@@ -25,7 +31,7 @@ export declare type InitializeInstructionArgs = {
  * @category Initialize
  * @category generated
  */
-export declare const initializeStruct: beet.BeetArgsStruct<InitializeInstructionArgs & {
+export declare const initializeStruct: beet.FixableBeetArgsStruct<InitializeInstructionArgs & {
     instructionDiscriminator: number[];
 }>;
 /**
@@ -34,6 +40,8 @@ export declare const initializeStruct: beet.BeetArgsStruct<InitializeInstruction
  * @property [_writable_, **signer**] authority
  * @property [_writable_] farmConfig
  * @property [_writable_] dyfVault
+ * @property [] burnWallet
+ * @property [_writable_] platformVault
  * @property [] mint
  * @property [_writable_] pdaAccount
  * @property [_writable_] campaignTableAccount
@@ -47,6 +55,8 @@ export declare type InitializeInstructionAccounts = {
     authority: web3.PublicKey;
     farmConfig: web3.PublicKey;
     dyfVault: web3.PublicKey;
+    burnWallet: web3.PublicKey;
+    platformVault: web3.PublicKey;
     mint: web3.PublicKey;
     pdaAccount: web3.PublicKey;
     campaignTableAccount: web3.PublicKey;

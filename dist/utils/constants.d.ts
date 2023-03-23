@@ -1,31 +1,3 @@
-export declare const STAKE_ACCOUNT_ROLE: {
-    architect: {
-        val: number;
-        label: string;
-    };
-    builder: {
-        val: number;
-        label: string;
-    };
-    validator: {
-        val: number;
-        label: string;
-    };
-};
-export declare const ACCESS_METHOD: {
-    nft: {
-        val: number;
-        label: string;
-    };
-    sns: {
-        val: number;
-        label: string;
-    };
-    free2play: {
-        val: number;
-        label: string;
-    };
-};
 export declare const PHRASE_TYPE: {
     general: {
         val: number;
@@ -44,38 +16,21 @@ export declare const PHRASE_TYPE: {
         label: string;
     };
 };
-export declare const OFFCHAIN_TYPE: {
-    synesis: {
-        val: number;
-        label: string;
-    };
-    ipfs: {
-        val: number;
-        label: string;
-    };
-    arweave: {
-        val: number;
-        label: string;
-    };
-    s3: {
-        val: number;
-        label: string;
-    };
-};
-export declare const RPC_TXN_STATUS: {
-    pending: {
-        val: number;
-        label: string;
-    };
-    finalized: {
-        val: number;
-        label: string;
-    };
-    expired: {
-        val: number;
-        label: string;
-    };
-};
+export declare enum RpcTxnStatus {
+    Pending = 0,
+    Finalized = 1,
+    Expired = 2
+}
+export declare enum CampaignStatus {
+    Upcoming = 0,
+    Inprogress = 1,
+    FinishedUnclaimable = 2,
+    FinishedClaimable = 3,
+    ClosingByRpc = 4,
+    ClosingByArchitect = 5,
+    Closed = 6,
+    Expired = 7
+}
 export declare const METADATA_PROGRAM_ADDRESS = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s";
 export declare const SNS_PAIR = "SNS/USD";
 export declare const LOOKUP_PROGRAM_ADDRESS = "AddressLookupTab1e1111111111111111111111111";

@@ -1,6 +1,6 @@
 import { Connection, PublicKey, Signer, TransactionInstruction } from '@solana/web3.js';
-import { PCampaign } from '../typings';
-export declare const createStakeCampaignInstructions: (publicKey: PublicKey, connection: Connection, role: number, amount: number, campaignTitle: string, args: {
+import { AccessMethod, Role } from '../dyfarm';
+export declare const createStakeCampaignInstructions: (publicKey: PublicKey, connection: Connection, amount: number, campaignTitle: string, args: {
     programId: PublicKey;
     snsMint: PublicKey;
 }) => Promise<{
@@ -28,15 +28,16 @@ export declare const createBatchClaimRewardInstructions: (publicKey: PublicKey, 
     instructions: TransactionInstruction[];
     signers: Signer[];
 }>;
-export declare const createStakeCampaignWithNFTInstructions: (publicKey: PublicKey, connection: Connection, role: string, mint: string, args: {
+export declare const createStakeCampaignWithNFTInstructions: (publicKey: PublicKey, connection: Connection, role: Role, access: AccessMethod, mint: string, args: {
     programId: PublicKey;
     snsMint: PublicKey;
 }) => Promise<{
     instructions: TransactionInstruction[];
     signers: Signer[];
 }>;
-export declare const getTotalAvailableRewards: (publicKey: PublicKey, connection: Connection, appCampaigns: PCampaign[], args: {
+export declare const getTotalAvailableRewards: (publicKey: PublicKey, connection: Connection, args: {
     programId: PublicKey;
+    stopOffset: number;
 }) => Promise<{
     rewards: number;
     claimed: number;
@@ -45,11 +46,11 @@ export declare const getTotalAvailableRewards: (publicKey: PublicKey, connection
 export declare const getBuilderActivity: (publicKey: PublicKey, args: {
     apiHost: string;
     apiAuth: string;
-}) => Promise<import("../typings").BuilderActivityInfo>;
+}) => Promise<import("..").BuilderActivityInfo>;
 export declare const getValidatorActivity: (publicKey: PublicKey, args: {
     apiHost: string;
     apiAuth: string;
-}) => Promise<import("../typings").ValidatorActivityInfo>;
+}) => Promise<import("..").ValidatorActivityInfo>;
 export declare const getBuilderSubmissionsToday: (publicKey: PublicKey, args: {
     apiHost: string;
     apiAuth: string;

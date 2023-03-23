@@ -1,11 +1,16 @@
 import { Connection, PublicKey, Signer, TransactionInstruction } from '@solana/web3.js';
-export declare const getIsRpcPermitted: (publicKey: PublicKey, connection: Connection, role: string, args: {
+import { AccessMethod, Role } from '../dyfarm';
+import { ProfileStatus } from '../typings';
+export declare const createGlobalProfileInstructions: (publicKey: PublicKey, connection: Connection, role: Role, access: AccessMethod, args: {
     programId: PublicKey;
-}) => Promise<boolean>;
-export declare const getIsProfileCreated: (publicKey: PublicKey, connection: Connection, args: {
+}) => Promise<{
+    instructions: TransactionInstruction[];
+    signers: Signer[];
+}>;
+export declare const getProfileStatus: (publicKey: PublicKey, connection: Connection, args: {
     programId: PublicKey;
-}) => Promise<boolean>;
-export declare const createRpcPermitInstructions: (publicKey: PublicKey, connection: Connection, role: string, args: {
+}) => Promise<ProfileStatus>;
+export declare const createRpcPermitInstructions: (publicKey: PublicKey, connection: Connection, role: Role, args: {
     programId: PublicKey;
 }) => Promise<{
     instructions: TransactionInstruction[];

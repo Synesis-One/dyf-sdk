@@ -67,6 +67,10 @@ export declare type ApiCampaignInfo = {
     rpuCause: number;
     rpuEffect: number;
     rpuValidator: number;
+    minSpecific: number;
+    minGeneral: number;
+    minCause: number;
+    minEffect: number;
     majorityQuorum: number;
     architect: string;
     finish: boolean;

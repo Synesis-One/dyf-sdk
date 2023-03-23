@@ -10,6 +10,7 @@ import * as beet from '@metaplex-foundation/beet';
 import * as beetSolana from '@metaplex-foundation/beet-solana';
 import { AccessMethod } from '../types/AccessMethod';
 import { Role } from '../types/Role';
+import { Tier } from '../types/Tier';
 /**
  * Arguments used to create {@link Profile}
  * @category Accounts
@@ -17,12 +18,14 @@ import { Role } from '../types/Role';
  */
 export declare type ProfileArgs = {
     user: web3.PublicKey;
+    social: web3.PublicKey;
     kind: AccessMethod;
     nftStaked: boolean;
     nftMint: web3.PublicKey;
     scholarAccess: boolean;
     scholarSign: boolean;
     scholarActivate: beet.bignum;
+    scholarSelfStake: boolean;
     nftOwner: web3.PublicKey;
     nftOwnerShare: number;
     nftGuild: web3.PublicKey;
@@ -32,6 +35,7 @@ export declare type ProfileArgs = {
     durability: number;
     productivity: number;
     performance: number;
+    tier: Tier;
     activity: number;
     reject: number;
     accept: number;
@@ -50,12 +54,14 @@ export declare const profileDiscriminator: number[];
  */
 export declare class Profile implements ProfileArgs {
     readonly user: web3.PublicKey;
+    readonly social: web3.PublicKey;
     readonly kind: AccessMethod;
     readonly nftStaked: boolean;
     readonly nftMint: web3.PublicKey;
     readonly scholarAccess: boolean;
     readonly scholarSign: boolean;
     readonly scholarActivate: beet.bignum;
+    readonly scholarSelfStake: boolean;
     readonly nftOwner: web3.PublicKey;
     readonly nftOwnerShare: number;
     readonly nftGuild: web3.PublicKey;
@@ -65,6 +71,7 @@ export declare class Profile implements ProfileArgs {
     readonly durability: number;
     readonly productivity: number;
     readonly performance: number;
+    readonly tier: Tier;
     readonly activity: number;
     readonly reject: number;
     readonly accept: number;
@@ -131,6 +138,7 @@ export declare class Profile implements ProfileArgs {
      */
     pretty(): {
         user: string;
+        social: string;
         kind: string;
         nftStaked: boolean;
         nftMint: string;
@@ -139,6 +147,7 @@ export declare class Profile implements ProfileArgs {
         scholarActivate: number | {
             toNumber: () => number;
         };
+        scholarSelfStake: boolean;
         nftOwner: string;
         nftOwnerShare: number;
         nftGuild: string;
@@ -148,6 +157,7 @@ export declare class Profile implements ProfileArgs {
         durability: number;
         productivity: number;
         performance: number;
+        tier: string;
         activity: number;
         reject: number;
         accept: number;

@@ -1,5 +1,6 @@
 import { Connection, PublicKey } from '@solana/web3.js';
-import { ApiCampaignMeta, CreateCampaignArgs, PCampaign, PUtterance, SubmitOntologyArgs, UpdateCampaignArgs, ValidationArgs } from './typings';
+import { AccessMethod, Role } from './dyfarm';
+import { ApiCampaignMeta, CreateCampaignArgs, PUtterance, SubmitOntologyArgs, UpdateCampaignArgs, ValidationArgs } from './typings';
 export * from './modules/airdrop';
 export * from './modules/architect';
 export * from './modules/campaignActivities';
@@ -44,6 +45,10 @@ export declare class Dyfarm {
         instructions: import("@solana/web3.js").TransactionInstruction[];
         signers: import("@solana/web3.js").Signer[];
     }>;
+    createArchitectClaimCampaignInstructions(publicKey: PublicKey, connection: Connection, campaignTitle: string): Promise<{
+        instructions: import("@solana/web3.js").TransactionInstruction[];
+        signers: import("@solana/web3.js").Signer[];
+    }>;
     getUnusedCampaignTitle(publicKey: PublicKey, connection: Connection): Promise<string>;
     getUtterancesAndHistoriesForBuilder(publicKey: PublicKey, connection: Connection, campaignAccountPubkey: string, latestSubmittedUuids: string[]): Promise<PUtterance[]>;
     createUtteranceByOntology(publicKey: PublicKey, ontology: SubmitOntologyArgs): Promise<PUtterance>;
@@ -60,13 +65,8 @@ export declare class Dyfarm {
             rpcHost: string;
         })[][];
     };
-    createRpcSubmitVerifiableUtterancesPromises(publicKey: PublicKey, signMessage: (message: Uint8Array) => Promise<Uint8Array>, connection: Connection, rpcAuthToken: string, campaignTitle: string, batchUtterances: PUtterance[][]): Promise<{
-        promise: (params: (string | number)[], args: {
-            rpcHost: string;
-        }) => Promise<import("./typings").RpcBatchSubmissionResponse[]>;
-        args: any[];
-    }>;
-    createStakeCampaignInstructions(publicKey: PublicKey, connection: Connection, role: number, amount: number, campaignTitle: string): Promise<{
+    createRpcSubmitVerifiableUtterancesPromise(publicKey: PublicKey, signMessage: (message: Uint8Array) => Promise<Uint8Array>, rpcAuthToken: string, campaignTitle: string, batchUtterances: PUtterance[]): Promise<(string | number)[][]>;
+    createStakeCampaignInstructions(publicKey: PublicKey, connection: Connection, amount: number, campaignTitle: string): Promise<{
         instructions: import("@solana/web3.js").TransactionInstruction[];
         signers: import("@solana/web3.js").Signer[];
     }>;
@@ -82,11 +82,11 @@ export declare class Dyfarm {
         instructions: import("@solana/web3.js").TransactionInstruction[];
         signers: import("@solana/web3.js").Signer[];
     }>;
-    createStakeCampaignWithNFTInstructions(publicKey: PublicKey, connection: Connection, role: string, mint: string): Promise<{
+    createStakeCampaignWithNFTInstructions(publicKey: PublicKey, connection: Connection, role: Role, access: AccessMethod, mint: string): Promise<{
         instructions: import("@solana/web3.js").TransactionInstruction[];
         signers: import("@solana/web3.js").Signer[];
     }>;
-    getTotalAvailableRewards(publicKey: PublicKey, connection: Connection, appCampaigns: PCampaign[]): Promise<{
+    getTotalAvailableRewards(publicKey: PublicKey, connection: Connection): Promise<{
         rewards: number;
         claimed: number;
         campaignTitles: string[];
@@ -95,13 +95,21 @@ export declare class Dyfarm {
     getValidatorActivity(publicKey: PublicKey): Promise<import("./typings").ValidatorActivityInfo>;
     getBuilderSubmissionsToday(publicKey: PublicKey): Promise<number>;
     getValidatorValidationsToday(publicKey: PublicKey): Promise<number>;
-    getCampaignFromCampaignAccount(publicKey: PublicKey, connection: Connection, campaignTitle: string): Promise<PCampaign>;
-    getCampaignFromCampaignInfo(publicKey: PublicKey, connection: Connection, campaignTitle: string, role: number): Promise<PCampaign>;
-    getAllCampaigns(publicKey: PublicKey, connection: Connection, isFetchingStakedInfoOnchain?: boolean): Promise<PCampaign[]>;
-    getAppRole(publicKey: PublicKey): Promise<number>;
-    getIsRpcPermitted(publicKey: PublicKey, connection: Connection, role: string): Promise<boolean>;
-    getIsProfileCreated(publicKey: PublicKey, connection: Connection): Promise<boolean>;
-    createRpcPermitInstructions(publicKey: PublicKey, connection: Connection, role: string): Promise<{
+    getCampaignFromCampaignAccount(publicKey: PublicKey, connection: Connection, campaignTitle: string): Promise<import("./typings").PCampaign>;
+    getCampaignFromCampaignInfo(publicKey: PublicKey, connection: Connection, campaignTitle: string, role: Role): Promise<import("./typings").PCampaign>;
+    getAllCampaigns(publicKey: PublicKey, connection: Connection): Promise<import("./typings").PCampaign[]>;
+    getAppRole(publicKey: PublicKey): Promise<Role>;
+    getCampaignStatusFromCampaignTitles(publicKey: PublicKey, connection: Connection, role: Role, campaignTitles: string[]): Promise<{
+        campaignTitle: string;
+        status: import("./utils").CampaignStatus;
+    }[]>;
+    bootstrapDev(publicKey: PublicKey, connection: Connection): Promise<void>;
+    createGlobalProfileInstructions(publicKey: PublicKey, connection: Connection, role: Role, access: AccessMethod): Promise<{
+        instructions: import("@solana/web3.js").TransactionInstruction[];
+        signers: import("@solana/web3.js").Signer[];
+    }>;
+    getProfileStatus(publicKey: PublicKey, connection: Connection): Promise<import("./typings").ProfileStatus>;
+    createRpcPermitInstructions(publicKey: PublicKey, connection: Connection, role: Role): Promise<{
         instructions: import("@solana/web3.js").TransactionInstruction[];
         signers: import("@solana/web3.js").Signer[];
     }>;
@@ -119,9 +127,23 @@ export declare class Dyfarm {
             rpcHost: string;
         })[][];
     };
+    createRpcValidateVerifiableUtterancesPromise(publicKey: PublicKey, signMessage: (message: Uint8Array) => Promise<Uint8Array>, rpcAuthToken: string, campaignTitle: string, validations: ValidationArgs[]): Promise<(string | number | boolean)[][]>;
     getSolBalance(publicKey: PublicKey, connection: Connection): Promise<number>;
     getTokenBalance(publicKey: PublicKey, connection: Connection): Promise<number>;
     getKanonNfts(publicKey: PublicKey, connection: Connection): Promise<import("./typings").KanonNft[]>;
     addCampaignMeta(data: ApiCampaignMeta): Promise<boolean>;
     delCampaignMeta(data: ApiCampaignMeta): Promise<boolean>;
+    createCreateGuildInstructions(admin: PublicKey, connection: Connection, guildTitle: string, ownerRate: number, masterRate: number): Promise<{
+        instructions: import("@solana/web3.js").TransactionInstruction[];
+        signers: import("@solana/web3.js").Signer[];
+    }>;
+    createGuildStakeNftInstructions(admin: PublicKey, user: PublicKey, connection: Connection, guildTitle: string, nftMint: PublicKey, role: Role): Promise<{
+        instructions: import("@solana/web3.js").TransactionInstruction[];
+        signers: import("@solana/web3.js").Signer[];
+    }>;
+    createScholarSignInstructions(admin: PublicKey, user: PublicKey, connection: Connection, guildTitle: string): Promise<{
+        instructions: import("@solana/web3.js").TransactionInstruction[];
+        signers: import("@solana/web3.js").Signer[];
+    }>;
+    getGuild(admin: PublicKey, connection: Connection, guildTitle: string): Promise<import("./dyfarm").Guild>;
 }

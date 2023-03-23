@@ -30,6 +30,7 @@ export declare const guildClaimRewardStruct: beet.FixableBeetArgsStruct<GuildCla
  * @property [_writable_] master
  * @property [_writable_] userProfile
  * @property [_writable_] userToken
+ * @property [_writable_] campaignAccount
  * @property [_writable_] campaignActivity
  * @property [_writable_] campaignVault
  * @property [] guildAccount
@@ -47,6 +48,7 @@ export declare type GuildClaimRewardInstructionAccounts = {
     master: web3.PublicKey;
     userProfile: web3.PublicKey;
     userToken: web3.PublicKey;
+    campaignAccount: web3.PublicKey;
     campaignActivity: web3.PublicKey;
     campaignVault: web3.PublicKey;
     guildAccount: web3.PublicKey;

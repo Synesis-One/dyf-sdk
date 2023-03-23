@@ -24,14 +24,19 @@ export declare type CreateCampaignInstructionArgs = {
     close: beet.bignum;
     expire: beet.bignum;
     rpuValidator: beet.bignum;
+    minGeneral: beet.bignum;
     rpuGeneral: beet.bignum;
+    minSpecific: beet.bignum;
     rpuSpecific: beet.bignum;
+    minCause: beet.bignum;
     rpuCause: beet.bignum;
+    minEffect: beet.bignum;
     rpuEffect: beet.bignum;
     minBuilder: number;
     minValidator: number;
     majorityQuorum: number;
     minimumStake: beet.bignum;
+    acceptRate: number;
 };
 /**
  * @category Instructions
@@ -47,6 +52,7 @@ export declare const createCampaignStruct: beet.FixableBeetArgsStruct<CreateCamp
  * @property [_writable_, **signer**] user
  * @property [_writable_] campaignAccount
  * @property [_writable_] campaignVault
+ * @property [_writable_] dyfVault
  * @property [_writable_] userToken
  * @property [] mint
  * @property [] farmConfig
@@ -64,6 +70,7 @@ export declare type CreateCampaignInstructionAccounts = {
     user: web3.PublicKey;
     campaignAccount: web3.PublicKey;
     campaignVault: web3.PublicKey;
+    dyfVault: web3.PublicKey;
     userToken: web3.PublicKey;
     mint: web3.PublicKey;
     farmConfig: web3.PublicKey;

@@ -1,4 +1,5 @@
-import { Tag } from '../dyfarm';
+import { AccessMethod, Role, Tag } from '../dyfarm';
+import { CampaignStatus } from '../utils';
 export declare type PHistory = {
     timestamp: number;
     utterance: string;
@@ -50,18 +51,22 @@ export declare type PCampaign = {
     rpuGeneral: number;
     rpuCause: number;
     rpuEffect: number;
+    minSpecific: number;
+    minGeneral: number;
+    minCause: number;
+    minEffect: number;
     rpuValidator: number;
     majorityQuorum: number;
     architect: string;
     utterances: PUtterance[];
     finish: boolean;
-    builderStakeStatus: boolean;
-    validatorStakeStatus: boolean;
+    stakeStatus: boolean;
     progress: number;
     submissions: number;
     rejections: number;
     timestamp: number;
     deployment: string;
+    status: CampaignStatus;
 };
 export declare type CreateCampaignArgs = {
     campaignTitle: string;
@@ -86,6 +91,10 @@ export declare type CreateCampaignArgs = {
     rpuGeneral: number;
     rpuSpecific: number;
     rpuValidator: number;
+    minSpecific: number;
+    minGeneral: number;
+    minCause: number;
+    minEffect: number;
     majorityQuorum: number;
 };
 export declare type UpdateCampaignArgs = {
@@ -110,4 +119,13 @@ export declare type KanonNft = {
     symbol: string;
     metadataUri: string;
     imageUri: string;
+};
+export declare type ProfileStatus = {
+    isCreated: boolean;
+    isNftStaked?: boolean;
+    isRpcPermitted?: boolean;
+    isScholarSign?: boolean;
+    isScholarAccess?: boolean;
+    role?: Role;
+    access?: AccessMethod;
 };

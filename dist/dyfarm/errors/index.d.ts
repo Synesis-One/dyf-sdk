@@ -273,7 +273,7 @@ export declare class CampaignNotFinishedError extends Error {
     constructor();
 }
 /**
- * RewardIsLow: 'aaaaaaaaaaaaaaaaaaaaaaaaaaa'
+ * RewardIsLow: 'Reward is low'
  *
  * @category Errors
  * @category generated
@@ -284,45 +284,45 @@ export declare class RewardIsLowError extends Error {
     constructor();
 }
 /**
- * B: 'bbbbbbbbbbbbbbbbbbbbbbbbbbb'
+ * InvalidMerkleProof: 'Invalid Merkle Proof'
  *
  * @category Errors
  * @category generated
  */
-export declare class BError extends Error {
+export declare class InvalidMerkleProofError extends Error {
     readonly code: number;
     readonly name: string;
     constructor();
 }
 /**
- * C: 'ccccccccccccccccccccccccccc'
+ * InvalidSignature: 'Invalid Signature'
  *
  * @category Errors
  * @category generated
  */
-export declare class CError extends Error {
+export declare class InvalidSignatureError extends Error {
     readonly code: number;
     readonly name: string;
     constructor();
 }
 /**
- * D: 'ddddddddddddddddddddddddddd'
+ * InvalidInput: 'Invalid Input on kind or phrase_type'
  *
  * @category Errors
  * @category generated
  */
-export declare class DError extends Error {
+export declare class InvalidInputError extends Error {
     readonly code: number;
     readonly name: string;
     constructor();
 }
 /**
- * E: 'eeeeeeeeeeeeeeeeeeeeeeeeeee'
+ * InvalidPlatformTiers: 'Invalid Platform Percents for Tiers'
  *
  * @category Errors
  * @category generated
  */
-export declare class EError extends Error {
+export declare class InvalidPlatformTiersError extends Error {
     readonly code: number;
     readonly name: string;
     constructor();

@@ -30,13 +30,19 @@ export declare type CampaignArgs = {
     minStake: beet.bignum;
     rewardCap: beet.bignum;
     rewardTvl: beet.bignum;
-    rewardClaim: beet.bignum;
+    claimedReward: beet.bignum;
+    unclaimedReward: beet.bignum;
+    rewardFinish: beet.bignum;
     minPhrase: number;
     minValidate: number;
     rpuValidator: beet.bignum;
+    minGeneral: beet.bignum;
     rpuGeneral: beet.bignum;
+    minSpecific: beet.bignum;
     rpuSpecific: beet.bignum;
+    minCause: beet.bignum;
     rpuCause: beet.bignum;
+    minEffect: beet.bignum;
     rpuEffect: beet.bignum;
     majorityQuorum: number;
     utterances: number;
@@ -44,6 +50,9 @@ export declare type CampaignArgs = {
     payScale: number;
     timeLimit: beet.bignum;
     finish: boolean;
+    finishTime: beet.bignum;
+    architectClaim: beet.bignum;
+    overrunBuffer: number;
     bump: number;
 };
 export declare const campaignDiscriminator: number[];
@@ -70,13 +79,19 @@ export declare class Campaign implements CampaignArgs {
     readonly minStake: beet.bignum;
     readonly rewardCap: beet.bignum;
     readonly rewardTvl: beet.bignum;
-    readonly rewardClaim: beet.bignum;
+    readonly claimedReward: beet.bignum;
+    readonly unclaimedReward: beet.bignum;
+    readonly rewardFinish: beet.bignum;
     readonly minPhrase: number;
     readonly minValidate: number;
     readonly rpuValidator: beet.bignum;
+    readonly minGeneral: beet.bignum;
     readonly rpuGeneral: beet.bignum;
+    readonly minSpecific: beet.bignum;
     readonly rpuSpecific: beet.bignum;
+    readonly minCause: beet.bignum;
     readonly rpuCause: beet.bignum;
+    readonly minEffect: beet.bignum;
     readonly rpuEffect: beet.bignum;
     readonly majorityQuorum: number;
     readonly utterances: number;
@@ -84,6 +99,9 @@ export declare class Campaign implements CampaignArgs {
     readonly payScale: number;
     readonly timeLimit: beet.bignum;
     readonly finish: boolean;
+    readonly finishTime: beet.bignum;
+    readonly architectClaim: beet.bignum;
+    readonly overrunBuffer: number;
     readonly bump: number;
     private constructor();
     /**
@@ -124,13 +142,19 @@ export declare class Campaign implements CampaignArgs {
         minStake: any;
         rewardCap: any;
         rewardTvl: any;
-        rewardClaim: any;
+        claimedReward: any;
+        unclaimedReward: any;
+        rewardFinish: any;
         minPhrase: any;
         minValidate: any;
         rpuValidator: any;
+        minGeneral: any;
         rpuGeneral: any;
+        minSpecific: any;
         rpuSpecific: any;
+        minCause: any;
         rpuCause: any;
+        minEffect: any;
         rpuEffect: any;
         majorityQuorum: any;
         utterances: any;
@@ -138,6 +162,9 @@ export declare class Campaign implements CampaignArgs {
         payScale: any;
         timeLimit: any;
         finish: any;
+        finishTime: any;
+        architectClaim: any;
+        overrunBuffer: any;
         bump: any;
         accountDiscriminator: any;
     }>;
@@ -202,7 +229,13 @@ export declare class Campaign implements CampaignArgs {
         rewardTvl: number | {
             toNumber: () => number;
         };
-        rewardClaim: number | {
+        claimedReward: number | {
+            toNumber: () => number;
+        };
+        unclaimedReward: number | {
+            toNumber: () => number;
+        };
+        rewardFinish: number | {
             toNumber: () => number;
         };
         minPhrase: number;
@@ -210,13 +243,25 @@ export declare class Campaign implements CampaignArgs {
         rpuValidator: number | {
             toNumber: () => number;
         };
+        minGeneral: number | {
+            toNumber: () => number;
+        };
         rpuGeneral: number | {
+            toNumber: () => number;
+        };
+        minSpecific: number | {
             toNumber: () => number;
         };
         rpuSpecific: number | {
             toNumber: () => number;
         };
+        minCause: number | {
+            toNumber: () => number;
+        };
         rpuCause: number | {
+            toNumber: () => number;
+        };
+        minEffect: number | {
             toNumber: () => number;
         };
         rpuEffect: number | {
@@ -230,6 +275,13 @@ export declare class Campaign implements CampaignArgs {
             toNumber: () => number;
         };
         finish: boolean;
+        finishTime: number | {
+            toNumber: () => number;
+        };
+        architectClaim: number | {
+            toNumber: () => number;
+        };
+        overrunBuffer: number;
         bump: number;
     };
 }
